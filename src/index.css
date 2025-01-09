@@ -1,0 +1,318 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-nunito;
+  }
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer components {
+  .range-slider {
+    -webkit-appearance: none; /* Remove default styles */
+    width: 300px;
+    height: 6px;
+    background: #dfc606;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  /* Change the background on hover */
+  .range-slider:hover {
+    background: #def105;
+  }
+  .menu-item {
+    @apply text-[18px] font-semibold text-menuLinkColor duration-200 ease-in-out hover:text-primary;
+  }
+  .menu-item.active {
+    @apply text-primary;
+  }
+  .btn-gradient {
+    background: linear-gradient(0deg, #0ca6fc 0%, #6acaff 100%);
+  }
+  .text--xl {
+    @apply text-[48px] font-bold text-primary leading-normal;
+  }
+  .book-btn {
+    @apply h-[42px] w-[42px] px-4 bg-menuLinkColor rounded-full overflow-hidden duration-200 ease-in-out hover:w-[138px];
+  }
+  .book-btn p {
+    @apply whitespace-nowrap ml-[-86px] opacity-0 duration-200 ease-in-out;
+  }
+  .book-btn:hover p {
+    @apply ml-0 opacity-100;
+  }
+  .team-card img {
+    @apply duration-200 ease-in-out;
+  }
+  .team-card:hover img {
+    @apply scale-[1.1];
+  }
+  .accordion-item button:hover {
+    text-decoration: none;
+  }
+  .accordion-item button svg {
+    height: 30px;
+    width: 30px;
+  }
+
+  .footer-contacts li {
+    @apply flex items-center gap-2;
+  }
+  .footer-contacts li svg {
+    height: 24px;
+    width: 24px;
+  }
+  .footer--box.links h4 {
+    @apply text-[24px] mb-12;
+  }
+  .footer--box.links li a {
+    @apply inline-block mt-6;
+  }
+  .footer--box.links li:first-child a {
+    @apply mt-0;
+  }
+  .breadcrumbs {
+    @apply text-[24px];
+  }
+  .breadcrumb--item {
+    @apply font-semibold text-[rgba(255,255,255,0.6)];
+  }
+  .breadcrumb--item.active {
+    @apply text-white;
+  }
+  .treatment-wrap {
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 33.33%;
+    flex: 0 0 33.33%;
+  }
+  .treatment--row {
+    margin-right: -10px;
+    margin-left: -10px;
+  }
+  .health-feature li {
+    @apply flex items-center gap-5 mt-7 first:mt-0;
+  }
+  .health-feature li p {
+    @apply text-[24px] font-medium capitalize;
+  }
+  .quick-consultation-feature li {
+    @apply flex items-center gap-[6px] mt-[10px] first:mt-0;
+  }
+  .quick-consultation-feature li img {
+    @apply h-6 w-6;
+  }
+  .quick-consultation-feature li p {
+    @apply text-[18px] leading-[164%];
+  }
+  .product-wrapper:hover .product-img img {
+    @apply scale-[1.1];
+  }
+  .step-indicators li {
+    @apply flex flex-col items-center;
+  }
+  .step-indicators li .icon {
+    @apply h-20 w-20 flex items-center justify-center rounded-full border-[2px] border-indicatorsColor text-[32px] font-semibold text-indicatorsColor bg-white;
+  }
+  .step-indicators li.active .icon {
+    @apply bg-primary text-white border-primary;
+  }
+  .step-indicators li span {
+    @apply text-[24px] text-indicatorsColor font-semibold mt-3 inline-block;
+  }
+  .checkout-stepform label {
+    @apply block text-[24px] font-semibold mb-[26px] text-[rgba(0,0,0,0.80)];
+  }
+  .checkout-stepform input,
+  .checkout-stepform textarea {
+    @apply w-full py-[22px] px-10 text-[rgba(0,0,0,0.80)] bg-transparent border border-[rgba(0,0,0,0.30)] rounded-[10px] focus:outline-none text-[24px];
+  }
+  .checkout-stepform textarea {
+    @apply h-[307px] resize-none;
+  }
+  .checkout-stepform .react-tel-input .form-control {
+    font-size: 24px;
+    border-radius: 5px;
+    line-height: 25px;
+    height: 80px;
+    width: 100%;
+    border-radius: 10px;
+    outline: none;
+    @apply border-[rgba(0,0,0,0.30)];
+  }
+  .royalmail-radio-wrap label::before,
+  .royalMail-radio::after {
+    content: '';
+    @apply absolute h-10 w-10 top-1/2 translate-y-[-50%] left-10 bg-white rounded-full border border-[rgba(0,0,0,0.5)];
+  }
+  .royalmail-radio-wrap input:checked + label::after {
+    content: '';
+    @apply h-6 w-6 bg-primryDark left-[48px];
+  }
+  .treatment-preference-medicine li {
+    @apply flex items-center justify-between;
+  }
+  .treatment-preference-medicine li p {
+    @apply text-[18px] text-[rgba(0,0,0,0.60)] mt-5 first:mt-0 font-medium;
+  }
+  .treatment-preference-medicine li.total-pay p {
+    @apply text-primryDark;
+  }
+  .suggested-medicine label {
+    @apply relative;
+  }
+  .checkout-stepform .setp-two label:before {
+    content: '';
+    @apply absolute top-[30px] left-10 h-[34px] w-[34px] bg-white border border-[rgba(0,0,0,0.6)] rounded-[4px];
+  }
+  .checkout-stepform .setp-two input:checked + label:after {
+    content: '';
+    @apply absolute top-[35px] left-[47px] w-[9px] h-[18px] border-primryDark;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    border-radius: 0px;
+    margin: 0px 15px 5px 5px;
+  }
+  .agreement label:before {
+    @apply !top-0 !left-0;
+  }
+  .agreement input:checked + label:after {
+    @apply !top-1 !left-[6px];
+  }
+  .faq-section button:hover {
+    text-decoration: none !important;
+  }
+  .faq-section .border-b {
+    @apply border-none;
+  }
+
+  .royalmail-radio-wrap input:checked + label::after {
+    content: '';
+    @apply h-6 w-6 bg-primryDark left-[48px];
+  }
+  .add-prescription button {
+    @apply text-[20px] py-5 px-10 bg-primary text-white font-semibold rounded-[10px];
+  }
+}
+
+.swiper-wrapper {
+  padding-bottom: 50px !important;
+}
+.swiper-pagination {
+  top: unset !important;
+  left: unset !important;
+  right: unset !important;
+}
+.swiper-pagination-bullet {
+  @apply !w-[12px] !h-[12px] !bg-black !opacity-30;
+}
+.swiper-pagination-bullet-active {
+  @apply !bg-black !opacity-100;
+}
+.about-faq .border-b {
+  border: none;
+}
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* custom scrollbar */
+
+.custom_scrollbar::-webkit-scrollbar {
+  width: 2.5px;
+}
+.custom_scrollbar::-webkit-scrollbar-track {
+  background-color: rgb(255, 255, 255);
+  -webkit-border-radius: 2px;
+}
+.custom_scrollbar::-webkit-scrollbar-thumb:vertical {
+  background-color: rgb(142, 142, 142);
+  -webkit-border-radius: 0px;
+  -webkit-width: 5;
+}
+.custom_scrollbar::-webkit-scrollbar-thumb:vertical:hover {
+  background: #1ca8cb;
+}
+
+/* Custom CSS to hide scrollbar */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+.user-assessment-result::-webkit-scrollbar {
+  display: none;
+}
+.user-assessment-result {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
