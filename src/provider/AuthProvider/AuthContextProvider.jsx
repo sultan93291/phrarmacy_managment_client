@@ -22,7 +22,7 @@ const AuthProvider = ({ children }) => {
     const fetchData = () => {
       axios({
         method: "GET",
-        url: "http://aamairk.softvencefsd.xyz/api/me",
+        url: "https://aamairk.softvencefsd.xyz/api/me",
         headers: {
           Authorization: `Bearer ${token}`,
         },

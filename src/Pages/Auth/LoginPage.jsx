@@ -24,7 +24,7 @@ function LoginPage() {
 
   const onSubmit = data => {
     axios
-      .post("http://aamairk.softvencefsd.xyz/api/login", {
+      .post("https://aamairk.softvencefsd.xyz/api/login", {
         email: data?.email,
         password: data?.password,
       })

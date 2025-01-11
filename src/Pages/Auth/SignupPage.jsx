@@ -74,7 +74,7 @@ function SignupPage() {
         
         axios({
           method: "POST",
-          url: "http://aamairk.softvencefsd.xyz/api/social-login",
+          url: "https://aamairk.softvencefsd.xyz/api/social-login",
           data: {
             token: token,
             provider: "google",
