@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
@@ -14,31 +14,99 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import axios from "axios";
+import { setLoggedInUserData } from "@/Redux/features/loggedInUserSlice";
+import { useDispatch } from "react-redux";
 
 function SignupPage() {
+  const navigate = useNavigate();
   const [toggle, setToggle] = useState(true);
   const [toggle2, setToggle2] = useState(true);
   const [date, setDate] = useState();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log({...data, date});
+
+  const dispatch = useDispatch()
+
+  const formattedDate = (() => {
+    const d = new Date(date); // Convert the input date string to a Date object
+    if (isNaN(d)) return "Invalid Date"; // Handle invalid date
+    return `${(d.getMonth() + 1).toString().padStart(2, "0")}/${d
+      .getDate()
+      .toString()
+      .padStart(2, "0")}/${d.getFullYear()}`;
+  })();
+
+  const onSubmit = data => {
+    axios
+      .post("http://aamairk.softvencefsd.xyz/api/register", {
+        name: data?.name,
+        email: data?.email,
+        password: data?.password,
+        password_confirmation: data?.confirm_password,
+        date_of_birth: formattedDate,
+      })
+      .then(res => {
+        if (res.status === 200) {
+          console.log("Registration successful!");
+          reset(); // Clear the form fields
+          navigate("/auth/login");
+        }
+      })
+      .catch(error => {
+        console.log("Registration failed:", error);
+      });
+  };
+
+  const handleLoginWithGoogle = () => {
+    const token = localStorage.getItem("token");
+    axios({
+      method: "POST",
+      url: "http://aamairk.softvencefsd.xyz/api/social-login",
+      data: {
+        token: token,
+        provider: "google",
+      },
+    })
+      .then(res => {
+        console.log(res.data.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   return (
     <div className="min-h-[800px] flex justify-center items-center">
       <div className="container w-4/12">
         <div className="pb-4">
-          <h3 data-aos="zoom-up" data-aos-duration="2000" className="text-4xl font-bold pb-2 text-[#232323]">Sign Up</h3>
-          <p data-aos="zoom-up" data-aos-duration="2000" className="text-[#969696]">
+          <h3
+            data-aos="zoom-up"
+            data-aos-duration="2000"
+            className="text-4xl font-bold pb-2 text-[#232323]"
+          >
+            Sign Up
+          </h3>
+          <p
+            data-aos="zoom-up"
+            data-aos-duration="2000"
+            className="text-[#969696]"
+          >
             Sign up to enjoy the feature of MyLondonPharmacy
           </p>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} action="">
           {/* input */}
           <div className="bg-white pt-4 space-y-6 rounded-lg">
-            <div data-aos="zoom-up" data-aos-duration="2000" className="relative bg-inherit">
+            <div
+              data-aos="zoom-up"
+              data-aos-duration="2000"
+              className="relative bg-inherit"
+            >
               <input
                 type="text"
                 id="name"
@@ -54,7 +122,11 @@ function SignupPage() {
                 Your Name
               </label>
             </div>
-            <div data-aos="zoom-up" data-aos-duration="2000" className="relative bg-inherit">
+            <div
+              data-aos="zoom-up"
+              data-aos-duration="2000"
+              className="relative bg-inherit"
+            >
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
@@ -78,7 +150,11 @@ function SignupPage() {
                 </PopoverContent>
               </Popover>
             </div>
-            <div data-aos="zoom-up" data-aos-duration="2000" className="relative bg-inherit">
+            <div
+              data-aos="zoom-up"
+              data-aos-duration="2000"
+              className="relative bg-inherit"
+            >
               <input
                 type="email"
                 id="email"
@@ -94,7 +170,11 @@ function SignupPage() {
                 Email
               </label>
             </div>
-            <div data-aos="zoom-up" data-aos-duration="2000" className="relative bg-inherit">
+            <div
+              data-aos="zoom-up"
+              data-aos-duration="2000"
+              className="relative bg-inherit"
+            >
               <input
                 type={toggle ? "password" : "text"}
                 id="password"
@@ -123,7 +203,11 @@ function SignupPage() {
                 />
               )}
             </div>
-            <div data-aos="zoom-up" data-aos-duration="2000" className="relative bg-inherit">
+            <div
+              data-aos="zoom-up"
+              data-aos-duration="2000"
+              className="relative bg-inherit"
+            >
               <input
                 type={toggle2 ? "password" : "text"}
                 id="confirm_password"
@@ -156,18 +240,29 @@ function SignupPage() {
           {/* button */}
           <div data-aos="zoom-up" data-aos-duration="2000" className="pt-6">
             <button className="bg-primary text-white font-semibold w-full py-4 rounded-lg">
-            Sign up
+              Sign up
             </button>
           </div>
         </form>
 
-        <div data-aos="zoom-up" data-aos-duration="2000" className="flex items-center py-5 gap-2 w-full">
+        <div
+          data-aos="zoom-up"
+          data-aos-duration="2000"
+          className="flex items-center py-5 gap-2 w-full"
+        >
           <div className="flex-1 border-[0.5px] border-[#D9D9D9]"></div>
           <span className="text-[#6E6E6E]">or</span>
           <div className="flex-1 border-[0.5px] border-[#D9D9D9]"></div>
         </div>
 
-        <div data-aos="zoom-up" data-aos-duration="2000" className=" w-full">
+        <div
+          onClick={() => {
+            handleLoginWithGoogle();
+          }}
+          data-aos="zoom-up"
+          data-aos-duration="2000"
+          className=" w-full"
+        >
           <button className="flex w-full justify-center py-4 border rounded-lg items-center gap-3">
             <h4 className="text-lg font-semibold text-[#232323]">
               Sign in with Google
@@ -207,11 +302,15 @@ function SignupPage() {
           </button>
         </div>
 
-        <div data-aos="zoom-up" data-aos-duration="2000" className="flex justify-center items-center pt-5">
+        <div
+          data-aos="zoom-up"
+          data-aos-duration="2000"
+          className="flex justify-center items-center pt-5"
+        >
           <h4 className="text-[#6C6C6C]">
-          Already have an account?{" "}
+            Already have an account?{" "}
             <Link to={"/auth/login"} className="text-[#367AFF] font-medium">
-            Sign in
+              Sign in
             </Link>
           </h4>
         </div>

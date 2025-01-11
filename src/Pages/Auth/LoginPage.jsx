@@ -1,28 +1,74 @@
+import { setLoggedInUserData } from "@/Redux/features/loggedInUserSlice";
+import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 function LoginPage() {
   const [toggle, setToggle] = useState(true);
+  const loggedInUserData = useSelector(
+    state => state.loggedInuserSlice?.loggedInUserData
+  );
 
-  const { register, handleSubmit, formState: { errors } } = useForm();
-  const onSubmit = data => console.log(data);
+  const dispatch = useDispatch();
+  console.log(loggedInUserData);
+  const navigate = useNavigate();
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = data => {
+    axios
+      .post("http://aamairk.softvencefsd.xyz/api/login", {
+        email: data?.email,
+        password: data?.password,
+      })
+      .then(res => {
+        console.log(res); // Log response to see the data
+
+        // Dispatch action to store user data in Redux
+        dispatch(setLoggedInUserData(res?.data));
+        localStorage.setItem("token", res?.data?.token);
+
+        navigate("/");
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   return (
-    <div  className="min-h-[800px] flex justify-center items-center">
+    <div className="min-h-[800px] flex justify-center items-center">
       <div className="container w-4/12">
         <div data-aos="zoom-up" data-aos-duration="2000">
-          <h3 data-aos="zoom-up" data-aos-duration="2000" className="text-4xl font-bold pb-2 text-[#232323]">Sign in</h3>
-          <p data-aos="zoom-up" data-aos-duration="2000" className="text-[#969696]">
+          <h3
+            data-aos="zoom-up"
+            data-aos-duration="2000"
+            className="text-4xl font-bold pb-2 text-[#232323]"
+          >
+            Sign in
+          </h3>
+          <p
+            data-aos="zoom-up"
+            data-aos-duration="2000"
+            className="text-[#969696]"
+          >
             Please login to continue to your account.
           </p>
         </div>
-        <form  onSubmit={handleSubmit(onSubmit)} action="">
+        <form onSubmit={handleSubmit(onSubmit)} action="">
           {/* input */}
           <div className="bg-white pt-4 space-y-6 rounded-lg">
-            <div data-aos="zoom-up" data-aos-duration="2000" className="relative bg-inherit">
+            <div
+              data-aos="zoom-up"
+              data-aos-duration="2000"
+              className="relative bg-inherit"
+            >
               <input
                 type="email"
                 id="email"
@@ -38,7 +84,11 @@ function LoginPage() {
                 Email
               </label>
             </div>
-            <div data-aos="zoom-up" data-aos-duration="2000" className="relative bg-inherit">
+            <div
+              data-aos="zoom-up"
+              data-aos-duration="2000"
+              className="relative bg-inherit"
+            >
               <input
                 type={toggle ? "password" : "text"}
                 id="password"
@@ -69,7 +119,11 @@ function LoginPage() {
             </div>
           </div>
           {/* checkbox */}
-          <div data-aos="zoom-up" data-aos-duration="2000" className="flex items-center gap-2 pt-4">
+          <div
+            data-aos="zoom-up"
+            data-aos-duration="2000"
+            className="flex items-center gap-2 pt-4"
+          >
             <input
               className="appearance-none relative rounded-sm border w-6 h-6 after:content-['✔'] after:text-white after:font-bold after:absolute after:top-1/2 after:left-1/2 after:-translate-y-1/2 after:-translate-x-1/2 bg-transparent checked:bg-blue-500"
               type="checkbox"
@@ -86,7 +140,11 @@ function LoginPage() {
           </div>
         </form>
 
-        <div data-aos="zoom-up" data-aos-duration="2000" className="flex items-center py-5 gap-2 w-full">
+        <div
+          data-aos="zoom-up"
+          data-aos-duration="2000"
+          className="flex items-center py-5 gap-2 w-full"
+        >
           <div className="flex-1 border border-[#D9D9D9]"></div>
           <span className="text-[#6E6E6E]">or</span>
           <div className="flex-1 border border-[#D9D9D9]"></div>
@@ -132,14 +190,28 @@ function LoginPage() {
           </button>
         </div>
 
-        <div data-aos="zoom-up" data-aos-duration="2000" className="flex justify-center items-center pt-5">
-            <h4 className="text-[#6C6C6C]">Need an account?  <Link to={'/auth/signup'} className="text-[#367AFF] font-medium">Create one</Link></h4>
+        <div
+          data-aos="zoom-up"
+          data-aos-duration="2000"
+          className="flex justify-center items-center pt-5"
+        >
+          <h4 className="text-[#6C6C6C]">
+            Need an account?{" "}
+            <Link to={"/auth/signup"} className="text-[#367AFF] font-medium">
+              Create one
+            </Link>
+          </h4>
         </div>
       </div>
 
       <div data-aos="zoom-up" data-aos-duration="2000" className="w-7/12 p-20">
-      <img data-aos="zoom-in" data-aos-duration="2000" className="w-full" src="https://i.ibb.co.com/1RHw2mj/aa0ada24ef439cbe3b561d248f33efd6.png" alt="" />
-
+        <img
+          data-aos="zoom-in"
+          data-aos-duration="2000"
+          className="w-full"
+          src="https://i.ibb.co.com/1RHw2mj/aa0ada24ef439cbe3b561d248f33efd6.png"
+          alt=""
+        />
       </div>
     </div>
   );
