@@ -2,7 +2,10 @@
 import { Link, NavLink } from 'react-router-dom';
 import Logo from '@/assets/images/logo/logo.svg';
 import userIcon from '@/assets/images/icon/User-rounded.svg';
+
+
 const SideBarNav = ({ isOpen, setOpen, navLinks }) => {
+ 
   return (
     <>
       {/* Blur Overlay */}

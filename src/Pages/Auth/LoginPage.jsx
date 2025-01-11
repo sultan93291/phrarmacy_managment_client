@@ -34,8 +34,8 @@ function LoginPage() {
         // Dispatch action to store user data in Redux
         dispatch(setLoggedInUserData(res?.data));
         localStorage.setItem("token", res?.data?.token);
-
-        navigate("/");
+        window.location.reload();
+        navigate("/user/user-homepage");
       })
       .catch(error => {
         console.log(error);

@@ -1,18 +1,25 @@
-import DashboardTitle from '@/components/Dashboard/User/DashboardTitle';
-import { useState } from 'react';
-import UserCalendar from '@/components/Dashboard/User/UserCalendar';
-import userPhoto from '@/assets/images/user.png';
+import DashboardTitle from "@/components/Dashboard/User/DashboardTitle";
+import { useState } from "react";
+import UserCalendar from "@/components/Dashboard/User/UserCalendar";
+import userPhoto from "@/assets/images/user.png";
+import { useSelector } from "react-redux";
 const UserDashboardProfile = () => {
   const genderOptions = [
-    { id: 'male', label: 'Male' },
-    { id: 'female', label: 'Female' },
-    { id: 'others', label: 'Others' },
+    { id: "male", label: "Male" },
+    { id: "female", label: "Female" },
+    { id: "others", label: "Others" },
   ];
 
-  const [imagePreview, setImagePreview] = useState(userPhoto);
-  const [fileName, setFileName] = useState('No File Chosen');
+  const loggedInUser = useSelector(
+    state => state.loggedInuserSlice.loggedInUserData
+  );
 
-  const handleFileChange = (event) => {
+  console.log("from user dashboard profile", loggedInUser);
+
+  const [imagePreview, setImagePreview] = useState(userPhoto);
+  const [fileName, setFileName] = useState("No File Chosen");
+
+  const handleFileChange = event => {
     const file = event.target.files[0];
     if (file) {
       setImagePreview(URL.createObjectURL(file));
@@ -20,9 +27,9 @@ const UserDashboardProfile = () => {
     }
   };
 
-  const [selectedGender, setSelectedGender] = useState('male');
+  const [selectedGender, setSelectedGender] = useState("male");
 
-  const handleGenderChange = (event) => {
+  const handleGenderChange = event => {
     setSelectedGender(event.target.value);
   };
   return (
@@ -44,7 +51,7 @@ const UserDashboardProfile = () => {
                     name="name"
                     id="name"
                     className="rounded-lg border border-black/10 px-4 py-3 text-sm placeholder:text-black/50 focus:outline-none md:text-base md:placeholder:text-sm 2xl:px-10 2xl:py-5"
-                    defaultValue="Erich"
+                    defaultValue={loggedInUser?.name}
                   />
                 </div>
               </div>
@@ -58,7 +65,7 @@ const UserDashboardProfile = () => {
                     name="email"
                     id="email"
                     className="rounded-lg border border-black/10 px-4 py-3 text-sm placeholder:text-black/50 focus:outline-none md:text-base 2xl:px-10 2xl:py-5"
-                    defaultValue="davidlee21@gmail.com"
+                    defaultValue={loggedInUser?.email}
                   />
                 </div>
               </div>
@@ -74,7 +81,11 @@ const UserDashboardProfile = () => {
                     type="tel"
                     name="phone"
                     id="phone"
-                    defaultValue="+8801761624031"
+                    defaultValue={
+                      loggedInUser?.phone
+                        ? loggedInUser?.phone
+                        : "+8801761624031"
+                    }
                     className="rounded-lg border border-black/10 px-4 py-3 text-sm placeholder:text-black/50 focus:outline-none md:text-base 2xl:px-10 2xl:py-5"
                   />
                 </div>
@@ -85,7 +96,7 @@ const UserDashboardProfile = () => {
                     Date of Birth
                   </label>
                   <div className="w-full">
-                    <UserCalendar />
+                    <UserCalendar userBirthDate={loggedInUser?.date_of_birth} />
                   </div>
                 </div>
               </div>

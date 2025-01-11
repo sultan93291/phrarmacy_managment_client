@@ -17,6 +17,8 @@ import {
 import axios from "axios";
 import { setLoggedInUserData } from "@/Redux/features/loggedInUserSlice";
 import { useDispatch } from "react-redux";
+import { useGoogleLogin } from "@react-oauth/google";
+import qs from "qs";
 
 function SignupPage() {
   const navigate = useNavigate();
@@ -30,7 +32,7 @@ function SignupPage() {
     formState: { errors },
   } = useForm();
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const formattedDate = (() => {
     const d = new Date(date); // Convert the input date string to a Date object
@@ -62,23 +64,42 @@ function SignupPage() {
       });
   };
 
-  const handleLoginWithGoogle = () => {
-    const token = localStorage.getItem("token");
-    axios({
-      method: "POST",
-      url: "http://aamairk.softvencefsd.xyz/api/social-login",
-      data: {
-        token: token,
-        provider: "google",
-      },
-    })
-      .then(res => {
-        console.log(res.data.data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
+  const handleLoginWithGoogle = useGoogleLogin({
+    onSuccess: response => {
+      console.log("Google login success:", response);
+      const token = response?.access_token;
+
+      if (token) {
+        console.log(token);
+        
+        axios({
+          method: "POST",
+          url: "http://aamairk.softvencefsd.xyz/api/social-login",
+          data: {
+            token: token,
+            provider: "google",
+          },
+          headers: {
+            "Content-Type": "application/json", 
+          },
+        })
+          .then(res => {
+            console.log("API Response:", res); 
+            if (res.data && res.data.token) {
+              localStorage.setItem("token", res.data.token);
+            }
+          })
+          .catch(error => {
+            console.error("Error during API request:", error);
+          });
+      } else {
+        console.error("No token received from Google login.");
+      }
+    },
+    onError: error => {
+      console.error("Google Login Failed:", error);
+    },
+  });
 
   return (
     <div className="min-h-[800px] flex justify-center items-center">
@@ -256,50 +277,57 @@ function SignupPage() {
         </div>
 
         <div
-          onClick={() => {
-            handleLoginWithGoogle();
-          }}
+          onClick={() => {}}
           data-aos="zoom-up"
           data-aos-duration="2000"
           className=" w-full"
         >
-          <button className="flex w-full justify-center py-4 border rounded-lg items-center gap-3">
-            <h4 className="text-lg font-semibold text-[#232323]">
-              Sign in with Google
-            </h4>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 18 18"
-              fill="none"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M17.16 9.19323C17.16 8.5905 17.1059 8.01095 17.0055 7.45459H9V10.7425H13.5746C13.3775 11.8051 12.7786 12.7053 11.8784 13.308V15.4407H14.6255C16.2327 13.961 17.16 11.7819 17.16 9.19323Z"
-                fill="#4285F4"
-              />
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M9.00217 17.5C11.2972 17.5 13.2213 16.7389 14.6276 15.4407L11.8806 13.308C11.1194 13.818 10.1458 14.1193 9.00217 14.1193C6.7883 14.1193 4.91444 12.6241 4.24603 10.615H1.40625V12.8173C2.80489 15.5953 5.67944 17.5 9.00217 17.5Z"
-                fill="#34A853"
-              />
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M4.24387 10.6151C4.07387 10.105 3.97728 9.56028 3.97728 9.00005C3.97728 8.43982 4.07387 7.89505 4.24387 7.38505V5.18277H1.40409C0.82841 6.33027 0.5 7.62846 0.5 9.00005C0.5 10.3716 0.82841 11.6698 1.40409 12.8173L4.24387 10.6151Z"
-                fill="#FBBC05"
-              />
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M9.00217 3.88072C10.2501 3.88072 11.3706 4.30958 12.2515 5.15186L14.6895 2.7139C13.2174 1.3423 11.2933 0.500031 9.00217 0.500031C5.67944 0.500031 2.80489 2.40481 1.40625 5.18277L4.24603 7.38504C4.91444 5.37595 6.7883 3.88072 9.00217 3.88072Z"
-                fill="#EA4335"
-              />
-            </svg>
-          </button>
+          <div
+            onClick={() => {
+              handleLoginWithGoogle();
+            }}
+            data-aos="zoom-up"
+            data-aos-duration="2000"
+            className=" w-full"
+          >
+            <button className="flex w-full justify-center py-4 border rounded-lg items-center gap-3">
+              <h4 className="text-lg font-semibold text-[#232323]">
+                Sign in with Google
+              </h4>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 18 18"
+                fill="none"
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M17.16 9.19323C17.16 8.5905 17.1059 8.01095 17.0055 7.45459H9V10.7425H13.5746C13.3775 11.8051 12.7786 12.7053 11.8784 13.308V15.4407H14.6255C16.2327 13.961 17.16 11.7819 17.16 9.19323Z"
+                  fill="#4285F4"
+                />
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M9.00217 17.5C11.2972 17.5 13.2213 16.7389 14.6276 15.4407L11.8806 13.308C11.1194 13.818 10.1458 14.1193 9.00217 14.1193C6.7883 14.1193 4.91444 12.6241 4.24603 10.615H1.40625V12.8173C2.80489 15.5953 5.67944 17.5 9.00217 17.5Z"
+                  fill="#34A853"
+                />
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M4.24387 10.6151C4.07387 10.105 3.97728 9.56028 3.97728 9.00005C3.97728 8.43982 4.07387 7.89505 4.24387 7.38505V5.18277H1.40409C0.82841 6.33027 0.5 7.62846 0.5 9.00005C0.5 10.3716 0.82841 11.6698 1.40409 12.8173L4.24387 10.6151Z"
+                  fill="#FBBC05"
+                />
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M9.00217 3.88072C10.2501 3.88072 11.3706 4.30958 12.2515 5.15186L14.6895 2.7139C13.2174 1.3423 11.2933 0.500031 9.00217 0.500031C5.67944 0.500031 2.80489 2.40481 1.40625 5.18277L4.24603 7.38504C4.91444 5.37595 6.7883 3.88072 9.00217 3.88072Z"
+                  fill="#EA4335"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
 
         <div

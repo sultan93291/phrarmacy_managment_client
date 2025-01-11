@@ -1,29 +1,34 @@
 import {
   DashboardNotification,
   DashboardNotificationIndicatorSvg,
-} from '@/components/SvgContainer/SvgContainer';
-import { useRef, useState } from 'react';
-import DashboardNotificationsContainer from './DashboardNotificationsContainer';
-import user from '@/assets/images/user.png';
+} from "@/components/SvgContainer/SvgContainer";
+import { useRef, useState } from "react";
+import DashboardNotificationsContainer from "./DashboardNotificationsContainer";
+import user from "@/assets/images/user.png";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import useAuth from '@/Hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+} from "@/components/ui/select";
+import useAuth from "@/Hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const DashboardHeader = () => {
   const { role, setRole } = useAuth();
   const navigate = useNavigate();
 
+  const loggedInUser = useSelector(
+    state => state.loggedInuserSlice.loggedInUserData
+  );
+
   const [showNotifications, setShowNotifications] = useState(false);
   const showNotificationsRef = useRef(null);
 
   useState(() => {
-    const handleClickOutside = (e) => {
+    const handleClickOutside = e => {
       if (
         showNotificationsRef.current &&
         !showNotificationsRef.current.contains(e.target)
@@ -31,11 +36,13 @@ const DashboardHeader = () => {
         setShowNotifications(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   });
+
+  console.log(loggedInUser);
 
   return (
     <div className="py-8 px-10 min-h-[88px] max-h-[88px] w-full flex items-center justify-between">
@@ -44,12 +51,14 @@ const DashboardHeader = () => {
         <div className="size-12 ">
           <img
             className="w-full h-full object-cover rounded-full"
-            src={user}
+            src={loggedInUser?.avatar ? loggedInUser?.avatar : user}
             alt=""
           />
         </div>
         <div className="space-y-2">
-          <h3 className="text-xl font-medium">Welcome back, Hawkins</h3>
+          <h3 className="text-xl font-medium">
+            Welcome back, {loggedInUser?.name ? loggedInUser?.name : "Hawkins"}{" "}
+          </h3>
           <p className="text-[#404A60] text-sm">
             Happy to see you again on your dashboard.
           </p>
@@ -61,19 +70,19 @@ const DashboardHeader = () => {
         <div>
           <Select
             value={role}
-            onValueChange={(selectedRole) => {
+            onValueChange={selectedRole => {
               setRole(selectedRole);
 
               // navigate to dashboard according to role
               switch (selectedRole) {
-                case 'user':
-                  navigate('/dashboard/user/user-homepage');
+                case "user":
+                  navigate("/dashboard/user/user-homepage");
                   break;
-                case 'doctor':
-                  navigate('/dashboard/doctor/homepage');
+                case "doctor":
+                  navigate("/dashboard/doctor/homepage");
                   break;
-                case 'pharmacist':
-                  navigate('/dashboard/pharmacist/homepage');
+                case "pharmacist":
+                  navigate("/dashboard/pharmacist/homepage");
                   break;
                 default:
                   break;

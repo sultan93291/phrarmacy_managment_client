@@ -1,38 +1,45 @@
-import { Link, NavLink } from 'react-router-dom';
-import Logo from '../assets/images/logo/logo.svg';
-import CartIcon from '../assets/images/icon/cart.svg';
-import { useForm } from 'react-hook-form';
-import { GoSearch } from 'react-icons/go';
-import HeaderBtn from '../components/HeaderComponents/HeaderBtn';
-import useAuth from '@/Hooks/useAuth';
-import Hamburger from 'hamburger-react';
-import { useState } from 'react';
-import SideBarNav from './SideBarNav';
+import { Link, NavLink } from "react-router-dom";
+import Logo from "../assets/images/logo/logo.svg";
+import CartIcon from "../assets/images/icon/cart.svg";
+import { useForm } from "react-hook-form";
+import { GoSearch } from "react-icons/go";
+import HeaderBtn from "../components/HeaderComponents/HeaderBtn";
+import useAuth from "@/Hooks/useAuth";
+import Hamburger from "hamburger-react";
+import { useState } from "react";
+import SideBarNav from "./SideBarNav";
+import React, { useContext } from "react";
+import { AuthContext } from "@/provider/AuthProvider/AuthContextProvider";
+import { useSelector } from "react-redux";
 
 function Navbar() {
   const { role } = useAuth();
   const { register, handleSubmit } = useForm();
   const [isOpen, setOpen] = useState(false);
-  const onSubmit = (data) => {
+  const onSubmit = data => {
     console.log(data);
   };
+  const { isAuthenticated } = useContext(AuthContext);
+   const loggedInUser = useSelector(
+     state => state.loggedInuserSlice.loggedInUserData
+   );
 
   const navLinks = [
     {
-      path: '/service',
-      title: 'HealthCare Service',
+      path: "/service",
+      title: "HealthCare Service",
     },
     {
-      path: '/howitworks',
-      title: 'How it works',
+      path: "/howitworks",
+      title: "How it works",
     },
     {
-      path: '/faq',
-      title: 'FAQ',
+      path: "/faq",
+      title: "FAQ",
     },
     {
-      path: '/auth/login',
-      title: 'Login',
+      path: "/auth/login",
+      title: "Login",
     },
   ];
 
@@ -44,7 +51,7 @@ function Navbar() {
           <div className="flex items-center gap-10">
             {/* logo  */}
             <div>
-              <Link to={'/'}>
+              <Link to={"/"}>
                 <div className="size-12 md:size-[70px]">
                   <img
                     data-aos="zoom-up"
@@ -58,17 +65,18 @@ function Navbar() {
             </div>
             {/* menus  */}
             <ul className="xl:flex items-center gap-[30px] hidden">
-              {navLinks?.map((navLink) => (
-                <li
-                  key={navLink?.path}
-                  data-aos="zoom-up"
-                  data-aos-duration="2000"
-                >
-                  <NavLink to={navLink?.path} className="menu-item">
-                    {navLink?.title}
-                  </NavLink>
-                </li>
-              ))}
+              {navLinks?.map(navLink => {
+                if (navLink.title === "Login" && isAuthenticated) {
+                  return null; // Don't render the "Login" link if the user is authenticated
+                }
+
+                // Otherwise, render the navigation link
+                return (
+                  <li key={navLink.title}>
+                    <a href={navLink.path}>{navLink.title}</a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>
@@ -84,7 +92,7 @@ function Navbar() {
             className="relative w-full md:w-[350px]"
           >
             <input
-              {...register('search')}
+              {...register("search")}
               type="text"
               name="search"
               placeholder="Search your remdies"
@@ -101,13 +109,13 @@ function Navbar() {
           <div data-aos="zoom-left" data-aos-duration="2000">
             <Link
               to={
-                role == 'user'
-                  ? '/dashboard/user/user-homepage'
-                  : role == 'doctor'
-                  ? '/dashboard/doctor/homepage'
-                  : role == 'pharmacist'
-                  ? '/dashboard/pharmacist/homepage'
-                  : '/'
+                role == "user"
+                  ? "/dashboard/user/user-homepage"
+                  : role == "doctor"
+                  ? "/dashboard/doctor/homepage"
+                  : role == "pharmacist"
+                  ? "/dashboard/pharmacist/homepage"
+                  : "/"
               }
               className="w-[50px] h-[50px] bg-white flex items-center justify-center rounded-full"
             >
@@ -120,9 +128,13 @@ function Navbar() {
             data-aos-duration="2000"
             className="hidden xl:block"
           >
-            <Link to={'/auth/signup'}>
-              <HeaderBtn text="Sign Up" />
-            </Link>
+            {isAuthenticated ? (
+              <HeaderBtn text={loggedInUser?.name ? loggedInUser?.name : "user name"} />
+            ) : (
+              <Link to={"/auth/signup"}>
+                <HeaderBtn text="Sign Up" />
+              </Link>
+            )}
           </div>
 
           {/* Hamburger */}

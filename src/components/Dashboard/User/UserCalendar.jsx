@@ -11,8 +11,22 @@ import { CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Calendar } from '@/components/ui/calendar';
 
-const UserCalendar = () => {
-  const [date, setDate] = useState(Date());
+const UserCalendar = ({ userBirthDate }) => {
+  const parseDate = dateString => {
+    if (!dateString) {
+      console.error("Invalid or missing date string");
+      return new Date(); 
+    }
+
+    try {
+      const [day, month, year] = dateString.split("/").map(Number); 
+      return new Date(year, month - 1, day); 
+    } catch (error) {
+      console.error("Error parsing date string:", error);
+      return new Date(); 
+    }
+  };
+  const [date, setDate] = useState(parseDate(userBirthDate));
   return (
     <Popover>
       <PopoverTrigger asChild>
