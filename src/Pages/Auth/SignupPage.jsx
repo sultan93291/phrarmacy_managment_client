@@ -60,7 +60,11 @@ function SignupPage() {
         }
       })
       .catch(error => {
-        console.log("Registration failed:", error);
+        console.error("Registration failed:", error.response || error.message);
+
+        // Log details for debugging
+        console.log("Error data:", error.response?.data);
+        console.log("Error status:", error.response?.status);
       });
   };
 

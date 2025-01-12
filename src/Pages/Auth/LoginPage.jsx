@@ -1,10 +1,12 @@
 import { setLoggedInUserData } from "@/Redux/features/loggedInUserSlice";
+import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+
 
 function LoginPage() {
   const [toggle, setToggle] = useState(true);
@@ -41,6 +43,45 @@ function LoginPage() {
         console.log(error);
       });
   };
+
+  const handleLoginWithGoogle = useGoogleLogin({
+    onSuccess: response => {
+      console.log("Google login success:", response);
+      const token = response?.access_token;
+
+      if (token) {
+        console.log(token);
+
+        axios({
+          method: "POST",
+          url: "https://aamairk.softvencefsd.xyz/api/social-login",
+          data: {
+            token: token,
+            provider: "google",
+          },
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then(res => {
+            console.log("API Response:", res);
+            if (res.data && res.data.token) {
+              localStorage.setItem("token", res.data.token);
+              window.location.reload();
+              navigate("/user/user-homepage");
+            }
+          })
+          .catch(error => {
+            console.error("Error during API request:", error);
+          });
+      } else {
+        console.error("No token received from Google login.");
+      }
+    },
+    onError: error => {
+      console.error("Google Login Failed:", error);
+    },
+  });
 
   return (
     <div className="min-h-[800px] flex justify-center items-center">
@@ -150,7 +191,15 @@ function LoginPage() {
           <div className="flex-1 border border-[#D9D9D9]"></div>
         </div>
 
-        <div data-aos="zoom-up" data-aos-duration="2000" className=" w-full">
+        <div
+          onClick={() => {
+            handleLoginWithGoogle();
+          }}
+       
+          data-aos="zoom-up"
+          data-aos-duration="2000"
+          className=" w-full"
+        >
           <button className="flex w-full justify-center py-4 border rounded-lg items-center gap-3">
             <h4 className="text-lg font-semibold text-[#232323]">
               Sign in with Google
