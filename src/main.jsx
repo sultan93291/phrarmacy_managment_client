@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { RouterProvider } from "react-router-dom";
+import { RouterProvider, useLocation } from "react-router-dom";
 import router from "./router/router";
 import AuthProvider from "./provider/AuthProvider/AuthContextProvider";
 import { Toaster } from "react-hot-toast";
@@ -9,13 +9,15 @@ import { Provider } from "react-redux";
 import store from "./Redux/store";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
+
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <GoogleOAuthProvider
       clientId={
         "578029591078-fv8sbuh4au2tjsvo8pf4k1m6aockqs9n.apps.googleusercontent.com"
       }
-      redirectUri="http://localhost:5173/auth/callback"
+      redirectUri="https://phrarmacy-managment-client.vercel.app/auth/callback"
     >
       <Provider store={store}>
         <AuthProvider>
