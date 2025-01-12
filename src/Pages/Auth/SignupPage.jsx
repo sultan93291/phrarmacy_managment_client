@@ -45,7 +45,7 @@ function SignupPage() {
 
   const onSubmit = data => {
     axios
-      .post("http://aamairk.softvencefsd.xyz/api/register", {
+      .post("https://aamairk.softvencefsd.xyz/api/register", {
         name: data?.name,
         email: data?.email,
         password: data?.password,
