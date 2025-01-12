@@ -71,7 +71,7 @@ function SignupPage() {
 
       if (token) {
         console.log(token);
-        
+
         axios({
           method: "POST",
           url: "https://aamairk.softvencefsd.xyz/api/social-login",
@@ -80,13 +80,15 @@ function SignupPage() {
             provider: "google",
           },
           headers: {
-            "Content-Type": "application/json", 
+            "Content-Type": "application/json",
           },
         })
           .then(res => {
-            console.log("API Response:", res); 
+            console.log("API Response:", res);
             if (res.data && res.data.token) {
               localStorage.setItem("token", res.data.token);
+              window.location.reload();
+              navigate("/user/user-homepage");
             }
           })
           .catch(error => {

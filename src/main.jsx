@@ -17,7 +17,7 @@ createRoot(document.getElementById("root")).render(
       clientId={
         "578029591078-fv8sbuh4au2tjsvo8pf4k1m6aockqs9n.apps.googleusercontent.com"
       }
-      redirectUri="https://phrarmacy-managment-client.vercel.app/auth/callback"
+      redirectUri="https://phrarmacy-managment-client.vercel.app/auth/signup"
     >
       <Provider store={store}>
         <AuthProvider>
