@@ -7,7 +7,6 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
-
 function LoginPage() {
   const [toggle, setToggle] = useState(true);
   const loggedInUserData = useSelector(
@@ -195,7 +194,6 @@ function LoginPage() {
           onClick={() => {
             handleLoginWithGoogle();
           }}
-       
           data-aos="zoom-up"
           data-aos-duration="2000"
           className=" w-full"
