@@ -36,7 +36,7 @@ function LoginPage() {
         dispatch(setLoggedInUserData(res?.data));
         localStorage.setItem("token", res?.data?.token);
         window.location.reload();
-        navigate("/user/user-homepage");
+        navigate("/dashboard/user/user-homepage");
       })
       .catch(error => {
         console.log(error);
@@ -67,7 +67,7 @@ function LoginPage() {
             if (res.data && res.data.token) {
               localStorage.setItem("token", res.data.token);
               window.location.reload();
-              navigate("/user/user-homepage");
+              navigate("/dashboard/user/user-homepage");
             }
           })
           .catch(error => {

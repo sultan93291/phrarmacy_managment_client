@@ -92,7 +92,7 @@ function SignupPage() {
             if (res.data && res.data.token) {
               localStorage.setItem("token", res.data.token);
               window.location.reload();
-              navigate("/user/user-homepage");
+              navigate("/dashboard/user/user-homepage");
             }
           })
           .catch(error => {
