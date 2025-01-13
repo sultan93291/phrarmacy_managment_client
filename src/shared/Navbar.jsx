@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import Logo from "../assets/images/logo/logo.svg";
 import CartIcon from "../assets/images/icon/cart.svg";
 import { useForm } from "react-hook-form";
@@ -12,6 +12,7 @@ import React, { useContext } from "react";
 import { AuthContext } from "@/provider/AuthProvider/AuthContextProvider";
 import { useSelector } from "react-redux";
 
+
 function Navbar() {
   const { role } = useAuth();
   const { register, handleSubmit } = useForm();
@@ -22,7 +23,9 @@ function Navbar() {
   const { isAuthenticated } = useContext(AuthContext);
    const loggedInUser = useSelector(
      state => state.loggedInuserSlice.loggedInUserData
-   );
+  );
+  
+  const location = useLocation();
 
   const navLinks = [
     {

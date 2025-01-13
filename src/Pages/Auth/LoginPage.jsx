@@ -159,19 +159,7 @@ function LoginPage() {
             </div>
           </div>
           {/* checkbox */}
-          <div
-            data-aos="zoom-up"
-            data-aos-duration="2000"
-            className="flex items-center gap-2 pt-4"
-          >
-            <input
-              className="appearance-none relative rounded-sm border w-6 h-6 after:content-['✔'] after:text-white after:font-bold after:absolute after:top-1/2 after:left-1/2 after:-translate-y-1/2 after:-translate-x-1/2 bg-transparent checked:bg-blue-500"
-              type="checkbox"
-              name=""
-              id=""
-            />
-            <label htmlFor="">Keep me logged in</label>
-          </div>
+          
           {/* button */}
           <div data-aos="zoom-up" data-aos-duration="2000" className="pt-6">
             <button className="bg-primary text-white font-semibold w-full py-4 rounded-lg">
