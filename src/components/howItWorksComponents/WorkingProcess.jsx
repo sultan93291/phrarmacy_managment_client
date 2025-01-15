@@ -26,11 +26,12 @@ const workingProcess = [
 ];
 
 function WorkingProcess() {
+    const SiteURl = import.meta.env.VITE_SITE_URL;
     const [WorkingCardData, setWorkingCardData] = useState([])
   useEffect(() => {
     axios({
       method: "post",
-      url: `https://aamairk.softvencefsd.xyz/api/section/data?type=process`,
+      url: `${SiteURl}/api/section/data?type=process`,
     })
       .then(res => {
           console.log(res.data.data.cards);

@@ -1,27 +1,29 @@
-'use client'
-import DoctorImg from '../../assets/images/hero-doctor.png';
-import CommonBtn from '../Common/CommonBtn';
-import ArrowIconBlack from '../../assets/images/icon/arrow-up-black.svg';
-import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-
-
-
+"use client";
+import DoctorImg from "../../assets/images/hero-doctor.png";
+import CommonBtn from "../Common/CommonBtn";
+import ArrowIconBlack from "../../assets/images/icon/arrow-up-black.svg";
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function HeroSection() {
-  const [avatar, setavatar] = useState()
+  
+  const SiteURl = import.meta.env.VITE_SITE_URL
+  const [avatar, setavatar] = useState();
+
   useEffect(() => {
     axios({
       method: "GET",
-      url: "https://aamairk.softvencefsd.xyz/api/cms/get-banner-page-data",
-    }).then((res) => {
-      console.log(res.data.data.avatar);
-      setavatar(res.data.data.avatar);
-    }).catch((err) => {
-      console.error(err);
-    });
-  },[])
+      url: `${SiteURl}/api/cms/get-banner-page-data`,
+    })
+      .then(res => {
+        console.log(res.data.data.avatar);
+        setavatar(res.data.data.avatar);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }, []);
   return (
     <section className="px-5 xl:px-[47px] xl:pt-20 hidden xl:block">
       <div
@@ -50,7 +52,7 @@ function HeroSection() {
               data-aos="zoom-up"
               data-aos-duration="2000"
               className="h-[550px] w-[450px] object-cover"
-              src={`https://aamairk.softvencefsd.xyz/${avatar}`}
+              src={`${SiteURl}/${avatar}`}
               // src={DoctorImg}
               alt="DoctorImg"
             />

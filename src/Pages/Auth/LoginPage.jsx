@@ -23,9 +23,11 @@ function LoginPage() {
     formState: { errors },
   } = useForm();
 
+    const SiteURl = import.meta.env.VITE_SITE_URL;
+
   const onSubmit = data => {
     axios
-      .post("https://aamairk.softvencefsd.xyz/api/login", {
+      .post(`${SiteURl}/api/login`, {
         email: data?.email,
         password: data?.password,
       })
@@ -53,7 +55,7 @@ function LoginPage() {
 
         axios({
           method: "POST",
-          url: "https://aamairk.softvencefsd.xyz/api/social-login",
+          url: `${SiteURl}/api/social-login`,
           data: {
             token: token,
             provider: "google",
@@ -83,7 +85,7 @@ function LoginPage() {
   });
 
   return (
-    <div className="min-h-[800px] flex justify-center items-center">
+    <div className="min-h-[800px]  flex justify-center items-center">
       <div className="container w-4/12">
         <div data-aos="zoom-up" data-aos-duration="2000">
           <h3

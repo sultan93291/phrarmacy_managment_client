@@ -32,6 +32,8 @@ function SignupPage() {
     formState: { errors },
   } = useForm();
 
+  const SiteURl = import.meta.env.VITE_SITE_URL;
+
   const dispatch = useDispatch();
 
   const formattedDate = (() => {
@@ -45,7 +47,7 @@ function SignupPage() {
 
   const onSubmit = data => {
     axios
-      .post("https://aamairk.softvencefsd.xyz/api/register", {
+      .post(` ${SiteURl}/api/register`, {
         name: data?.name,
         email: data?.email,
         password: data?.password,
@@ -78,7 +80,7 @@ function SignupPage() {
 
         axios({
           method: "POST",
-          url: "https://aamairk.softvencefsd.xyz/api/social-login",
+          url: `${SiteURl}/api/social-login`,
           data: {
             token: token,
             provider: "google",

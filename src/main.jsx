@@ -9,14 +9,12 @@ import { Provider } from "react-redux";
 import store from "./Redux/store";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
-
+const ClientId = import.meta.env.VITE_GOOGLE_AUTH_ID;
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <GoogleOAuthProvider
-      clientId={
-        "578029591078-fv8sbuh4au2tjsvo8pf4k1m6aockqs9n.apps.googleusercontent.com"
-      }
+      clientId={ClientId}
       redirectUri="https://phrarmacy-managment-client.vercel.app/auth/signup"
     >
       <Provider store={store}>

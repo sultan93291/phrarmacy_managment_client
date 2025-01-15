@@ -25,6 +25,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
+    "dotenv": "^16.4.7",
     "hamburger-react": "^2.5.2",
     "hot": "^0.0.7",
     "jwt-decode": "^4.0.0",

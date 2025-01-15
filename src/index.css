@@ -74,6 +74,7 @@
     cursor: pointer;
     transition: background 0.3s;
   }
+ 
   /* Change the background on hover */
   .range-slider:hover {
     background: #def105;

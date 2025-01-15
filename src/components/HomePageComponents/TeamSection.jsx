@@ -1,4 +1,7 @@
+'use client'
+import { useEffect, useState } from 'react';
 import TeamCard from './TeamCard';
+import axios from 'axios';
 
 const teamData = [
   {
@@ -28,6 +31,28 @@ const teamData = [
 ];
 
 function TeamSection() {
+  const [DoctorData, setDoctorData] = useState([]);
+  const SiteURl = import.meta.env.VITE_SITE_URL;
+  console.log(`${SiteURl}/api/doctores`);
+
+
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: `${SiteURl}/api/doctores`,
+    })
+      .then(res => {
+        setDoctorData(res?.data?.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
+
+
+
+  
+
   return (
     <section className="py-[140px]">
       <div className="container">
@@ -38,18 +63,18 @@ function TeamSection() {
             data-aos-duration="1000"
             className="w-[650px] text-center mx-auto text--xl"
           >
-            Our mission provide medical equipment in order to.
+            {/* Our mission provide medical equipment in order to. */}
           </h3>
         </div>
         <div className="grid grid-cols-4 gap-5">
-          {teamData.map((item) => (
+          {DoctorData.map((item,index) => (
             <div
               data-aos="zoom-up"
               data-aos-duration="2000"
-              key={item.id}
+              key={index}
               className="mt-5"
             >
-              <TeamCard item={item} />
+              <TeamCard key={index} item={item} />
             </div>
           ))}
         </div>
