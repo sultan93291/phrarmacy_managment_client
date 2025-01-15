@@ -1,11 +1,12 @@
 import { setLoggedInUserData } from "@/Redux/features/loggedInUserSlice";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+
 
 function LoginPage() {
   const [toggle, setToggle] = useState(true);
@@ -23,7 +24,8 @@ function LoginPage() {
     formState: { errors },
   } = useForm();
 
-    const SiteURl = import.meta.env.VITE_SITE_URL;
+  const SiteURl = import.meta.env.VITE_SITE_URL;
+  
 
   const onSubmit = data => {
     axios
