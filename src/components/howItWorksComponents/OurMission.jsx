@@ -44,12 +44,15 @@ function OurMission() {
     })
       .then(res => {
         console.log("mission data", res.data.data.cards);
+        setDoctorData(res?.data?.data)
       })
       .catch(err => {
         console.log(err);
       });
   }, []);
 
+  console.log('this is doctor data' , DoctorData);
+  
 
   return (
     <section className="pb-[140px]">
@@ -60,8 +63,8 @@ function OurMission() {
           </h3>
         </div>
         <div className="grid grid-cols-4 gap-5">
-          {teamData.map(item => (
-            <TeamCard key={item.id} item={item} />
+          {DoctorData.map((item,index) => (
+            <TeamCard key={index} item={item} />
           ))}
         </div>
       </div>
