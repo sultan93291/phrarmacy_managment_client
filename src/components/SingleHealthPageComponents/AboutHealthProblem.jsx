@@ -27,7 +27,11 @@ const faqData = [
   },
 ];
 
-function AboutHealthProblem() {
+function AboutHealthProblem(data) {
+  const mainData = data?.data?.data;
+  console.log("i'm main data", mainData);
+  const SiteURl = import.meta.env.VITE_SITE_URL;
+
   return (
     <section className="mb-[140px]">
       <div className="container">
@@ -39,26 +43,25 @@ function AboutHealthProblem() {
               data-aos-duration="2000"
               className="text--xl"
             >
-              About Hair Loss{" "}
+              {mainData?.about?.title}
             </h3>
             <div className="mt-[22px]">
               <img
                 data-aos="zoom-in"
                 data-aos-duration="2000"
                 className="h-[582px] w-full object-cover"
-                src={aboutImg}
+                src={`${SiteURl}/${mainData?.about?.avatar}`}
                 alt="aboutImg"
               />
             </div>
             <p className="text-[20px] mt-[22px] text-categoryBtnColor">
-              Our medical team is UK-based and registered with the General
-              Medical Council and General Pharmaceutical Council.
+              {mainData?.about?.short_description}
             </p>
           </div>
           {/* related faq  */}
           <div className="text-left about-faq w-[750px]">
             <Accordion type="single" collapsible className="w-full">
-              {faqData.map((item, index) => (
+              {mainData?.faqs?.map((item, index) => (
                 <AccordionItem
                   key={item.id}
                   value={`item-${index}`}

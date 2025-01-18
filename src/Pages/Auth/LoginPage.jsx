@@ -3,16 +3,19 @@ import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { Toaster } from "react-hot-toast";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-
+import { ClipLoader } from "react-spinners";
+import { toast } from "react-toastify";
 
 function LoginPage() {
   const [toggle, setToggle] = useState(true);
   const loggedInUserData = useSelector(
     state => state.loggedInuserSlice?.loggedInUserData
   );
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
   console.log(loggedInUserData);
@@ -25,9 +28,9 @@ function LoginPage() {
   } = useForm();
 
   const SiteURl = import.meta.env.VITE_SITE_URL;
-  
 
   const onSubmit = data => {
+    setLoading(true);
     axios
       .post(`${SiteURl}/api/login`, {
         email: data?.email,
@@ -35,15 +38,23 @@ function LoginPage() {
       })
       .then(res => {
         console.log(res); // Log response to see the data
+        toast.success(res?.data?.message);
+        setLoading(false);
 
         // Dispatch action to store user data in Redux
         dispatch(setLoggedInUserData(res?.data));
         localStorage.setItem("token", res?.data?.token);
         window.location.reload();
-        navigate("/dashboard/user/user-homepage");
+        setTimeout(() => {
+          navigate("/dashboard/user/user-homepage");
+        }, 3000);
       })
       .catch(error => {
         console.log(error);
+        toast.error(error.response?.data?.message);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -70,15 +81,21 @@ function LoginPage() {
             console.log("API Response:", res);
             if (res.data && res.data.token) {
               localStorage.setItem("token", res.data.token);
-              window.location.reload();
-              navigate("/dashboard/user/user-homepage");
+              toast.success("successfully logged in");
+              setTimeout(() => {
+                  window.location.reload();
+                  navigate("/dashboard/user/user-homepage");
+              }, 3000);
+            
             }
           })
           .catch(error => {
             console.error("Error during API request:", error);
+            toast.success(error.data.message);
           });
       } else {
         console.error("No token received from Google login.");
+        toast.error("Token not found")
       }
     },
     onError: error => {
@@ -163,11 +180,15 @@ function LoginPage() {
             </div>
           </div>
           {/* checkbox */}
-          
+
           {/* button */}
           <div data-aos="zoom-up" data-aos-duration="2000" className="pt-6">
             <button className="bg-primary text-white font-semibold w-full py-4 rounded-lg">
-              Sign In
+              {loading ? (
+                <ClipLoader color="#fff" loading={loading} size={25} />
+              ) : (
+                "Sign in"
+              )}
             </button>
           </div>
         </form>

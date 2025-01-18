@@ -18,13 +18,16 @@ import axios from "axios";
 import { setLoggedInUserData } from "@/Redux/features/loggedInUserSlice";
 import { useDispatch } from "react-redux";
 import { useGoogleLogin } from "@react-oauth/google";
-import qs from "qs";
+import { toast } from "react-toastify";
+import { ClipLoader } from "react-spinners";
 
 function SignupPage() {
   const navigate = useNavigate();
   const [toggle, setToggle] = useState(true);
   const [toggle2, setToggle2] = useState(true);
   const [date, setDate] = useState();
+  const [loading, setLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -46,6 +49,7 @@ function SignupPage() {
   })();
 
   const onSubmit = data => {
+    setLoading(true);
     axios
       .post(` ${SiteURl}/api/register`, {
         name: data?.name,
@@ -56,17 +60,24 @@ function SignupPage() {
       })
       .then(res => {
         if (res.status === 200) {
+          toast.success(res?.data?.message);
           console.log("Registration successful!");
+          setLoading(false);
           reset(); // Clear the form fields
-          navigate("/auth/login");
+          setTimeout(() => {
+            navigate("/auth/login");
+          }, 3000);
         }
       })
       .catch(error => {
         console.error("Registration failed:", error.response || error.message);
-
+        toast.error(error.response?.data?.message);
         // Log details for debugging
         console.log("Error data:", error.response?.data);
         console.log("Error status:", error.response?.status);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -269,7 +280,11 @@ function SignupPage() {
           {/* button */}
           <div data-aos="zoom-up" data-aos-duration="2000" className="pt-6">
             <button className="bg-primary text-white font-semibold w-full py-4 rounded-lg">
-              Sign up
+              {loading ? (
+                <ClipLoader color="#fff" loading={loading} size={25} />
+              ) : (
+                "Sign up"
+              )}
             </button>
           </div>
         </form>

@@ -1,141 +1,32 @@
+"use client";
+import { useEffect, useState } from "react";
 import Searchbar from "./Searchbar";
 import TreatmentBox from "./TreatmentBox";
+import axios from "axios";
 
-const treatmentsCategories = [
-  {
-    categoryName: "Men's Health",
-    treatments: [
-      {
-        name: "Erectile dysfunction treatments",
-        image: "https://i.ibb.co.com/T1fgTDv/Frame.png",
-      },
-      {
-        name: "Premature ejaculation",
-        image: "https://i.ibb.co.com/wJPFf7q/Frame-1.png",
-      },
-      {
-        name: "Hair Loss",
-        image: "https://i.ibb.co.com/98wdbY4/Frame-2.png",
-      },
-    ],
-  },
-  {
-    categoryName: "Women's Health",
-    treatments: [
-      {
-        name: "Erectile dysfunction treatments",
-        image: "https://i.ibb.co.com/T1fgTDv/Frame.png",
-      },
-      {
-        name: "Premature ejaculation",
-        image: "https://i.ibb.co.com/wJPFf7q/Frame-1.png",
-      },
-      {
-        name: "Hair Loss",
-        image: "https://i.ibb.co.com/98wdbY4/Frame-2.png",
-      },
-    ],
-  },
-  {
-    categoryName: "Healthy Living",
-    treatments: [
-      {
-        name: "Erectile dysfunction treatments",
-        image: "https://i.ibb.co.com/T1fgTDv/Frame.png",
-      },
-      {
-        name: "Premature ejaculation",
-        image: "https://i.ibb.co.com/wJPFf7q/Frame-1.png",
-      },
-      {
-        name: "Hair Loss",
-        image: "https://i.ibb.co.com/98wdbY4/Frame-2.png",
-      },
-    ],
-  },
-  {
-    categoryName: "Sexual Health",
-    treatments: [
-      {
-        name: "Erectile dysfunction treatments",
-        image: "https://i.ibb.co.com/T1fgTDv/Frame.png",
-      },
-      {
-        name: "Premature ejaculation",
-        image: "https://i.ibb.co.com/wJPFf7q/Frame-1.png",
-      },
-      {
-        name: "Hair Loss",
-        image: "https://i.ibb.co.com/98wdbY4/Frame-2.png",
-      },
-    ],
-  },
-  {
-    categoryName: "General Health",
-    treatments: [
-      {
-        name: "Erectile dysfunction treatments",
-        image: "https://i.ibb.co.com/T1fgTDv/Frame.png",
-      },
-      {
-        name: "Premature ejaculation",
-        image: "https://i.ibb.co.com/wJPFf7q/Frame-1.png",
-      },
-      {
-        name: "Hair Loss",
-        image: "https://i.ibb.co.com/98wdbY4/Frame-2.png",
-      },
-    ],
-  },
-  {
-    categoryName: "Travel Health",
-    treatments: [
-      {
-        name: "Erectile dysfunction treatments",
-        image: "https://i.ibb.co.com/T1fgTDv/Frame.png",
-      },
-      {
-        name: "Premature ejaculation",
-        image: "https://i.ibb.co.com/wJPFf7q/Frame-1.png",
-      },
-      {
-        name: "Hair Loss",
-        image: "https://i.ibb.co.com/98wdbY4/Frame-2.png",
-      },
-    ],
-  },
-  {
-    categoryName: "Hair, Skin, Nails",
-    treatments: [
-      {
-        name: "Erectile dysfunction treatments",
-        image: "https://i.ibb.co.com/T1fgTDv/Frame.png",
-      },
-      {
-        name: "Premature ejaculation",
-        image: "https://i.ibb.co.com/wJPFf7q/Frame-1.png",
-      },
-      {
-        name: "Hair Loss",
-        image: "https://i.ibb.co.com/98wdbY4/Frame-2.png",
-      },
-      {
-        name: "Erectile dysfunction treatments",
-        image: "https://i.ibb.co.com/T1fgTDv/Frame.png",
-      },
-      {
-        name: "Premature ejaculation",
-        image: "https://i.ibb.co.com/wJPFf7q/Frame-1.png",
-      },
-      {
-        name: "Hair Loss",
-        image: "https://i.ibb.co.com/98wdbY4/Frame-2.png",
-      },
-    ],
-  },
-];
+
 
 function AllTreatmentSection() {
+  const SiteURl = import.meta.env.VITE_SITE_URL;
+  const [treatmentsCategories, setTreamentCategories] = useState([]);
+
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: `${SiteURl}/api/treatment/servicess`,
+    })
+      .then(res => {
+        console.log(res.data , "all data is here");
+        
+        setTreamentCategories(res.data.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
+
+
+
   return (
     <section className="pt-[140px]">
       <div className="container">
@@ -157,7 +48,7 @@ function AllTreatmentSection() {
           </div>
         </div>
         <div>
-          {treatmentsCategories.map((category,idx) => (
+          {treatmentsCategories.map((category, idx) => (
             <div
               data-aos="zoom-in"
               data-aos-duration="2000"

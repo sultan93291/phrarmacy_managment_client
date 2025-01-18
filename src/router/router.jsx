@@ -56,7 +56,7 @@ const router = createBrowserRouter(
           element: <ServicePage />,
         },
         {
-          path: "/service/:name",
+          path: "/service/:id",
           element: <SingleHealthPage />,
         },
 
