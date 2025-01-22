@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { CiLocationOn } from "react-icons/ci";
 import PhoneInput from "react-phone-input-2";
@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import { UploadButton } from "@bytescale/upload-widget-react";
 import prescriptionIcon from "../../assets/images/icon/prescription.svg";
 import pdfIcon from "../../assets/images/icon/pdf.png";
+import axios from "axios";
+const SiteURl = import.meta.env.VITE_SITE_URL;
 
 const suggestedMedicine = [
   {
@@ -35,13 +37,14 @@ const suggestedMedicine = [
 
 function StepForm() {
   const [currentStep, setCurrentStep] = useState(1);
+  const [deliveryData, setdeliveryData] = useState();
   const [deliveryAddress, setDeliveryAddress] = useState(
     "John Smith, 123 Meadow Lanem, Cambridge, CB2 3AB, United Kingdom"
   );
   const [isAddressEditMode, setIsAddressEditMode] = useState(false);
   const [uploadedFile, setUploadedFile] = useState([]);
 
-  const handleUploadComplete = (files) => {
+  const handleUploadComplete = files => {
     const file = files[0];
     if (file && file?.originalFile?.file?.type !== "application/pdf") {
       alert("Please upload only PDF files.");
@@ -49,8 +52,22 @@ function StepForm() {
     }
     setUploadedFile(file);
 
-    console.log(uploadedFile)
+    console.log(uploadedFile);
   };
+
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: `${SiteURl}/api/get-delivery-info-data`,
+    })
+      .then(res => {
+        console.log(res.data.data);
+        setdeliveryData(res.data.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
 
   const {
     register,
@@ -63,12 +80,12 @@ function StepForm() {
     setIsAddressEditMode(!isAddressEditMode);
   };
 
-  const onSumbit = (data) => {
+  const onSumbit = data => {
     console.log(data);
   };
 
   const handleNext = () => {
-    setCurrentStep((prevStep) => (prevStep < 3 ? prevStep + 1 : prevStep));
+    setCurrentStep(prevStep => (prevStep < 3 ? prevStep + 1 : prevStep));
     window.scrollTo(0, 0);
   };
 
@@ -181,7 +198,7 @@ function StepForm() {
                     <PhoneInput
                       country={"us"}
                       value={field.value}
-                      onChange={(phone) => field.onChange(phone)}
+                      onChange={phone => field.onChange(phone)}
                     />
                   )}
                   rules={{ required: "Phone number is required" }}
@@ -221,11 +238,23 @@ function StepForm() {
             <div className="flex items-center gap-8 pt-8">
               <div className="w-5/12  flex flex-col">
                 <label htmlFor="">GP Name</label>
-                <input className="border rounded-lg px-4 py-2" placeholder="Write gp name" type="text" name="" id="" />
+                <input
+                  className="border rounded-lg px-4 py-2"
+                  placeholder="Write gp name"
+                  type="text"
+                  name=""
+                  id=""
+                />
               </div>
               <div className="w-7/12  flex flex-col ">
                 <label htmlFor="">GP Address</label>
-                <input className="border rounded-lg px-4 py-2" placeholder="Write gp adress" type="text" name="" id="" />
+                <input
+                  className="border rounded-lg px-4 py-2"
+                  placeholder="Write gp adress"
+                  type="text"
+                  name=""
+                  id=""
+                />
               </div>
             </div>
             {/* {/ add prescription  /} */}
@@ -239,7 +268,9 @@ function StepForm() {
                   <div>
                     <img
                       className="w-[120px] h-[120px] mb-5"
-                      src={`${uploadedFile.originalFile ? pdfIcon : prescriptionIcon}`}
+                      src={`${
+                        uploadedFile.originalFile ? pdfIcon : prescriptionIcon
+                      }`}
                       alt=""
                     />
                     <p className="mb-5 text-[18px] font-semibold">
@@ -254,7 +285,7 @@ function StepForm() {
                     render={({ field }) => (
                       <UploadButton
                         options={options}
-                        onComplete={(files) => {
+                        onComplete={files => {
                           handleUploadComplete(files);
                           field.onChange(files[0]);
                         }}
@@ -268,20 +299,17 @@ function StepForm() {
                 </div>
               </div>
             </div>
+
             {/* {/ delivery information  /} */}
             <div>
               <div className="text-center w-[882px] mx-auto mt-[172px]">
                 <h3 className="text--xl mb-5">Delivery Information</h3>
                 <p className="text-[24px] text-primary">
-                  Due to increased demand, our clinical team may take up to 4
-                  business days to review your suitability for the treatment and
-                  approve your prescription. Once approved, your order will be
-                  shipped using your selected delivery method.
+                  {deliveryData?.description}
                 </p>
                 <p className="text-[24px] text-primary mt-[30px]">
                   <span className="text-[#FF6607]">Please note:</span> Orders
-                  approved after 4 PM on Friday will be dispatched on the next
-                  business day (Monday).
+                  {deliveryData?.note}
                 </p>
               </div>
               {/* {/ Royal Mail Tracked /} */}
@@ -298,12 +326,9 @@ function StepForm() {
                 >
                   <div className="w-[800px]">
                     <h4 className="text-[24px] font-semibold text-primryDark mb-[10px]">
-                      Royal Mail Tracked™
+                      {deliveryData?.option_name}
                     </h4>
-                    <p>
-                      Estimated delivery: 1–2 working days after prescription
-                      approval Signature required upon delivery
-                    </p>
+                    <p>{deliveryData?.option_sub_description}</p>
                   </div>
                 </label>
               </div>
@@ -372,7 +397,7 @@ function StepForm() {
                   ) : (
                     <textarea
                       value={deliveryAddress}
-                      onChange={(e) => setDeliveryAddress(e.target.value)}
+                      onChange={e => setDeliveryAddress(e.target.value)}
                       className="text-[24px] text-[rgba(0,0,0,0.60)] !h-[200px] resize-none"
                     />
                   )}

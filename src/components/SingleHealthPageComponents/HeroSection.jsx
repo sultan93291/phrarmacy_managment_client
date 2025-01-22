@@ -6,6 +6,9 @@ function HeroSection(data) {
   console.log("hero section data", data.data?.data?.detail?.avatar);
   const SiteURl = import.meta.env.VITE_SITE_URL;
 
+ const id = data.data?.data?.treatment_id;
+
+
   return (
     <section className="pt-[120px] pb-[140px]">
       <div className="container">
@@ -25,7 +28,7 @@ function HeroSection(data) {
             </ul>
             <div>
               <Link
-                to={"/consultation"}
+                to={`/treatment/consultation/${data.data?.data?.treatment_id}`}
                 className="flex items-center gap-[10px] text-[24px] py-5 px-[30px] bg-primary rounded-[40px] font-semibold w-fit text-white border-[2px] border-white duration-200 ease-in-out hover:bg-transparent hover:text-black hover:border-primary"
               >
                 Start Consultation

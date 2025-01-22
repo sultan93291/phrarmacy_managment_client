@@ -40,7 +40,7 @@ function ProductCard({ item }) {
           </p>
           {/* button  */}
           <div className="flex items-center justify-between mt-5">
-            <Link to={`/consultation`}>
+            <Link to={`/medicine-details/${item.id}`}>
               <CommonButtonV2 type="fill" text="Continue" />
             </Link>
             <Link to={"/"}>

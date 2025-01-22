@@ -61,11 +61,11 @@ const router = createBrowserRouter(
         },
 
         {
-          path: "/consultation",
+          path: "/treatment/consultation/:id",
           element: <AssessmentPage></AssessmentPage>,
         },
         {
-          path: "/medicine-details",
+          path: "/medicine-details/:id",
           element: <MedicineDetailsPage></MedicineDetailsPage>,
         },
         {

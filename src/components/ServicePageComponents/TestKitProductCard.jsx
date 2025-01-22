@@ -1,14 +1,13 @@
-
 import { FaStar } from "react-icons/fa";
-import { Link, useParams } from "react-router-dom";
+import { Link,  useParams } from "react-router-dom";
 import CommonButtonV2 from "../Common/CommonButtonV2";
 
-
 function TestKitProductCard({ item }) {
-  console.log("single kit item", item.title);
-  
-    const params = useParams();
-    console.log(params)
+  console.log("single kit item", item.id);
+
+
+
+
   return (
     <div className="product-wrapper">
       <div className="p-5 rounded-[20px] border border-[rgba(0_0_0_0.20)]">
@@ -40,7 +39,7 @@ function TestKitProductCard({ item }) {
           </p>
           {/* button  */}
           <div className="flex items-center justify-between mt-5">
-            <Link to={`/medicine-details`}>
+            <Link to={`/medicine-details/${item.id}`}>
               <CommonButtonV2 type="fill" text="Continue" />
             </Link>
             <Link to={"/"}>

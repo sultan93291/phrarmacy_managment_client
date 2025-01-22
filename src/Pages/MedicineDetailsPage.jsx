@@ -10,13 +10,51 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 function MedicineDetailsPage() {
+  const { id } = useParams();
+  const [medicineDetails, setmedicineDetails] = useState();
+  const SiteURl = import.meta.env.VITE_SITE_URL;
+  const [allReview, setallReview] = useState([]);
+
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: `${SiteURl}/api/medicine/${id}/show`,
+    })
+      .then(res => {
+        console.log(res.data.data, " medicine details data");
+        setmedicineDetails(res.data.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, [id]);
+
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: `${SiteURl}/api/medicine/1/review?sort=&per_page=&page=`,
+    })
+      .then(res => {
+        console.log(res.data.data, " all review  data");
+        setallReview(res.data.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <div className="py-24 font-dmsans">
       <div className="container">
-        <MedicineDetails></MedicineDetails>
-        <MedicineDetailsAccordion></MedicineDetailsAccordion>
+        <MedicineDetails data={medicineDetails}></MedicineDetails>
+        <MedicineDetailsAccordion
+          data={medicineDetails}
+        ></MedicineDetailsAccordion>
 
         {/* reviews */}
         <div className="border rounded-lg p-10  w-full flex flex-col">
@@ -45,15 +83,13 @@ function MedicineDetailsPage() {
                     </SelectContent>
                   </Select>
                 </div>
-
-               
-
               </div>
             </div>
             <div className="flex flex-col gap-4">
-                    <SingleReviews></SingleReviews>
-                    <SingleReviews></SingleReviews>
-                </div>
+              {allReview.map((review, index) => {
+                return <SingleReviews data={review}  key={index} ></SingleReviews>;
+              })}
+            </div>
           </div>
         </div>
       </div>
