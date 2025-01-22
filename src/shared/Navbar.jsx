@@ -12,7 +12,6 @@ import React, { useContext } from "react";
 import { AuthContext } from "@/provider/AuthProvider/AuthContextProvider";
 import { useSelector } from "react-redux";
 
-
 function Navbar() {
   const { role } = useAuth();
   const { register, handleSubmit } = useForm();
@@ -21,10 +20,10 @@ function Navbar() {
     console.log(data);
   };
   const { isAuthenticated } = useContext(AuthContext);
-   const loggedInUser = useSelector(
-     state => state.loggedInuserSlice.loggedInUserData
+  const loggedInUser = useSelector(
+    state => state.loggedInuserSlice.loggedInUserData
   );
-  
+
   const location = useLocation();
 
   const navLinks = [
@@ -67,7 +66,7 @@ function Navbar() {
               </Link>
             </div>
             {/* menus  */}
-            <ul className="xl:flex items-center gap-[30px] hidden">
+            <ul className="xl:flex items-center gap-[30px] hidden ">
               {navLinks?.map(navLink => {
                 if (navLink.title === "Login" && isAuthenticated) {
                   return null; // Don't render the "Login" link if the user is authenticated
@@ -76,7 +75,9 @@ function Navbar() {
                 // Otherwise, render the navigation link
                 return (
                   <li key={navLink.title}>
-                    <a href={navLink.path}>{navLink.title}</a>
+                    <a className="menu-item" href={navLink.path}>
+                      {navLink.title}
+                    </a>
                   </li>
                 );
               })}
@@ -132,7 +133,9 @@ function Navbar() {
             className="hidden xl:block"
           >
             {isAuthenticated ? (
-              <HeaderBtn text={loggedInUser?.name ? loggedInUser?.name : "user name"} />
+              <HeaderBtn
+                text={loggedInUser?.name ? loggedInUser?.name : "user name"}
+              />
             ) : (
               <Link to={"/auth/signup"}>
                 <HeaderBtn text="Sign Up" />
