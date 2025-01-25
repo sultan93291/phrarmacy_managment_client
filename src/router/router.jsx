@@ -31,6 +31,7 @@ import PharmacistOrderDetailsPage from "@/Pages/Dashboard/Pharmacist/PharmacistO
 import ProtectedRoute from "@/ProtectRoute/ProtectRoute";
 import PublicRoute from "@/PublicRoute/PublicRoute";
 
+
 // Breadcrumb configuration
 const routes = [
   { path: "/", breadcrumb: "Home" },

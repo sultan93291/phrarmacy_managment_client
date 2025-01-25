@@ -1,14 +1,18 @@
-import DashboardTitle from '@/components/Dashboard/User/DashboardTitle';
-import PaymentCard from './PaymentCard';
-import { AddIconSvg } from '@/components/SvgContainer/SvgContainer';
-import { useState } from 'react';
-import { Modal } from '@/components/Modals/Modal';
-import AddPaymentModal from '@/components/Modals/AddPaymentModal';
+import React, { useState } from "react";
+import DashboardTitle from "@/components/Dashboard/User/DashboardTitle";
+import PaymentCard from "./PaymentCard";
+import { AddIconSvg } from "@/components/SvgContainer/SvgContainer";
+import { Modal } from "@/components/Modals/Modal";
+import AddPaymentModal from "@/components/Modals/AddPaymentModal";
+import AddPaymentModalWrapper from "@/components/Modals/AddPaymentModal";
+
+
 
 const UserDashboardPayments = () => {
   const [open, setOpen] = useState(false);
+
   return (
-    <div className="  bg-white rounded-md px-16 py-10">
+    <div className="bg-white rounded-md px-16 py-10">
       <DashboardTitle title="My Payments" />
 
       {/* cards */}
@@ -29,9 +33,8 @@ const UserDashboardPayments = () => {
       </div>
 
       {/* modal */}
-
       <Modal open={open} setOpen={setOpen}>
-        <AddPaymentModal setOpen={setOpen} />
+        <AddPaymentModalWrapper setOpen={setOpen} />
       </Modal>
     </div>
   );
