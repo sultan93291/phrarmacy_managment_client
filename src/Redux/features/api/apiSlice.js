@@ -12,7 +12,9 @@ export const apiSlice = createApi({
       query: payment_method_id => ({
         url: "/api/add/stripe/customer/payment-method", // Backend API
         method: "POST",
-        data: payment_method_id,
+        data: {
+          payment_method_id: payment_method_id,
+        },
         includeToken: true, // Now this flag is passed as part of the query
       }),
     }),
