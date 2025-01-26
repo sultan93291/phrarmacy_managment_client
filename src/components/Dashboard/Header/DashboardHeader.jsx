@@ -67,41 +67,7 @@ const DashboardHeader = () => {
 
       <div className="flex items-center gap-10">
         {/* temporary role switch */}
-        <div>
-          <Select
-            value={role}
-            onValueChange={selectedRole => {
-              setRole(selectedRole);
-
-              // navigate to dashboard according to role
-              switch (selectedRole) {
-                case "user":
-                  navigate("/dashboard/user/user-homepage");
-                  break;
-                case "doctor":
-                  navigate("/dashboard/doctor/homepage");
-                  break;
-                case "pharmacist":
-                  navigate("/dashboard/pharmacist/homepage");
-                  break;
-                default:
-                  break;
-              }
-            }}
-          >
-            <SelectTrigger className="w-36 border rounded-md px-4 py-1 text-sm text-[#6B7280] font-md">
-              <SelectValue placeholder="Select Role" />
-            </SelectTrigger>
-            <SelectContent className="font-medium">
-              <SelectItem value="Select Role" disabled>
-                Select Role
-              </SelectItem>
-              <SelectItem value="user">User</SelectItem>
-              <SelectItem value="doctor">Doctor</SelectItem>
-              <SelectItem value="pharmacist">Pharmacist</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+       
 
         {/* Notification */}
         <div

@@ -23,12 +23,7 @@ import {
 } from "@/components/ui/select";
 import { useCreateAddCardIntentMutation } from "@/Redux/features/api/apiSlice";
 
-
-
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
-
-
-
 
 const AddPaymentModal = ({ setOpen }) => {
   const { register, handleSubmit } = useForm();
@@ -37,7 +32,7 @@ const AddPaymentModal = ({ setOpen }) => {
   const elements = useElements();
   const [createAddCardIntent, { isLoading, isError, isSuccess }] =
     useCreateAddCardIntentMutation();
-  
+
   console.log(isLoading, isError, isSuccess);
 
   const onSubmit = async data => {
@@ -56,19 +51,22 @@ const AddPaymentModal = ({ setOpen }) => {
       }
 
       // Handle paymentMethod.id here (e.g., send to your server)
-      console.log("Payment Method ID:", paymentMethod.id);
 
       if (paymentMethod.id) {
         try {
           // Call the mutation to add the payment method to the customer
-          await createAddCardIntent(paymentMethod.id).unwrap();
-          console.log("Card added successfully!");
+          const response = await createAddCardIntent(paymentMethod.id).unwrap();
+          console.log(response);
+
+          if (response.code === 200) {
+            toast.success("Card added successfully");
+            setLoading(false)
+          }
         } catch (error) {
           console.error("Error adding card:", error);
         }
       }
 
-     
       setOpen(false);
     } catch (err) {
       toast.error("Something went wrong");
