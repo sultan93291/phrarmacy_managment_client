@@ -32,6 +32,7 @@ const UserDashboardPayments = () => {
           console.log(item);
           return <PaymentCard key={index} data={item} />;
         })}
+       
 
         <div className="h-72 bg-cover bg-center border border-black/20 bg-no-repeat font-dmsans rounded-2xl p-5 flex flex-col items-center justify-center">
           <div className="flex flex-col items-center justify-center gap-4">

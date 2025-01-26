@@ -1,4 +1,5 @@
 import card1 from "@/assets/images/cards/card-1.png";
+import cardTemplate from "@/assets/images/card_template.png";
 import { useSelector } from "react-redux";
 
 const PaymentCard = ({ data }) => {
@@ -12,8 +13,14 @@ const PaymentCard = ({ data }) => {
   return (
     <div
       className="h-72 bg-cover bg-center bg-no-repeat font-dmsans rounded-2xl p-5 flex flex-col items-center justify-center"
-      style={{ backgroundImage: `url(${card1})` }}
+      style={{ backgroundImage: `url(${cardTemplate})` }}
     >
+      <div className="flex w-full justify-end">
+        <h2 className="text-white text-2xl font-bold uppercase font-dmsans   items-center ">
+          {" "}
+          {data?.brand}{" "}
+        </h2>
+      </div>
       <div className="mt-10">
         <p className="text-white text-2xl flex gap-2  items-center ">
           **** **** **** <span className="text-3xl">{data?.last4}</span>
