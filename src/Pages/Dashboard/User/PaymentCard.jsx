@@ -16,7 +16,7 @@ const PaymentCard = ({ data }) => {
       style={{ backgroundImage: `url(${cardTemplate})` }}
     >
       <div className="flex w-full justify-end">
-        <h2 className="text-white text-2xl font-bold uppercase font-dmsans   items-center ">
+        <h2 className="text-white text-2xl font-bold uppercase font-mono   items-center ">
           {" "}
           {data?.brand}{" "}
         </h2>
