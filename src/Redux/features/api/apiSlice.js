@@ -42,6 +42,28 @@ export const apiSlice = createApi({
         includeToken: true,
       }),
     }),
+
+    updateUserInfoIntent: builder.mutation({
+      query: ({ data }) => ({
+        url: "/api/change-password",
+        method: "POST",
+        data: {
+          old_password: old_password,
+          password: password, // Backend expects the new password here
+          password_confirmation: password_confirmation, // Confirm new password
+        },
+        includeToken: true,
+      }),
+    }),
+
+    deleteCardIntent: builder.mutation({
+      query: cardId => ({
+        url: `/api/remove/stripe/customer/payment-method/${cardId}`,
+        method: "DELETE",
+        includeToken: true,
+      }),
+      invalidatesTags: ["Card"],
+    }),
   }),
 });
 
@@ -50,4 +72,5 @@ export const {
   useCreateAddCardIntentMutation,
   useGetCardDataIntentQuery,
   useUpdatePasswordIntentMutation,
+  useDeleteCardIntentMutation,
 } = apiSlice;

@@ -9,6 +9,7 @@ import {
   useCreateAddCardIntentMutation,
   useGetCardDataIntentQuery,
 } from "@/Redux/features/api/apiSlice";
+import DeleteCardModal from "@/components/Modals/DeleteCardModal";
 
 const UserDashboardPayments = () => {
   const [open, setOpen] = useState(false);
@@ -21,36 +22,62 @@ const UserDashboardPayments = () => {
 
   console.log(cardData, isLoading, error, isError);
 
+  const [demoModalOpen, setdemoModalOpen] = useState(false);
+  const [modalData, setmodalData] = useState();
+
+  // handle close function for closing the button
+  const handleModalClose = () => {
+    setdemoModalOpen(false);
+  };
+
+
   return (
-    <div className="bg-white rounded-md px-16 py-10">
-      <DashboardTitle title="My Payments" />
+    <>
+      <DeleteCardModal
+        isOpen={demoModalOpen}
+        setIsOpen={setdemoModalOpen}
+        onClose={handleModalClose}
+        modalData={modalData}
+      />
+      <div className="bg-white rounded-md px-16 py-10">
+        <DashboardTitle title="My Payments" />
 
-      {/* cards */}
-      <div className="mt-10 grid grid-cols-3 gap-12">
-        {/* card */}
-        {cardData?.data?.map((item, index) => {
-          console.log(item);
-          return <PaymentCard key={index} data={item} />;
-        })}
-       
+        {/* cards */}
+        <div className="mt-10 grid grid-cols-3 gap-12">
+          {/* card */}
+          {cardData?.data?.map((item, index) => {
+            console.log(item);
+            return (
+              <div
+                key={index}
+                onClick={() => {
+                  setdemoModalOpen(true);
+                  setmodalData(item);
+                }}
+              >
+                <PaymentCard data={item} />
+              </div>
+            );
+          })}
 
-        <div className="h-72 bg-cover bg-center border border-black/20 bg-no-repeat font-dmsans rounded-2xl p-5 flex flex-col items-center justify-center">
-          <div className="flex flex-col items-center justify-center gap-4">
-            <div onClick={() => setOpen(true)} className="cursor-pointer">
-              <AddIconSvg />
+          <div className="h-72 bg-cover bg-center border border-black/20 bg-no-repeat font-dmsans rounded-2xl p-5 flex flex-col items-center justify-center">
+            <div className="flex flex-col items-center justify-center gap-4">
+              <div onClick={() => setOpen(true)} className="cursor-pointer">
+                <AddIconSvg />
+              </div>
+              <p className="font-nunito font-semibold text-lg">
+                Add Payment Method
+              </p>
             </div>
-            <p className="font-nunito font-semibold text-lg">
-              Add Payment Method
-            </p>
           </div>
         </div>
-      </div>
 
-      {/* modal */}
-      <Modal open={open} setOpen={setOpen}>
-        <AddPaymentModalWrapper setOpen={setOpen} />
-      </Modal>
-    </div>
+        {/* modal */}
+        <Modal open={open} setOpen={setOpen}>
+          <AddPaymentModalWrapper setOpen={setOpen} />
+        </Modal>
+      </div>
+    </>
   );
 };
 
