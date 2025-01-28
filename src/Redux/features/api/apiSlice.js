@@ -29,9 +29,25 @@ export const apiSlice = createApi({
       }),
       providesTags: ["Card"], // Provide "Card" tag for this query
     }),
+
+    updatePasswordIntent: builder.mutation({
+      query: ({ old_password, password, password_confirmation }) => ({
+        url: "/api/change-password",
+        method: "POST",
+        data: {
+          old_password: old_password,
+          password: password, // Backend expects the new password here
+          password_confirmation: password_confirmation, // Confirm new password
+        },
+        includeToken: true,
+      }),
+    }),
   }),
 });
 
 // Export hooks for each endpoint
-export const { useCreateAddCardIntentMutation, useGetCardDataIntentQuery } =
-  apiSlice;
+export const {
+  useCreateAddCardIntentMutation,
+  useGetCardDataIntentQuery,
+  useUpdatePasswordIntentMutation,
+} = apiSlice;

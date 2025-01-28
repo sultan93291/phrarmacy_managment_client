@@ -3,12 +3,26 @@ import { useState } from "react";
 import UserCalendar from "@/components/Dashboard/User/UserCalendar";
 import userPhoto from "@/assets/images/user.png";
 import { useSelector } from "react-redux";
+import { useUpdatePasswordIntentMutation } from "@/Redux/features/api/apiSlice";
+import toast from "react-hot-toast";
+
 const UserDashboardProfile = () => {
   const genderOptions = [
     { id: "male", label: "Male" },
     { id: "female", label: "Female" },
     { id: "others", label: "Others" },
   ];
+
+  const [updatePasswordIntent, { isLoading, isError, isSuccess }] =
+    useUpdatePasswordIntentMutation();
+
+  console.log(isSuccess, isLoading, isError);
+
+  const [passwordUpdate, setpasswordUpdate] = useState({
+    old_password: "",
+    password: "",
+    password_confirmation: "",
+  });
 
   const loggedInUser = useSelector(
     state => state.loggedInuserSlice.loggedInUserData
@@ -26,6 +40,47 @@ const UserDashboardProfile = () => {
       setFileName(file.name);
     }
   };
+
+  const handleFormData = e => {
+    const { name, value } = e.target; // Destructure name and value directly from e.target
+    setpasswordUpdate({ ...passwordUpdate, [name]: value });
+  };
+
+const handlePasswordUpdate = async e => {
+  e.preventDefault();
+
+  try {
+    const response = await updatePasswordIntent({
+      old_password: passwordUpdate.old_password, // Matches mutation
+      password: passwordUpdate.password, // Matches mutation
+      password_confirmation: passwordUpdate.password_confirmation, // Matches mutation
+    }).unwrap();
+
+    // Success handling
+    if (response.code === 200) {
+      toast.success("Password updated successfully");
+    } else {
+      toast.error(
+        response.message || "Failed to update password. Please try again."
+      );
+    }
+  } catch (error) {
+    // Log the error object to understand the structure
+    console.error("Error Response:", error);
+
+    // Handle error message based on the error response
+    const errorMessage =
+      error?.data?.message || "Something went wrong. Please try again.";
+    toast.error(errorMessage);
+  } finally {
+    setpasswordUpdate({
+      old_password: "",
+      password: "",
+      password_confirmation: "",
+    })
+  }
+};
+
 
   const [selectedGender, setSelectedGender] = useState("male");
 
@@ -211,7 +266,7 @@ const UserDashboardProfile = () => {
         </div>
 
         <div className="pt-4 font-inter md:pt-8">
-          <form action="" className="flex flex-col gap-12">
+          <form className="flex flex-col gap-12">
             <div className="flex w-full flex-col gap-6 md:gap-8">
               <div className="w-full">
                 <div className="flex flex-col gap-3 md:gap-5">
@@ -220,11 +275,15 @@ const UserDashboardProfile = () => {
                   </label>
                   <div className="relative w-full">
                     <input
+                      onChange={e => {
+                        handleFormData(e);
+                      }}
                       type="password"
-                      name="currentPass"
-                      id="currentPass"
+                      name="old_password"
+                      id="old_password"
                       className="w-full rounded-lg border border-black/10 px-4 py-3 text-sm placeholder:text-sm placeholder:text-black/50 focus:outline-none md:text-base md:placeholder:text-base 2xl:px-10 2xl:py-5"
                       placeholder="Type your password"
+                      value={passwordUpdate.old_password}
                     />
                   </div>
                 </div>
@@ -237,10 +296,14 @@ const UserDashboardProfile = () => {
                   <div className="relative w-full">
                     <input
                       type="password"
-                      name="newPass"
-                      id="newPass"
+                      name="password"
+                      id="password"
                       className="w-full rounded-lg border border-black/10 px-4 py-3 text-sm placeholder:text-sm placeholder:text-black/50 focus:outline-none md:text-base md:placeholder:text-base 2xl:px-10 2xl:py-5"
                       placeholder="Type your password"
+                      value={passwordUpdate.password}
+                      onChange={e => {
+                        handleFormData(e);
+                      }}
                     />
                   </div>
                 </div>
@@ -253,16 +316,23 @@ const UserDashboardProfile = () => {
                   <div className="relative w-full">
                     <input
                       type="password"
-                      name="confirmPass"
-                      id="confirmPass"
+                      name="password_confirmation"
+                      id="password_confirmation"
                       className="w-full rounded-lg border border-black/10 px-4 py-3 text-sm placeholder:text-sm placeholder:text-black/50 focus:outline-none md:text-base md:placeholder:text-base 2xl:px-10 2xl:py-5"
                       placeholder="Type your password"
+                      onChange={e => {
+                        handleFormData(e);
+                      }}
+                      value={passwordUpdate.password_confirmation}
                     />
                   </div>
                 </div>
               </div>
               <div>
                 <button
+                  onClick={e => {
+                    handlePasswordUpdate(e);
+                  }}
                   type="submit"
                   className="rounded-[40px] border border-white bg-primary px-5 py-2 font-inter text-sm text-white transition duration-500 hover:border-primary hover:bg-white hover:text-primary md:text-base"
                 >
