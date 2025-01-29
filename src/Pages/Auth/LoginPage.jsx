@@ -104,7 +104,7 @@ function LoginPage() {
   });
 
   return (
-    <div className="py-10 flex flex-col lg:flex-row justify-center items-center">
+    <div className="pt-28 sm:py-10 flex flex-col lg:flex-row justify-center items-center">
       <div className="container lg:w-4/12">
         <div data-aos="zoom-up" data-aos-duration="2000">
           <h3
