@@ -51,7 +51,11 @@ const DashboardHeader = () => {
         <div className="size-12 ">
           <img
             className="w-full h-full object-cover rounded-full"
-            src={loggedInUser?.avatar ? loggedInUser?.avatar : user}
+            src={
+              loggedInUser?.avatar
+                ? `https://aamairk.softvencefsd.xyz/${loggedInUser?.avatar}`
+                : user
+            }
             alt=""
           />
         </div>
@@ -67,7 +71,6 @@ const DashboardHeader = () => {
 
       <div className="flex items-center gap-10">
         {/* temporary role switch */}
-       
 
         {/* Notification */}
         <div

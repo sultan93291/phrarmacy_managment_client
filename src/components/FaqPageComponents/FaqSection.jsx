@@ -135,7 +135,7 @@ function FaqSection() {
           </h1>
         </div>
         <div>
-          {faqDatas.map((item, index) => {
+          {faqDatas?.map((item, index) => {
             return (
               <div key={index}>
                 <h4 className="text-[36px] font-bold text-primryDark mb-[50px] mt-[60px]">

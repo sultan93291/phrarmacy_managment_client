@@ -42,11 +42,23 @@ export const apiSlice = createApi({
     // Update User Info
     updateUserInfoIntent: builder.mutation({
       query: ({ data }) => ({
-        url: "/api/update-user-info",
+        url: "/api/user-update",
         method: "POST",
-        data,
+        body: data, // Keep FormData as is
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        includeToken: true, // Ensure authentication (if needed)
+      }),
+    }),
+
+    getUserReviewIntent: builder.query({
+      query: () => ({
+        url: "/api/auth-review",
+        method: "GET",
         includeToken: true,
       }),
+      providesTags: ["Card"],
     }),
 
     // Delete Card
@@ -68,4 +80,5 @@ export const {
   useUpdatePasswordIntentMutation,
   useUpdateUserInfoIntentMutation,
   useDeleteCardIntentMutation,
+  useGetUserReviewIntentQuery,
 } = apiSlice;

@@ -1,8 +1,13 @@
 /* eslint-disable react/prop-types */
 
 import { EmptyStarSvg, StarSvg } from '@/components/SvgContainer/SvgContainer';
+const SiteURl = import.meta.env.VITE_SITE_URL;
 
 const UserReviewCard = ({ review }) => {
+
+  console.log(review , 'got this review');
+  
+
   const rating = parseInt(review?.rating);
   const emptyStars = 5 - rating;
   const fullStars = 5 - emptyStars;

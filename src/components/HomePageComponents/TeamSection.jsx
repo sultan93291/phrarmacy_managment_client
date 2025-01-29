@@ -67,7 +67,7 @@ function TeamSection() {
           </h3>
         </div>
         <div className="grid grid-cols-4 gap-5">
-          {DoctorData.map((item,index) => (
+          {DoctorData?.map((item,index) => (
             <div
               data-aos="zoom-up"
               data-aos-duration="2000"
