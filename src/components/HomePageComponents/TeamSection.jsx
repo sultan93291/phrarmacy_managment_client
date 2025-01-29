@@ -51,23 +51,23 @@ function TeamSection() {
 
 
 
-  
+
 
   return (
-    <section className="py-[140px]">
+    <section className="my-14 sm:my-20">
       <div className="container">
         {/* section title  */}
         <div className="mb-10">
           <h3
             data-aos="zoom-up"
             data-aos-duration="1000"
-            className="w-[650px] text-center mx-auto text--xl"
+            className="max-w-[650px] text-center mx-auto text-2xl sm:text-3xl md:text-4xl opacity-1 text-[#0ca6fc] font-bold text--xl"
           >
             Our mission provide medical equipment in order to.
           </h3>
         </div>
-        <div className="grid grid-cols-4 gap-5">
-          {DoctorData.map((item,index) => (
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {DoctorData.map((item, index) => (
             <div
               data-aos="zoom-up"
               data-aos-duration="2000"

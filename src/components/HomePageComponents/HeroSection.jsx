@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 function HeroSection() {
-  
+
   const SiteURl = import.meta.env.VITE_SITE_URL
   const [avatar, setavatar] = useState();
 
@@ -25,33 +25,51 @@ function HeroSection() {
       });
   }, []);
   return (
-    <section className="px-5 xl:px-[47px] xl:pt-20 hidden xl:block">
+    <section className="px-5 xl:px-[47px] my-14 sm:my-20">
       <div
         data-aos="zoom-up"
         data-aos-duration="1000"
-        className="bg-primary rounded-2xl xl:rounded-[40px]"
+        className="bg-primary pt-10 sm:pt-0 rounded-2xl xl:rounded-[40px]"
       >
         <div className="container">
           <h1
             data-aos="fade-up"
             data-aos-duration="1000"
-            className="text-[320px] font-bold text-white text-center hidden 2xl:block"
+            className="text-[40px] sm:text-[100px] md:text-[130px] lg:text-[180px] xl:text-[250px] 2xl:text-[320px] font-bold text-white sm:text-center"
           >
             Pharmacy
           </h1>
-          <div className="flex  items-end justify-between mt-[-200px]">
-            <p
-              data-aos="zoom-left"
-              data-aos-duration="3000"
-              className="w-[510px] text-[24px] text-white pb-[85px]"
-            >
-              Operational bottlenecks, frequent billing errors, and mismanaged
-              schedules can lead to revenue loss and frustrated patients.
-            </p>
+          <div className="flex flex-col justify-center items-center lg:flex-row lg:mt-[-150px] xl:mt-[-200px] lg:items-end lg:justify-between ">
+            <div className="">
+              <p
+                data-aos="zoom-left"
+                data-aos-duration="3000"
+                className="max-w-[510px] text-lg sm:text-xl xl:text-[24px] text-white pb-8 sm:pb-14 2xl:pb-[85px]"
+              >
+                Operational bottlenecks, frequent billing errors, and mismanaged
+                schedules can lead to revenue loss and frustrated patients.
+              </p>
+              <Link
+                data-aos="zoom-in"
+                data-aos-duration="2000"
+                to={"/service"}
+                className="pb-[85px] inline-block mb-2 2xl:hidden"
+              >
+                <CommonBtn
+                  data-aos="zoom-up"
+                  data-aos-duration="2000"
+                  text="Order Now"
+                  arrowIcon={ArrowIconBlack}
+                // height="45px"
+                // width="45px"
+                />
+              </Link>
+            </div>
+
             <img
               data-aos="zoom-up"
               data-aos-duration="2000"
-              className="h-[550px] w-[450px] object-cover"
+              className="sm:max-h-[550px] -mt-20 lg:mt-auto sm:max-w-[450px] object-cover"
               src={`${SiteURl}/${avatar}`}
               // src={DoctorImg}
               alt="DoctorImg"
@@ -60,7 +78,7 @@ function HeroSection() {
               data-aos="zoom-in"
               data-aos-duration="2000"
               to={"/service"}
-              className="pb-[85px]"
+              className="pb-[85px] hidden 2xl:block"
             >
               <CommonBtn
                 data-aos="zoom-up"

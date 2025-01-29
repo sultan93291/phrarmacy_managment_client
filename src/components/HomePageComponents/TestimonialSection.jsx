@@ -65,66 +65,61 @@ import { Pagination } from 'swiper/modules';
 
 function TestimonialSection() {
   return (
-    <section className="px-[50px]">
-      <div className="bg-headerBg rounded-[40px] py-[100px]">
-        <div   className="container">
+    <section className="px-5 xl:px-[47px]">
+      <div className="bg-headerBg rounded-xl sm:rounded-[40px] py-10 sm:py-[100px]">
+        <div className="container">
           {/* section title  */}
-          <div  data-aos="zoom-up"
-                data-aos-duration="1000" className="mb-[10px] text-center">
-            <h3 className="text--xl">Verified Customer Reviews</h3>
+          <div data-aos="zoom-up"
+            data-aos-duration="1000" className="mb-[10px] text-center">
+            <h3 className="text-3xl md:text-4xl opacity-1 text-[#0ca6fc] font-bold lg:text--xl">Verified Customer Reviews</h3>
           </div>
           <div>
 
-          <Swiper
-  spaceBetween={12}
-  slidesPerView={1} // Default to 1 slide per view for small screens
-  pagination={{
-    clickable: true,
-  }}
-  modules={[Pagination]}
-  breakpoints={{
-    // Define breakpoints for responsiveness
-    640: { // Devices larger than 640px
-      slidesPerView: 2,
-      spaceBetween: 16,
-    },
-    768: { // Devices larger than 768px
-      slidesPerView: 3,
-      spaceBetween: 24,
-    },
-    1024: { // Devices larger than 1024px
-      slidesPerView: 4,
-      spaceBetween: 32,
-    },
-  }}
->
-  {testimonialData.map((item) => (
-    <SwiperSlide key={item.id}>
-      <div
-        data-aos="zoom-in"
-        data-aos-duration="2000"
-        className="py-9 px-8 rounded-lg bg-white mt-5"
-      >
-        <p className="text-xl font-bold text-menuLinkColor leading-9 mb-6 text-center">
-          {item.message}
-        </p>
-        <img
-          className="w-[115px] h-[20px] mx-auto"
-          src={ratingImg}
-          alt="ratingImg"
-        />
-        <div className="flex items-center justify-center gap-2 mt-6">
-          <img
-            className="w-12 h-12 rounded-full object-cover"
-            src={item.imgUrl}
-            alt={item.clientName}
-          />
-          <p className="text-xl font-medium">{item.clientName}</p>
-        </div>
-      </div>
-    </SwiperSlide>
-  ))}
-</Swiper>
+            <Swiper
+              spaceBetween={12}
+              slidesPerView={1} // Default to 1 slide per view for small screens
+              pagination={{
+                clickable: true,
+              }}
+              modules={[Pagination]}
+              breakpoints={{
+                1024: {
+                  slidesPerView: 3,
+                  spaceBetween: 24,
+                },
+                1280: {
+                  slidesPerView: 4,
+                  spaceBetween: 24,
+                },
+              }}
+            >
+              {testimonialData.map((item) => (
+                <SwiperSlide key={item.id}>
+                  <div
+                    data-aos="zoom-in"
+                    data-aos-duration="2000"
+                    className="py-9 px-8 rounded-lg bg-white mt-5"
+                  >
+                    <p className="text-xl font-bold text-menuLinkColor leading-9 mb-6 text-center">
+                      {item.message}
+                    </p>
+                    <img
+                      className="w-[115px] h-[20px] mx-auto"
+                      src={ratingImg}
+                      alt="ratingImg"
+                    />
+                    <div className="flex items-center justify-center gap-2 mt-6">
+                      <img
+                        className="w-12 h-12 rounded-full object-cover"
+                        src={item.imgUrl}
+                        alt={item.clientName}
+                      />
+                      <p className="text-xl font-medium">{item.clientName}</p>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
 
           </div>
         </div>

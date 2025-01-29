@@ -5,27 +5,27 @@ import { Link } from "react-router-dom";
 
 function PersonalizedSection() {
   return (
-    <section className="px-[50px]">
+    <section className="px-5 xl:px-[47px]">
       <div
         data-aos="zoom-up"
         data-aos-duration="2000"
-        className="py-[73px] bg-headerBg rounded-[40px]"
+        className="py-10 sm:py-[73px] bg-headerBg rounded-2xl sm:rounded-[40px]"
       >
         <div className="container">
-          <div className="flex items-center gap-[162px]">
-            <div    data-aos="zoom-up"
-                  data-aos-duration="2000" className="w-[737px]">
+          <div className="grid lg:grid-cols-2 items-center gap-10 lg:gap-20 xl:gap-[162px]">
+            <div data-aos="zoom-up"
+              data-aos-duration="2000" className="">
               <h3
                 data-aos="zoom-up"
                 data-aos-duration="2000"
-                className="text--xl"
+                className="text-3xl md:text-4xl opacity-1 text-[#0ca6fc] font-bold lg:text--xl"
               >
                 Personalized Healthcare, Just a Click Away
               </h3>
               <p
                 data-aos="zoom-up"
                 data-aos-duration="3000"
-                className="text-[24px] font-medium text-categoryBtnColor mt-6"
+                className="text-lg sm:text-[24px] font-medium text-categoryBtnColor mt-6"
               >
                 Experience healthcare that's designed around your needs. Access
                 safe, approved treatments without the hassle of waiting rooms.
@@ -49,7 +49,7 @@ function PersonalizedSection() {
               <img
                 data-aos="zoom-in"
                 data-aos-duration="2000"
-                className="w-[626px] h-[585px]"
+                className="object-cover"
                 src={personalizedImg}
                 alt="personalizedImg "
               />

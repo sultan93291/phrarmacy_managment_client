@@ -83,10 +83,10 @@ function LoginPage() {
               localStorage.setItem("token", res.data.token);
               toast.success("successfully logged in");
               setTimeout(() => {
-                  window.location.reload();
-                  navigate("/dashboard/user/user-homepage");
+                window.location.reload();
+                navigate("/dashboard/user/user-homepage");
               }, 3000);
-            
+
             }
           })
           .catch(error => {
@@ -104,8 +104,8 @@ function LoginPage() {
   });
 
   return (
-    <div className="min-h-[800px]  flex justify-center items-center">
-      <div className="container w-4/12">
+    <div className="py-10 flex flex-col lg:flex-row justify-center items-center">
+      <div className="container lg:w-4/12">
         <div data-aos="zoom-up" data-aos-duration="2000">
           <h3
             data-aos="zoom-up"
@@ -264,7 +264,7 @@ function LoginPage() {
         </div>
       </div>
 
-      <div data-aos="zoom-up" data-aos-duration="2000" className="w-7/12 p-20">
+      <div data-aos="zoom-up" data-aos-duration="2000" className="lg:w-7/12 hidden md:block p-20">
         <img
           data-aos="zoom-in"
           data-aos-duration="2000"
