@@ -58,7 +58,7 @@ function OurMission() {
     <section className="pb-[140px]">
       <div className="container">
         <div className="max-w-[692px] text-center mx-auto mb-10">
-          <h3 className="text-3xl md:text-4xl font-bold lg:text--xl text-primary">
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold lg:text--xl text-primary">
             Our mission provide medical equipment in order to.
           </h3>
         </div>

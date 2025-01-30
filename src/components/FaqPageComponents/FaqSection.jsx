@@ -130,7 +130,7 @@ function FaqSection() {
     <section className="my-10 sm:my-20 max-w-[1000px] mx-auto faq-section">
       <div className="container">
         <div className="text-center mb-5">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold sm:mb-10  text-primryDark">
+          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold sm:mb-10  text-primryDark">
             Frequently Asked Questions
           </h1>
         </div>
@@ -149,7 +149,7 @@ function FaqSection() {
                         key={`${item.category}-${faq.question}`}
                         value={`${item.category}-${faq.question}`}
                       >
-                        <AccordionTrigger className="text-xl sm:text-[24px] text-primryDark p-0">
+                        <AccordionTrigger className="text-lg sm:text-[24px] text-primryDark p-0">
                           {faq.question}
                         </AccordionTrigger>
                         <AccordionContent className="text-[18px] mt-5">

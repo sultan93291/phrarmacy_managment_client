@@ -14,7 +14,7 @@ function Footer() {
       <div data-aos="zoom-up"
         data-aos-duration="1000" className="py-10 sm:pt-[70px] sm:pb-[90px] xl:pb-[117px] bg-primryDark rounded-2xl md:rounded-[40px]">
         <div className="container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 w-full xl:flex items-start justify-between gap-10 sm:gap-16 xl:gap-[100px]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 w-full xl:flex items-start justify-between gap-14 sm:gap-16 xl:gap-[100px]">
             {/* footer box  */}
             <div data-aos="zoom-up"
               data-aos-duration="2000" className="footer-box">
@@ -76,7 +76,7 @@ function Footer() {
             </div>
             {/* footer box  */}
             <div data-aos="zoom-up"
-              data-aos-duration="2000" className="footer--box links">
+              data-aos-duration="2000" className="footer--box lg:mt-6 links">
               <h4 data-aos="zoom-up"
                 data-aos-duration="2000">Our Services</h4>
               <ul className="-mt-5">
@@ -112,7 +112,7 @@ function Footer() {
             </div>
             {/* footer box  */}
             <div data-aos="zoom-up"
-              data-aos-duration="2000" className="footer--box links">
+              data-aos-duration="2000" className="footer--box lg:mt-6 links">
               <h4 data-aos="zoom-up"
                 data-aos-duration="2000">Customer Support</h4>
               <ul className="-mt-5">
@@ -136,7 +136,7 @@ function Footer() {
             </div>
             {/* footer box  */}
             <div data-aos="zoom-up"
-              data-aos-duration="2000" className="footer--box links">
+              data-aos-duration="2000" className="footer--box lg:mt-6 links">
               <h4 data-aos="zoom-up"
                 data-aos-duration="2000">Useful Links</h4>
               <ul className="-mt-5">

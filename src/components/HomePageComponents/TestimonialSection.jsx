@@ -71,7 +71,7 @@ function TestimonialSection() {
           {/* section title  */}
           <div data-aos="zoom-up"
             data-aos-duration="1000" className="mb-[10px] text-center">
-            <h3 className="text-3xl md:text-4xl opacity-1 text-[#0ca6fc] font-bold lg:text--xl">Verified Customer Reviews</h3>
+            <h3 className="text-2xl sm:text-3xl md:text-4xl opacity-1 text-[#0ca6fc] font-bold lg:text--xl">Verified Customer Reviews</h3>
           </div>
           <div>
 

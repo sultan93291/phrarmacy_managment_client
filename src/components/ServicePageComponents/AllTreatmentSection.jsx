@@ -33,14 +33,14 @@ function AllTreatmentSection() {
           <h2
             data-aos="zoom-up"
             data-aos-duration="2000"
-            className="text-3xl md:text-[36px] font-bold leading-normal text-primary"
+            className="text-2xl sm:text-3xl md:text-[36px] font-bold leading-normal text-primary"
           >
             Our All Treatments
           </h2>
           <div
             data-aos="zoom-up"
             data-aos-duration="2000"
-            className="max-w-[300px] sm:max-w-[350px] md:max-w-[500px] xl:max-w-[638px] mx-auto mt-5"
+            className="max-w-[270px] sm:max-w-[350px] md:max-w-[500px] xl:max-w-[638px] mx-auto mt-5"
           >
             <Searchbar />
           </div>

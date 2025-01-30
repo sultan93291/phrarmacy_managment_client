@@ -18,7 +18,7 @@ function PersonalizedSection() {
               <h3
                 data-aos="zoom-up"
                 data-aos-duration="2000"
-                className="text-3xl md:text-4xl opacity-1 text-[#0ca6fc] font-bold lg:text--xl"
+                className="text-2xl sm:text-3xl md:text-4xl opacity-1 text-[#0ca6fc] font-bold lg:text--xl"
               >
                 Personalized Healthcare, Just a Click Away
               </h3>
