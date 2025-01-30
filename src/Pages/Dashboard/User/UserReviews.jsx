@@ -30,11 +30,6 @@ const UserReviews = () => {
           console.log(review);
           return <UserReviewCard review={review} key={idx} />
         })}
-        {/* {allReview?.length > 0 ? (
-          
-        ) : (
-          <div>No reviews found.</div>
-        )} */}
       </div>
     </div>
   );

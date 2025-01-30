@@ -58,7 +58,22 @@ export const apiSlice = createApi({
         method: "GET",
         includeToken: true,
       }),
-      providesTags: ["Card"],
+    }),
+
+    getUserOrderIntent: builder.query({
+      query: () => ({
+        url: "/api/orders?column=&value=&sort=&page=&per_page=",
+        method: "POST",
+        includeToken: true,
+      }),
+    }),
+
+    getUserOrderDetailsIntent: builder.query({
+      query: ({id}) => ({
+        url: `/api/order/${id}`,
+        method: "GET",
+        includeToken: true,
+      }),
     }),
 
     // Delete Card
@@ -81,4 +96,6 @@ export const {
   useUpdateUserInfoIntentMutation,
   useDeleteCardIntentMutation,
   useGetUserReviewIntentQuery,
+  useGetUserOrderIntentQuery,
+  useGetUserOrderDetailsIntentQuery
 } = apiSlice;

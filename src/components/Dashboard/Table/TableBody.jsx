@@ -6,6 +6,7 @@ import useAuth from '@/Hooks/useAuth';
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+
 /* eslint-disable react/prop-types */
 const TableBody = ({ items, columns, status }) => {
   const { role } = useAuth();
@@ -19,14 +20,20 @@ const TableBody = ({ items, columns, status }) => {
     if (role == 'user') return '/dashboard/user/order-details';
   };
 
-  const handleRowClick = () => {
+  
+
+
+  const handleRowClick = (id) => {
     const detailsRoute = getDetailsRoute();
+
+    console.log(id);
+    
 
     // Check if we're already on the details page for the current user type
     const isAlreadyOnDetailsPage = location.pathname === detailsRoute;
 
     if (!isAlreadyOnDetailsPage) {
-      navigate(detailsRoute);
+      navigate(`${detailsRoute}/${id}`);
     }
   };
 
@@ -34,7 +41,9 @@ const TableBody = ({ items, columns, status }) => {
     <>
       {items?.map((item, idx) => (
         <tr
-          onClick={!status && handleRowClick}
+          onClick={() => {
+            !status && handleRowClick(item?.uuid);
+          }}
           key={idx}
           className="border-y hover:bg-primary/20 transition duration-300 text-sm md:text-base text-[#052D4C] font-medium cursor-pointer"
         >

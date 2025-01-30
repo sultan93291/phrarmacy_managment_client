@@ -1,10 +1,18 @@
 /* eslint-disable react/prop-types */
 
-import TableHead from './TableHead';
-import TableBody from './TableBody';
+import TableHead from "./TableHead";
+import TableBody from "./TableBody";
 
 const DashboardTable = ({ orders, status, doctor, pharmacist }) => {
-  const headers = Object.keys(orders[0]);
+  console.log(orders);
+
+  const headers = orders?.length > 0 ? Object.keys(orders[0]) : [];
+
+  if (!orders || orders.length === 0) {
+    return <p className="py-5">No orders available.</p>;
+  }
+
+  
   return (
     <div className="rounded-lg bg-white  md:rounded-xl lg:rounded-2xl">
       <div className="overflow-x-auto">
