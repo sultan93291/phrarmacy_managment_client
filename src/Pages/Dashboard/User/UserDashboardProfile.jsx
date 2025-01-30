@@ -1,10 +1,13 @@
 import DashboardTitle from "@/components/Dashboard/User/DashboardTitle";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UserCalendar from "@/components/Dashboard/User/UserCalendar";
 import userPhoto from "@/assets/images/user.png";
 import { useSelector } from "react-redux";
 import { useUpdatePasswordIntentMutation } from "@/Redux/features/api/apiSlice";
+import { useUpdateUserInfoIntentMutation } from "@/Redux/features/api/apiSlice";
 import toast from "react-hot-toast";
+import { format } from "date-fns";
+import axios from "axios";
 
 const UserDashboardProfile = () => {
   const genderOptions = [
@@ -15,6 +18,9 @@ const UserDashboardProfile = () => {
 
   const [updatePasswordIntent, { isLoading, isError, isSuccess }] =
     useUpdatePasswordIntentMutation();
+
+  const [updateUserInfoIntent, { isDocLoading, isDocError, isDocSuccess }] =
+    useUpdateUserInfoIntentMutation();
 
   console.log(isSuccess, isLoading, isError);
 
@@ -30,71 +36,175 @@ const UserDashboardProfile = () => {
 
   console.log("from user dashboard profile", loggedInUser);
 
-  const [imagePreview, setImagePreview] = useState(userPhoto);
+  const [imagePreview, setImagePreview] = useState(
+    loggedInUser.avatar
+      ? `https://aamairk.softvencefsd.xyz/${loggedInUser?.avatar}`
+      : userPhoto
+  );
   const [fileName, setFileName] = useState("No File Chosen");
+  const [imagefile, setimagefile] = useState();
 
   const handleFileChange = event => {
     const file = event.target.files[0];
+
     if (file) {
-      setImagePreview(URL.createObjectURL(file));
+      setimagefile(file); // Store the file
+      setImagePreview(URL.createObjectURL(file)); // Show preview
       setFileName(file.name);
+    } else {
+      // Reset to logged-in user's avatar
+      setImagePreview(
+        loggedInUser?.avatar
+          ? `https://aamairk.softvencefsd.xyz/${loggedInUser.avatar}`
+          : userPhoto
+      );
     }
   };
+
+  useEffect(() => {
+    setImagePreview(`https://aamairk.softvencefsd.xyz/${loggedInUser.avatar}`);
+  }, [loggedInUser.avatar]);
+
+  const [dob, setDob] = useState(loggedInUser.date_of_birth); // Store the selected date of birth
+  const handleDateChange = newDate => {
+    if (!newDate) return; // Prevent errors if newDate is null or undefined
+
+    const formattedDate = format(new Date(newDate), "MM/dd/yyyy"); // Convert to "MM/DD/YYYY"
+    setDob(formattedDate); // Update dob state with the formatted date
+  };
+
+  const [userData, setUserData] = useState({
+    name: loggedInUser?.name || "Hawkins",
+    email: loggedInUser?.email || "demo@gmail.com",
+    phone: loggedInUser?.phone || "+8801761624031",
+    date_of_birth: loggedInUser?.date_of_birth || "",
+    address: "1234 Elm Street, Los Angeles, CA 90001, United States",
+  });
+
+  useEffect(() => {
+    setUserData({
+      name: loggedInUser?.name || "Hawkins",
+      email: loggedInUser?.email || "demo@gmail.com",
+      phone: loggedInUser?.phone || "+8801761624031",
+      date_of_birth: loggedInUser?.date_of_birth || "",
+      address:
+        loggedInUser.address ||
+        "1234 Elm Street, Los Angeles, CA 90001, United States",
+    });
+    setDob(loggedInUser.date_of_birth)
+    setDob(loggedInUser.date_of_birth);
+    setSelectedGender(loggedInUser.gender);
+  }, [loggedInUser]);
+
+
 
   const handleFormData = e => {
     const { name, value } = e.target; // Destructure name and value directly from e.target
     setpasswordUpdate({ ...passwordUpdate, [name]: value });
   };
 
-const handlePasswordUpdate = async e => {
-  e.preventDefault();
+  const handlePasswordUpdate = async e => {
+    e.preventDefault();
 
-  try {
-    const response = await updatePasswordIntent({
-      old_password: passwordUpdate.old_password, // Matches mutation
-      password: passwordUpdate.password, // Matches mutation
-      password_confirmation: passwordUpdate.password_confirmation, // Matches mutation
-    }).unwrap();
+    try {
+      const response = await updatePasswordIntent({
+        old_password: passwordUpdate.old_password, // Matches mutation
+        password: passwordUpdate.password, // Matches mutation
+        password_confirmation: passwordUpdate.password_confirmation, // Matches mutation
+      }).unwrap();
 
-    // Success handling
-    if (response.code === 200) {
-      toast.success("Password updated successfully");
-    } else {
-      toast.error(
-        response.message || "Failed to update password. Please try again."
-      );
+      // Success handling
+      if (response.code === 200) {
+        toast.success("Password updated successfully");
+      } else {
+        toast.error(
+          response.message || "Failed to update password. Please try again."
+        );
+      }
+    } catch (error) {
+      // Log the error object to understand the structure
+      console.error("Error Response:", error);
+
+      // Handle error message based on the error response
+      const errorMessage =
+        error?.data?.message || "Something went wrong. Please try again.";
+      toast.error(errorMessage);
+    } finally {
+      setpasswordUpdate({
+        old_password: "",
+        password: "",
+        password_confirmation: "",
+      });
     }
-  } catch (error) {
-    // Log the error object to understand the structure
-    console.error("Error Response:", error);
+  };
 
-    // Handle error message based on the error response
-    const errorMessage =
-      error?.data?.message || "Something went wrong. Please try again.";
-    toast.error(errorMessage);
-  } finally {
-    setpasswordUpdate({
-      old_password: "",
-      password: "",
-      password_confirmation: "",
-    })
-  }
-};
-
-
-  const [selectedGender, setSelectedGender] = useState("male");
+  const [selectedGender, setSelectedGender] = useState(
+    loggedInUser.gender ? loggedInUser.gender : "male"
+  );
 
   const handleGenderChange = event => {
     setSelectedGender(event.target.value);
   };
+
+  const handleFromData = e => {
+    const { name, value } = e.target; // Destructure name and value directly from e.target
+    setUserData({ ...userData, [name]: value });
+  };
+
+  console.log(userData);
+
+  const handleUserInfo = async e => {
+    const SiteURl = import.meta.env.VITE_SITE_URL;
+    e.preventDefault();
+    const formData = new FormData();
+    console.log(imagefile, "i'm image file");
+
+    formData.append("name", userData.name);
+    formData.append("email", userData.email);
+    formData.append("phone", userData.phone);
+    formData.append("date_of_birth", dob);
+    formData.append("gender", selectedGender);
+    formData.append("address", userData.address);
+
+    if (imagefile) {
+      formData.append("avatar", imagefile); // ✅ Send the actual file object
+    }
+
+    // ✅ Log FormData contents correctly
+    console.log("FormData Payload:");
+    for (let pair of formData.entries()) {
+      console.log(`${pair[0]}:`, pair[1]);
+    }
+
+    const token = localStorage.getItem("token");
+
+    axios
+      .post(`${SiteURl}/api/user-update`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(response => {
+        console.log("Success:", response.data);
+        if (response.data.code === 200) {
+          toast.success("User information updated successfully");
+        }
+      })
+      .catch(error => {
+        console.error("Error updating user:", error);
+        toast.error("Can't updater user info , right now");
+      });
+  };
+
   return (
-    <div className="bg-white rounded-md px-16 py-10">
+    <div className="bg-white rounded-md px-5 py-8 sm:px-16 sm:py-10">
       <DashboardTitle title="Personal Information" />
 
       {/* form */}
       <div className="mt-12">
         <div className="font-inter">
-          <form action="" className="md:flewo flex flex-col gap-6 md:gap-12">
+          <form className="md:flewo flex flex-col gap-6 md:gap-12">
             <div className="flex w-full flex-col gap-6 md:flex-row 2xl:gap-24  ">
               <div className="md:w-1/2">
                 <div className="flex flex-col gap-3 md:gap-5">
@@ -106,7 +216,10 @@ const handlePasswordUpdate = async e => {
                     name="name"
                     id="name"
                     className="rounded-lg border border-black/10 px-4 py-3 text-sm placeholder:text-black/50 focus:outline-none md:text-base md:placeholder:text-sm 2xl:px-10 2xl:py-5"
-                    defaultValue={loggedInUser?.name}
+                    value={userData.name}
+                    onChange={e => {
+                      handleFromData(e);
+                    }}
                   />
                 </div>
               </div>
@@ -120,7 +233,10 @@ const handlePasswordUpdate = async e => {
                     name="email"
                     id="email"
                     className="rounded-lg border border-black/10 px-4 py-3 text-sm placeholder:text-black/50 focus:outline-none md:text-base 2xl:px-10 2xl:py-5"
-                    defaultValue={loggedInUser?.email}
+                    value={userData.email}
+                    onChange={e => {
+                      handleFromData(e);
+                    }}
                   />
                 </div>
               </div>
@@ -136,11 +252,10 @@ const handlePasswordUpdate = async e => {
                     type="tel"
                     name="phone"
                     id="phone"
-                    defaultValue={
-                      loggedInUser?.phone
-                        ? loggedInUser?.phone
-                        : "+8801761624031"
-                    }
+                    value={userData.phone}
+                    onChange={e => {
+                      handleFromData(e);
+                    }}
                     className="rounded-lg border border-black/10 px-4 py-3 text-sm placeholder:text-black/50 focus:outline-none md:text-base 2xl:px-10 2xl:py-5"
                   />
                 </div>
@@ -151,7 +266,10 @@ const handlePasswordUpdate = async e => {
                     Date of Birth
                   </label>
                   <div className="w-full">
-                    <UserCalendar userBirthDate={loggedInUser?.date_of_birth} />
+                    <UserCalendar
+                      userBirthDate={dob}
+                      onDateChange={handleDateChange}
+                    />
                   </div>
                 </div>
               </div>
@@ -205,6 +323,10 @@ const handlePasswordUpdate = async e => {
                   className="rounded-lg border border-black/10 px-4 py-3 text-sm placeholder:text-black/50 focus:outline-none md:text-base 2xl:px-10 2xl:py-8"
                   name="address"
                   id="address"
+                  value={userData.address}
+                  onChange={e => {
+                    handleFromData(e);
+                  }}
                 >
                   1234 Elm Street,Los Angeles, CA 90001,United States
                 </textarea>
@@ -235,7 +357,9 @@ const handlePasswordUpdate = async e => {
                         type="file"
                         name="photo"
                         id="photo"
-                        onChange={handleFileChange}
+                        onChange={e => {
+                          handleFileChange(e);
+                        }}
                         className="imageInput hidden"
                       />
                       <span className="imageFileName text-sm md:text-base">
@@ -245,8 +369,11 @@ const handlePasswordUpdate = async e => {
                   </div>
                 </div>
 
-                <div className="pt-4 md:pt-8">
+                <div className="pt-4 md:pt-8 mb-5">
                   <button
+                    onClick={e => {
+                      handleUserInfo(e);
+                    }}
                     type="submit"
                     className="rounded-[40px] border border-white bg-primary px-5 py-2 font-inter text-sm text-white transition duration-500 hover:border-primary hover:bg-white hover:text-primary md:text-base"
                   >

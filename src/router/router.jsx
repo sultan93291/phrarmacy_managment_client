@@ -127,7 +127,7 @@ const router = createBrowserRouter(
           element: <UserAssessmentResult />,
         },
         {
-          path: "user/order-details",
+          path: "user/order-details/:id",
           element: <UserOrderDetails />,
         },
         {

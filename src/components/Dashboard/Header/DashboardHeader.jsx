@@ -15,8 +15,12 @@ import {
 import useAuth from "@/Hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Hamburger from "hamburger-react";
+import SideDashboard from "@/shared/SideDashboard";
+import { FaBars } from "react-icons/fa6";
 
-const DashboardHeader = () => {
+const DashboardHeader = ({ dashboardNavLinks }) => {
+  const [isOpen, setOpen] = useState(false);
   const { role, setRole } = useAuth();
   const navigate = useNavigate();
 
@@ -45,37 +49,43 @@ const DashboardHeader = () => {
   console.log(loggedInUser);
 
   return (
-    <div className="py-8 px-10 min-h-[88px] max-h-[88px] w-full flex items-center justify-between">
+    <div className="py-8 px-5 sm:px-10 min-h-[88px] max-h-[88px] w-full flex items-center justify-between">
       {/* user information */}
-      <div className="flex items-center gap-5">
-        <div className="size-12 ">
+      <div className="flex items-center gap-3 sm:gap-5">
+        <div className="size-10 md:size-12 ">
           <img
             className="w-full h-full object-cover rounded-full"
-            src={loggedInUser?.avatar ? loggedInUser?.avatar : user}
+            src={
+              loggedInUser?.avatar
+                ? `https://aamairk.softvencefsd.xyz/${loggedInUser?.avatar}`
+                : user
+            }
             alt=""
           />
         </div>
-        <div className="space-y-2">
-          <h3 className="text-xl font-medium">
-            Welcome back, {loggedInUser?.name ? loggedInUser?.name : "Hawkins"}{" "}
+        <div className="md:space-y-2">
+          <h3 className="sm:text-lg md:text-xl font-medium">
+            Welcome back, <br className="sm:hidden" /> {loggedInUser?.name ? loggedInUser?.name : "Hawkins"}{" "}
           </h3>
-          <p className="text-[#404A60] text-sm">
+          <p className="hidden sm:block text-[#404A60] text-sm">
             Happy to see you again on your dashboard.
           </p>
         </div>
       </div>
 
-      <div className="flex items-center gap-10">
+      <div className="flex items-center gap-2 sm:gap-5">
         {/* temporary role switch */}
-       
-
+        {/* Hamburger */}
+        <div className="min-[1200px]:hidden">
+          <Hamburger size={30} toggled={isOpen} toggle={setOpen} />
+        </div>
         {/* Notification */}
         <div
           ref={showNotificationsRef}
           className="relative"
           onClick={() => setShowNotifications(!showNotifications)}
         >
-          <div className="cursor-pointer p-4 rounded-full bg-[#5D69F40D] relative">
+          <div className="cursor-pointer p-2 sm:p-4 rounded-full bg-[#5D69F40D] relative">
             {/* dot */}
             <div className="absolute top-[14px] right-[14px]">
               <DashboardNotificationIndicatorSvg />
@@ -87,7 +97,10 @@ const DashboardHeader = () => {
             showNotifications={showNotifications}
           />
         </div>
+
       </div>
+      {/* sidebar */}
+      <SideDashboard isOpen={isOpen} setOpen={setOpen} dashboardNavLinks={dashboardNavLinks} />
     </div>
   );
 };

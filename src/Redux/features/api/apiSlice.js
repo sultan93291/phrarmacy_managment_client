@@ -1,61 +1,82 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import axiosBaseQuery from "./axiosBaseQuery";
+
 const SiteURl = import.meta.env.VITE_SITE_URL;
 
 export const apiSlice = createApi({
   reducerPath: "api",
-  baseQuery: axiosBaseQuery({ baseUrl: SiteURl }), // Base URL here
-  tagTypes: ["Card"], // Add tag for cache management
+  baseQuery: axiosBaseQuery({ baseUrl: SiteURl }),
+  tagTypes: ["Card"],
   endpoints: builder => ({
     // Create PaymentIntent for Stripe
     createAddCardIntent: builder.mutation({
       query: payment_method_id => ({
-        url: "/api/add/stripe/customer/payment-method", // Backend API
+        url: "/api/add/stripe/customer/payment-method",
         method: "POST",
-        data: {
-          payment_method_id: payment_method_id,
-        },
-        includeToken: true, // Now this flag is passed as part of the query
+        data: { payment_method_id },
+        includeToken: true,
       }),
-      invalidatesTags: ["Card"], // Invalidate "Card" tag after successful mutation
+      invalidatesTags: ["Card"],
     }),
 
     // Get Card data for Stripe
     getCardDataIntent: builder.query({
       query: () => ({
-        url: "/api/get/stripe/customer/payment-method", // Backend API
+        url: "/api/get/stripe/customer/payment-method",
         method: "GET",
-        includeToken: true, // Now this flag is passed as part of the query
+        includeToken: true,
       }),
-      providesTags: ["Card"], // Provide "Card" tag for this query
+      providesTags: ["Card"],
     }),
 
+    // Update Password
     updatePasswordIntent: builder.mutation({
       query: ({ old_password, password, password_confirmation }) => ({
         url: "/api/change-password",
         method: "POST",
-        data: {
-          old_password: old_password,
-          password: password, // Backend expects the new password here
-          password_confirmation: password_confirmation, // Confirm new password
-        },
+        data: { old_password, password, password_confirmation },
         includeToken: true,
       }),
     }),
 
+    // Update User Info
     updateUserInfoIntent: builder.mutation({
       query: ({ data }) => ({
-        url: "/api/change-password",
+        url: "/api/user-update",
         method: "POST",
-        data: {
-          old_password: old_password,
-          password: password, // Backend expects the new password here
-          password_confirmation: password_confirmation, // Confirm new password
+        body: data, // Keep FormData as is
+        headers: {
+          "Content-Type": "multipart/form-data",
         },
+        includeToken: true, // Ensure authentication (if needed)
+      }),
+    }),
+
+    getUserReviewIntent: builder.query({
+      query: () => ({
+        url: "/api/auth-review",
+        method: "GET",
         includeToken: true,
       }),
     }),
 
+    getUserOrderIntent: builder.query({
+      query: () => ({
+        url: "/api/orders?column=&value=&sort=&page=&per_page=",
+        method: "POST",
+        includeToken: true,
+      }),
+    }),
+
+    getUserOrderDetailsIntent: builder.query({
+      query: ({id}) => ({
+        url: `/api/order/${id}`,
+        method: "GET",
+        includeToken: true,
+      }),
+    }),
+
+    // Delete Card
     deleteCardIntent: builder.mutation({
       query: cardId => ({
         url: `/api/remove/stripe/customer/payment-method/${cardId}`,
@@ -72,5 +93,9 @@ export const {
   useCreateAddCardIntentMutation,
   useGetCardDataIntentQuery,
   useUpdatePasswordIntentMutation,
+  useUpdateUserInfoIntentMutation,
   useDeleteCardIntentMutation,
+  useGetUserReviewIntentQuery,
+  useGetUserOrderIntentQuery,
+  useGetUserOrderDetailsIntentQuery
 } = apiSlice;

@@ -79,7 +79,7 @@ function Footer() {
               data-aos-duration="2000" className="footer--box lg:mt-6 links">
               <h4 data-aos="zoom-up"
                 data-aos-duration="2000">Our Services</h4>
-              <ul className="-mt-5">
+              <ul className="-mt-7">
                 <li data-aos="zoom-up"
                   data-aos-duration="2000">
                   <Link to={"/"}>Medical Billing</Link>
@@ -115,7 +115,7 @@ function Footer() {
               data-aos-duration="2000" className="footer--box lg:mt-6 links">
               <h4 data-aos="zoom-up"
                 data-aos-duration="2000">Customer Support</h4>
-              <ul className="-mt-5">
+              <ul className="-mt-7">
                 <li data-aos="zoom-up"
                   data-aos-duration="2000">
                   <Link to={"/"}>FAQ’s</Link>
@@ -139,7 +139,7 @@ function Footer() {
               data-aos-duration="2000" className="footer--box lg:mt-6 links">
               <h4 data-aos="zoom-up"
                 data-aos-duration="2000">Useful Links</h4>
-              <ul className="-mt-5">
+              <ul className="-mt-7">
                 <li data-aos="zoom-up"
                   data-aos-duration="2000">
                   <Link to={"/"}>Careers</Link>

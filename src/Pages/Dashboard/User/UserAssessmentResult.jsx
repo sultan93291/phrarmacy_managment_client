@@ -311,18 +311,18 @@ const UserAssessmentResult = () => {
               data-aos="zoom-in"
               data-aos-duration="1000"
               value={`item-1`}
-              className="border border-[#084772] rounded-[10px] overflow-hidden mt-[14px] accordion-item"
+              className="border border-[#084772] rounded-lg sm:rounded-[10px] overflow-hidden mt-[14px] accordion-item"
             >
               {/* title */}
-              <AccordionTrigger className="text-2xl text-[#052D4C] font-semibold py-5 px-10">
-                <div className="flex items-center gap-12">
+              <AccordionTrigger className="text-2xl text-[#052D4C] font-semibold py-3 sm:py-5 px-3 sm:px-10">
+                <div className="flex items-center sm:gap-12">
                   <p className="text-lg">#2734</p>
-                  <h5 className="text-xl">{data?.title}</h5>
+                  <h5 className="text-lg sm:text-xl">{data?.title}</h5>
                 </div>
               </AccordionTrigger>
 
               {/* details */}
-              <AccordionContent className="pt-5 pb-8 px-[55px] bg-white">
+              <AccordionContent className="pt-5 pb-8 px-5 sm:px-7 lg:px-[55px] bg-white">
                 <AssessmentResult questions={data?.questions} />
               </AccordionContent>
             </AccordionItem>
