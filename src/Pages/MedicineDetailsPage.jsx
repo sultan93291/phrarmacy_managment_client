@@ -37,7 +37,7 @@ function MedicineDetailsPage() {
   useEffect(() => {
     axios({
       method: "get",
-      url: `${SiteURl}/api/medicine/1/review?sort=&per_page=&page=`,
+      url: `${SiteURl}/api/medicine/review?sort=&per_page=&page=`,
     })
       .then(res => {
         console.log(res.data.data, " all review  data");
