@@ -1,29 +1,38 @@
 /* eslint-disable react/prop-types */
 
-import { EmptyStarSvg, StarSvg } from '@/components/SvgContainer/SvgContainer';
+import { EmptyStarSvg, StarSvg } from "@/components/SvgContainer/SvgContainer";
+import { formatDate } from "date-fns";
 const SiteURl = import.meta.env.VITE_SITE_URL;
+import medicine from "../../../../src/assets/images/medicine_img.png";
 
 const UserReviewCard = ({ review }) => {
+  console.log(review.review.rating, "got this review");
 
-  console.log(review , 'got this review');
-  
+  const formatDate = isoDate => {
+    const date = new Date(isoDate);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
-  const rating = parseInt(review?.rating);
+  const rating = parseInt(review?.review?.rating);
   const emptyStars = 5 - rating;
   const fullStars = 5 - emptyStars;
   return (
-    <div className="flex gap-5 font-nunito">
-      <div className="h-4/5 flex gap-10">
+    <div className="flex gap-5  font-nunito">
+      <div className="h-4/5 flex gap-10  ">
         <div className="flex-shrink-0 size-60">
           <img
             className="w-full h-full object-cover rounded-lg"
-            src={review?.image}
+            src={review?.image ? review.image : medicine}
             alt=""
           />
         </div>
         <div className="space-y-5 w-2/3">
-          <h3 className="text-3xl font-semibold">{review?.title}</h3>
-          <p>{review?.description}</p>
+          <h3 className="text-3xl font-semibold">{`Order id : #${review?.order_uuid}`}</h3>
+          <p>{review?.review?.review}</p>
         </div>
       </div>
       <div className="h-1/5 flex flex-shrink-0 items-center gap-3">
@@ -34,8 +43,10 @@ const UserReviewCard = ({ review }) => {
           {[...Array(emptyStars)].map((_, idx) => (
             <EmptyStarSvg key={idx} />
           ))}
-            </div>
-        <p className="text-[#404A60] font-medium">April 25, 2024</p>
+        </div>
+        <p className="text-[#404A60] font-medium">
+          {formatDate(review?.review?.created_at)}
+        </p>
       </div>
     </div>
   );
