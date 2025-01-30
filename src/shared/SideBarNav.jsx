@@ -5,22 +5,20 @@ import userIcon from '@/assets/images/icon/User-rounded.svg';
 
 
 const SideBarNav = ({ isOpen, setOpen, navLinks }) => {
- 
+
   return (
     <>
       {/* Blur Overlay */}
       <div
         onClick={() => setOpen(false)}
-        className={`fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity duration-300 z-50 lg:hidden ${
-          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        }`}
+        className={`fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity duration-300 z-50 xl:hidden ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
       />
 
       {/* Sidebar */}
       <div
-        className={`fixed left-0 top-0 z-[60] h-full w-60 transform shadow-lg bg-white transition-transform duration-500 md:w-64 px-5 py-8 lg:hidden ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`fixed left-0 top-0 z-[60] h-full w-60 transform shadow-lg bg-white transition-transform duration-500 lg:w-64 px-5 py-8 xl:hidden ${isOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
       >
         <div>
           <Link

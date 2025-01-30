@@ -9,7 +9,7 @@ function SymptomCard({ item }) {
       to="/service"
       data-aos="zoom-in"
       data-aos-duration="2000"
-      className="bg-no-repeat pt-[47px] pb-[40px] px-8 rounded-[20px] bg-[100%_100%] min-h-[412px] flex flex-col h-full"
+      className="bg-no-repeat bg-cover pt-[47px] pb-[40px] px-8 rounded-[20px] bg-[100%_100%] min-h-[412px] flex flex-col h-full"
       style={{ backgroundImage: `url(${item.imgUrl})` }}
     >
       <h3

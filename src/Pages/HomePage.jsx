@@ -10,7 +10,7 @@ import FaqSection from "../components/HomePageComponents/FaqSection";
 
 function HomePage() {
   return (
-    <div className="mt-[75px] lg:mt-0">
+    <div>
       {/* <PageTitle title="Home" /> */}
       <HeroSection />
       <SymptomsSection />

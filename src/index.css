@@ -149,20 +149,11 @@
     margin-right: -10px;
     margin-left: -10px;
   }
-  .health-feature li {
-    @apply flex items-center gap-5 mt-7 first:mt-0;
-  }
-  .health-feature li p {
-    @apply text-[24px] font-medium capitalize;
-  }
   .quick-consultation-feature li {
     @apply flex items-center gap-[6px] mt-[10px] first:mt-0;
   }
   .quick-consultation-feature li img {
     @apply h-6 w-6;
-  }
-  .quick-consultation-feature li p {
-    @apply text-[18px] leading-[164%];
   }
   .product-wrapper:hover .product-img img {
     @apply scale-[1.1];

@@ -8,7 +8,7 @@ import useAuth from "@/Hooks/useAuth";
 import Hamburger from "hamburger-react";
 import { useState } from "react";
 import SideBarNav from "./SideBarNav";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { AuthContext } from "@/provider/AuthProvider/AuthContextProvider";
 import { useSelector } from "react-redux";
 
@@ -47,7 +47,7 @@ function Navbar() {
 
   return (
     <>
-      <header className="py-[13px] px-5 md:px-9 flex justify-between bg-headerBg fixed xl:sticky top-0 left-0 w-full z-[50] h-[75px] xl:h-auto">
+      <header className="py-[13px] px-3 md:px-9 flex justify-between bg-headerBg sticky top-0 left-0 w-full z-[50] h-[75px] xl:h-auto">
         <div className="flex items-center justify-between">
           {/* header left  */}
           <div className="flex items-center gap-10">
@@ -88,7 +88,7 @@ function Navbar() {
         <div
           data-aos="zoom-left"
           data-aos-duration="2000"
-          className="flex items-center gap-[18px]"
+          className="flex items-center gap-2 sm:gap-[18px]"
         >
           {/* search  */}
           <form
@@ -100,11 +100,11 @@ function Navbar() {
               type="text"
               name="search"
               placeholder="Search your remdies"
-              className="py-[13px] px-6 bg-white w-full text-sm rounded-[40px] text-black focus:outline-none font-semibold"
+              className="sm:py-[13px] py-2 px-3 sm:px-6 bg-white w-full text-sm rounded-[40px] text-black focus:outline-none font-semibold"
             />
             <button
               type="submit"
-              className="absolute top-[50%] right-[20px] h-6 w-6 translate-y-[-50%] text-[20px] text-headerSearchbarPlaceHolder"
+              className="absolute top-[50%] right-2 sm:right-[20px] h-6 w-6 translate-y-[-50%] text-[20px] text-headerSearchbarPlaceHolder"
             >
               <GoSearch />
             </button>
@@ -116,14 +116,14 @@ function Navbar() {
                 role == "user"
                   ? "/dashboard/user/user-homepage"
                   : role == "doctor"
-                  ? "/dashboard/doctor/homepage"
-                  : role == "pharmacist"
-                  ? "/dashboard/pharmacist/homepage"
-                  : "/"
+                    ? "/dashboard/doctor/homepage"
+                    : role == "pharmacist"
+                      ? "/dashboard/pharmacist/homepage"
+                      : "/"
               }
-              className="w-[50px] h-[50px] bg-white flex items-center justify-center rounded-full"
+              className="w-9 h-9 sm:w-[50px] sm:h-[50px] bg-white flex items-center justify-center rounded-full"
             >
-              <img className="w-7 h-7" src={CartIcon} alt={CartIcon} />
+              <img className="w-5 h-5 sm:w-7 sm:h-7" src={CartIcon} alt={CartIcon} />
             </Link>
           </div>
           {/* header btn  */}

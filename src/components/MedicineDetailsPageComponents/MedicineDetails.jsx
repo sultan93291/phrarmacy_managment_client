@@ -42,19 +42,19 @@ function MedicineDetails({ data }) {
     setPreview(img);
   };
 
-  
+
 
   return (
     <div
       data-aos="zoom-up"
       data-aos-duration="2000"
-      className="p-14 rounded-xl bg-[#EFF8FF]"
+      className="p-5 sm:p-8 xl:p-14 rounded-xl bg-[#EFF8FF]"
     >
-      <div className="grid grid-cols-2 gap-24 items-center">
+      <div className="grid lg:grid-cols-2 gap-20 xl:gap-24 items-center">
         {/* image container */}
         <div className="flex flex-col gap-6">
-          <div className="p-8 bg-white">
-            <div className="w-full  h-[500px]  bg-white rounded-lg overflow-hidden">
+          <div className="p-5 sm:p-8 bg-white">
+            <div className="w-full h-[250px] sm:h-[400px] lg:h-[350px]  xl:h-[500px]  bg-white rounded-lg overflow-hidden">
               <img
                 className="w-full hover:scale-110  duration-300 rounded-lg h-full object-cover "
                 src={preview}
@@ -62,13 +62,13 @@ function MedicineDetails({ data }) {
               />
             </div>
           </div>
-          <div className="grid grid-cols-3 gap-6 ">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 ">
             {images.map((img, index) => (
               <div key={index} className="p-4 bg-white">
                 <div
                   onClick={() => handlePreview(img.img_url)}
                   key={index}
-                  className="h-[200px] cursor-pointer  bg-white object-cover rounded-lg overflow-hidden"
+                  className="h-[100px] xl:h-[200px] cursor-pointer  bg-white object-cover rounded-lg overflow-hidden"
                 >
                   {" "}
                   <img
@@ -124,7 +124,7 @@ function MedicineDetails({ data }) {
             })}
           </div>
 
-          <div className="border-[#78D0FF] relative rounded-lg border-4 mt-14 p-8 w-[400px]">
+          <div className="border-[#78D0FF] relative rounded-lg border-4 mt-14 p-8 max-w-[400px]">
             <div>
               <h3 className="text-[#02558A] font-semibold pb-4">Quantity</h3>
               <Select>
@@ -149,8 +149,8 @@ function MedicineDetails({ data }) {
               </h3>
             </div>
 
-            <div className=" absolute left-1/2 -translate-x-1/2 -top-5 border-2 border-[#78D0FF] rounded-full px-4 py-2 bg-[#EFF8FF] ">
-              <h4 className="text-[#02558A] uppercase font-semibold text-sm">
+            <div className=" absolute left-1/2 -translate-x-1/2 -top-5 border-2 border-[#78D0FF] rounded-full px-2 sm:px-4 py-1 sm:py-2 bg-[#EFF8FF] ">
+              <h4 className="text-[#02558A] uppercase font-semibold text-xs sm:text-sm">
                 Price Checker
               </h4>
             </div>

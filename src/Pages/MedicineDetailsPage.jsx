@@ -87,7 +87,7 @@ function MedicineDetailsPage() {
             </div>
             <div className="flex flex-col gap-4">
               {allReview.map((review, index) => {
-                return <SingleReviews data={review}  key={index} ></SingleReviews>;
+                return <SingleReviews data={review} key={index} ></SingleReviews>;
               })}
             </div>
           </div>

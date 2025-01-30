@@ -54,7 +54,7 @@ function FaqSection() {
       url: `${SiteURl}/api/faq/supplement`,
     })
       .then(res => {
-        setfaqData(  res?.data?.data);
+        setfaqData(res?.data?.data);
       })
       .catch(err => {
         console.log(err);
@@ -62,17 +62,17 @@ function FaqSection() {
   }, []);
 
   console.log(faqData, ' this is a faq data ');
-  
+
 
   return (
-    <section className="py-[140px]">
+    <section className="my-14 sm:my-20">
       <div className="container">
         {/* section title  */}
         <div className="mb-10">
           <h3
             data-aos="zoom-up"
             data-aos-duration="2000"
-            className="text--xl text-center"
+            className="lg:text--xl text-2xl sm:text-3xl md:text-4xl opacity-1 text-[#0ca6fc] font-bold text-center"
           >
             Frequently Asked Questions
           </h3>
@@ -87,10 +87,10 @@ function FaqSection() {
                 value={`item-${index}`}
                 className="border border-[#084772] rounded-[10px] overflow-hidden mt-[14px] accordion-item"
               >
-                <AccordionTrigger className="text-[32px] text-menuLinkColor font-semibold py-5 px-[50px] bg-headerBg">
+                <AccordionTrigger className="text-xl md:text-2xl lg:text-[32px] text-menuLinkColor font-semibold md:py-5 px-2 md:px-[50px] bg-headerBg">
                   {item.question}
                 </AccordionTrigger>
-                <AccordionContent className="pt-5 pb-8 px-[55px] bg-white text-[24px] leading-[40px]">
+                <AccordionContent className="text-lg md:text-xl lg:text-[24px] pt-5 pb-8 px-5 md:px-[55px] bg-white leading-[40px]">
                   {item.answer}
                 </AccordionContent>
               </AccordionItem>

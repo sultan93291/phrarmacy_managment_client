@@ -57,7 +57,7 @@ function AssessmentPage() {
                   data-aos-duration="2000"
                   className="flex flex-col space-y-5"
                 >
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center flex-wrap gap-5">
                     {item.options.map((option, optionIndex) => {
                       return (
                         <div key={option?.id}>
@@ -71,7 +71,7 @@ function AssessmentPage() {
                             })}
                           />
                           <label
-                            className="px-6 cursor-pointer peer-checked:bg-primary peer-checked:text-white py-1.5 text-primary rounded-full bg-[#DEF0FF] "
+                            className="px-3 text-xs sm:text-base sm:px-6 cursor-pointer peer-checked:bg-primary peer-checked:text-white py-2 sm:py-1.5 text-primary rounded-full bg-[#DEF0FF] "
                             htmlFor={`${item?.id}-${option?.name}-${option?.id}`}
                           >
                             {option.value}

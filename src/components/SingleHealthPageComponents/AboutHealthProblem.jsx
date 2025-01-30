@@ -33,15 +33,15 @@ function AboutHealthProblem(data) {
   const SiteURl = import.meta.env.VITE_SITE_URL;
 
   return (
-    <section className="mb-[140px]">
+    <section className="mb-16 sm:mb-[140px]">
       <div className="container">
-        <div className="flex items-center gap-[148px]">
+        <div className="flex flex-col lg:flex-row items-center gap-10 xl:gap-[148px]">
           {/* about disease  */}
-          <div className="w-[571px]">
+          <div className="max-w-[571px]">
             <h3
               data-aos="zoom-up"
               data-aos-duration="2000"
-              className="text--xl"
+              className="xl:text--xl text-primary font-bold md:text-4xl text-3xl"
             >
               {mainData?.about?.title}
             </h3>
@@ -49,17 +49,17 @@ function AboutHealthProblem(data) {
               <img
                 data-aos="zoom-in"
                 data-aos-duration="2000"
-                className="h-[582px] w-full object-cover"
+                className="lg:max-h-[582px] w-full object-cover"
                 src={`${SiteURl}/${mainData?.about?.avatar}`}
                 alt="aboutImg"
               />
             </div>
-            <p className="text-[20px] mt-[22px] text-categoryBtnColor">
+            <p className="sm:text-[20px] xl:mt-[22px] text-categoryBtnColor">
               {mainData?.about?.short_description}
             </p>
           </div>
           {/* related faq  */}
-          <div className="text-left about-faq w-[750px]">
+          <div className="text-left about-fa w-full lg:w-[750px]">
             <Accordion type="single" collapsible className="w-full">
               {mainData?.faqs?.map((item, index) => (
                 <AccordionItem
@@ -67,10 +67,10 @@ function AboutHealthProblem(data) {
                   value={`item-${index}`}
                   className="bg-[#eff8ff]rounded-[10px] overflow-hidden mt-[14px] accordion-item"
                 >
-                  <AccordionTrigger className="text-[24px] text-menuLinkColor font-medium py-5 px-[50px] bg-headerBg">
+                  <AccordionTrigger className="text-lg sm:text-xl md:text-[24px] text-menuLinkColor font-medium py-3 md:py-5 px-5 md:px-[50px] bg-headerBg">
                     {item.question}
                   </AccordionTrigger>
-                  <AccordionContent className="pt-5 pb-8 px-[55px] bg-[#eff8ff] text-[24px] leading-[40px]">
+                  <AccordionContent className="pt-5 pb-8 px-5 md:px-[55px] bg-[#eff8ff] text-lg md:text-[24px] leading-[40px]">
                     {item.answer}
                   </AccordionContent>
                 </AccordionItem>
