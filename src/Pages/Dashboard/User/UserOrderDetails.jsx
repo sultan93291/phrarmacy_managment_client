@@ -1,28 +1,48 @@
-import FeedbackModal from '@/components/Modals/FeedbackModal';
-import { Modal } from '@/components/Modals/Modal';
+import FeedbackModal from "@/components/Modals/FeedbackModal";
+import { Modal } from "@/components/Modals/Modal";
 import {
   FeedbackSvg,
   PrintSvg,
   RightArrowSvg,
-} from '@/components/SvgContainer/SvgContainer';
-import { useState } from 'react';
+} from "@/components/SvgContainer/SvgContainer";
+import { useGetUserOrderDetailsIntentQuery } from "@/Redux/features/api/apiSlice";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const UserOrderDetails = () => {
   const [open, setOpen] = useState(false);
   const medicineInfo = [
     {
-      name: 'Paracetamol',
+      name: "Paracetamol",
       quantity: 5,
       price: 900,
       totalPrice: 4500,
     },
     {
-      name: 'Ibuprofen',
+      name: "Ibuprofen",
       quantity: 3,
       price: 700,
       totalPrice: 2100,
     },
   ];
+  const { id } = useParams();
+  console.log(id, "redirect id");
+
+  const [billingAdress, setbillingAdress] = useState([]);
+  const [allMedicne, setallMedicine] = useState([]);
+
+  const { data, error, isLoading } = useGetUserOrderDetailsIntentQuery({
+    id: id,
+  });
+
+  if (isLoading) return <p>Loading order details...</p>;
+  if (error) return <p>Error fetching order details.</p>;
+
+  useEffect(() => {
+    setbillingAdress(data.data.billing_address);
+    setallMedicine(data.data.order_items);
+  }, [data]);
+
   return (
     <section className="font-nunito text-[#333333]">
       {/* top title */}
@@ -64,19 +84,23 @@ const UserOrderDetails = () => {
             <div className="w-1/2 pr-4 ">
               <h3 className="font-bold text-xl mb-2">Billed To</h3>
               <div className="space-y-2 text-base mt-5">
-                <p className="font-bold text-base">Din Djarin</p>
-                <p className="font-bold">dindjarin@gmail.com</p>
-                <p>9029 Salt Lake, Mandalor</p>
-                <p>(+254) 724-453-233</p>
+                <p className="font-bold text-base">{billingAdress?.name}</p>
+                <p className="font-bold">{billingAdress?.email}</p>
+                <p>
+                  {billingAdress.address},{billingAdress.city}
+                </p>
+                <p>{billingAdress.contact}</p>
               </div>
             </div>
             <div className="w-1/2 pl-4 ">
               <h3 className="font-bold text-xl mb-2">Shipping To</h3>
               <div className="space-y-2 text-base mt-5">
-                <p className="font-bold text-base">Din Djarin</p>
-                <p className="font-bold">dindjarin@gmail.com</p>
-                <p>9029 Salt Lake, Mandalor</p>
-                <p>(+254) 724-453-233</p>
+                <p className="font-bold text-base">{billingAdress?.name}</p>
+                <p className="font-bold">{billingAdress?.email}</p>
+                <p>
+                  {billingAdress.address},{billingAdress.city}
+                </p>
+                <p>{billingAdress.contact}</p>
               </div>
             </div>
           </div>
@@ -96,19 +120,19 @@ const UserOrderDetails = () => {
             </div>
 
             {/* table body */}
-            {medicineInfo?.map((med) => (
+            {allMedicne?.map(med => (
               <div
                 key={med.name}
                 className="w-full flex items-center py-2 border-b border-[#E7EBF4]"
               >
                 <div className="w-1/2 text-start space-y-2">
-                  <h2 className="font-bold text-base">{med?.name}</h2>
+                  <h2 className="font-bold text-base">{med?.medicine}</h2>
                   <p className="text-sm">{med?.quantity} Medicine included </p>
                 </div>
                 <div className="w-1/2 font-bold text-center text-base flex items-center justify-between pl-5">
                   <h2>{med?.quantity}</h2>
-                  <h2>$ {med?.price}</h2>
-                  <h2>$ {med?.totalPrice}</h2>
+                  <h2>$ {med?.unit_price}</h2>
+                  <h2>$ {med?.total_price}</h2>
                 </div>
               </div>
             ))}
@@ -122,11 +146,7 @@ const UserOrderDetails = () => {
           {/* note */}
           <div className="mt-3">
             <p className="p-5 rounded-xl border border-black/20 text-black/60">
-              Lorem ipsum dolor sit amet consectetur. Pellentesque tincidunt
-              dignissim sed nulla proin dignissim a varius in. Tortor massa
-              pharetra orci purus at amet tortor nisl diam. Massa ut ut nibh
-              felis fringilla dignissim fusce lobortis. Fringilla arcu commodo
-              vel eget ut in.
+              {UserOrderDetails?.note ? UserOrderDetails.note : "no  notes available"}
             </p>
           </div>
         </div>
