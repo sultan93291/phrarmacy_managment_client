@@ -94,14 +94,14 @@ const PharmacistOrderManagement = () => {
   ];
   return (
     <div>
-      <div className="w-full flex items-center gap-10">
+      <div className="w-full flex flex-col md:flex-row items-center gap-5 md:gap-10">
         {/* search bar */}
         <form
           action=""
-          className="p-4 rounded-xl border border-black/10 w-full flex items-center justify-between max-w-xl bg-white"
+          className="p-2 md:p-4 rounded-xl border border-black/10 w-full flex items-center justify-between max-w-xl bg-white"
         >
           <input
-            className="focus:outline-none px-5 py-1 bg-transparent w-full"
+            className="focus:outline-none px-3 md:px-5 py-1 bg-transparent w-full"
             type="text"
             placeholder="Order ID Search"
             name="searchOrder"
@@ -115,7 +115,7 @@ const PharmacistOrderManagement = () => {
         {/* select */}
         <div>
           <Select>
-            <SelectTrigger className="w-full border h-16 rounded-xl px-8 py-1 text-lg text-[#6B7280] font-md">
+            <SelectTrigger className="w-full border h-12 md:h-16 rounded-xl px-8 py-1 text-lg text-[#6B7280] font-md">
               <SelectValue placeholder="All Order" />
             </SelectTrigger>
             <SelectContent className={'font-medium'}>
@@ -127,20 +127,20 @@ const PharmacistOrderManagement = () => {
         </div>
       </div>
       {/* Table */}
-      <div className="bg-white rounded-md px-16 py-10 mt-12">
+      <div className="bg-white rounded-md px-5 md:px-16 py-10 mt-12">
         <DashboardTitle title="All Order" />
         <DashboardTable orders={orders} doctor={true} />
       </div>
       {/* Pagination */}
-      <div className="mt-20 border-t border-[#E5E7EB] w-full flex items-center justify-between py-6">
+      <div className="mt-20 border-t border-[#E5E7EB] w-full flex flex-col md:flex-row gap-5 items-center justify-between py-6">
         <p className="text-[#374151]">Showing 1 to 10 of 97 results</p>
 
         {/* pagination btn */}
-        <div className="h-10 border border-black/10 rounded-md flex items-center">
+        <div className="h-10 border border-black/10 rounded-md flex gap-1 flex-wrap items-center">
           <button
             disabled={activePage === 1}
             onClick={() => handlePageChange(Math.max(1, activePage - 1))}
-            className="size-10 flex items-center justify-center border-r border-black/10 disabled:opacity-50"
+            className="size-10 flex items-center border border-black/10 justify-center disabled:opacity-50"
           >
             <PrevSvg />
           </button>
@@ -152,13 +152,12 @@ const PharmacistOrderManagement = () => {
               <button
                 key={pageNumber}
                 className={`
-        size-10 text-[#374151] border-r border-black/10 px-4 py-2
+        size-10 text-[#374151] border border-black/10 px-4 py-2
         transition-all duration-200 ease-in-out
-        ${
-          activePage === pageNumber
-            ? 'bg-primary !text-white'
-            : 'hover:bg-primary hover:!text-white'
-        }
+        ${activePage === pageNumber
+                    ? 'bg-primary !text-white'
+                    : 'hover:bg-primary hover:!text-white'
+                  }
       `}
                 onClick={() => handlePageChange(pageNumber)}
               >
@@ -172,7 +171,7 @@ const PharmacistOrderManagement = () => {
             onClick={() =>
               handlePageChange(Math.min(totalPages, activePage + 1))
             }
-            className="size-10 flex items-center justify-center disabled:opacity-50"
+            className="size-10 flex border border-black/10 items-center justify-center disabled:opacity-50"
           >
             <NextSvg />
           </button>

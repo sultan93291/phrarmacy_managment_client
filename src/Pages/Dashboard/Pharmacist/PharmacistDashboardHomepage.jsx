@@ -102,14 +102,14 @@ const PharmacistDashboardHomepage = () => {
   return (
     <div>
       {/* user stats */}
-      <div className="grid grid-cols-3 gap-8">
+      <div className="grid lg:grid-cols-3 gap-5 lg:gap-8">
         {doctorStats?.map((stat, idx) => (
           <UserStatCard key={idx} stat={stat} />
         ))}
       </div>
 
       {/* order table */}
-      <div className="mt-12 bg-white rounded-md px-16 py-10">
+      <div className="mt-12 bg-white rounded-md px-5 md:px-16 py-10">
         <DashboardTitle title="All Order" />
 
         {/* table */}
