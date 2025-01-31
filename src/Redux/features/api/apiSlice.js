@@ -69,17 +69,17 @@ export const apiSlice = createApi({
       }),
     }),
 
-    // getUserPharmaCistOrderIntent: builder.query({
-    //   query: () => ({
-    //     url: "/api/orders?column=&value=&sort=&page=&per_page=",
-    //     method: "POST",
-    //     includeToken: true,
-    //   }),
-    // }),
-
     getUserOrderDetailsIntent: builder.query({
       query: ({ id }) => ({
         url: `/api/order/${id}`,
+        method: "GET",
+        includeToken: true,
+      }),
+    }),
+
+    getPharmaCistSingelOrderDetailsIntent: builder.query({
+      query: ({ id }) => ({
+        url: `/api/order-details/${id}`,
         method: "GET",
         includeToken: true,
       }),
@@ -154,6 +154,15 @@ export const apiSlice = createApi({
         includeToken: true,
       }),
     }),
+
+    updateMedicineStatusDataIntent: builder.mutation({
+      query: ({ id, status }) => ({
+        url: `/api/order-status-note-update/${id}`,
+        method: "POST",
+        data: { status },
+        includeToken: true,
+      }),
+    }),
   }),
 });
 
@@ -173,5 +182,7 @@ export const {
   useGetNotificationsIntentQuery,
   useGetAssesMentResultIntentQuery,
   useGetUserOverViewDataIntentQuery,
-  useGetPharmaCistOverViewDataIntentQuery
+  useGetPharmaCistOverViewDataIntentQuery,
+  useGetPharmaCistSingelOrderDetailsIntentQuery,
+  useUpdateMedicineStatusDataIntentMutation,
 } = apiSlice;
