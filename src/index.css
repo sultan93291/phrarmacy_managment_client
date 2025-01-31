@@ -308,3 +308,11 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+@media screen and (max-width:576px) {
+  .step-indicators li .icon {
+    @apply h-10 w-10 flex items-center justify-center rounded-full border-[2px] border-indicatorsColor text-lg font-semibold text-indicatorsColor bg-white;
+  }
+  .step-indicators li span {
+    @apply text-base text-indicatorsColor font-semibold mt-3 inline-block;
+  }
+}

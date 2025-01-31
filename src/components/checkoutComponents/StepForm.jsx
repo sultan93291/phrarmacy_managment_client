@@ -97,7 +97,7 @@ function StepForm() {
   return (
     <div>
       {/* {/ step indicator  /} */}
-      <div className="relative z-[1] w-[790px] mx-auto">
+      <div className="relative z-[1] max-w-[790px] mx-auto">
         <ul className="step-indicators flex items-center justify-between">
           <li className={currentStep >= 1 ? "active" : ""}>
             <p className="icon">1</p>
@@ -112,7 +112,7 @@ function StepForm() {
             <span>Receipt</span>
           </li>
         </ul>
-        <p className="progress-line absolute top-10 left-1/2 translate-x-[-50%] w-[95%] border-[2px] border-dashed bg-indicatorsColor z-[-1]"></p>
+        <p className="progress-line absolute top-5 sm:top-10 left-1/2 translate-x-[-50%] w-[80%] sm:w-[95%] border-[2px] border-dashed bg-indicatorsColor z-[-1]"></p>
       </div>
       {/* {/ form  /} */}
       <form className="checkout-stepform" onSubmit={handleSubmit(onSumbit)}>
@@ -120,22 +120,22 @@ function StepForm() {
         {currentStep === 1 && (
           <div className="step-one">
             {/* {/ step title /} */}
-            <div className="w-[882px] mx-auto text-center my-[100px]">
-              <h3 className="text--xl mb-[60px] text-primryDark">
+            <div className="max-w-[882px] mx-auto text-center mt-12 md:my-[100px]">
+              <h3 className="md:text--xl text-primary text-3xl sm:text-4xl font-bold mb-[60px]">
                 Where should we deliver your order?
               </h3>
-              <p className="text-[24px] text-[rgba(0,0,0,0.60)]">
+              <p className="text-xl md:text-[24px] text-[rgba(0,0,0,0.60)]">
                 We ensure all packages are shipped in discreet, plain packaging
                 with no mention of MyHealthNeedsLondon, guaranteeing your
                 privacy.
               </p>
-              <p className="text-[24px] text-[rgba(0,0,0,0.60)] mt-[30px]">
+              <p className="text-xl md:text-[24px] text-[rgba(0,0,0,0.60)] mt-[30px]">
                 In the next step, you can select your preferred delivery method.
                 For now, please provide your delivery address to proceed.
               </p>
             </div>
             {/* {/ name & email  /} */}
-            <div className="grid grid-cols-2 gap-10">
+            <div className="grid md:grid-cols-2 gap-5 md:gap-10">
               {/* {/ name  /} */}
               <div className="mt-[60px]">
                 <div>
@@ -150,7 +150,7 @@ function StepForm() {
                 {errors?.name && <p>{errors.name}</p>}
               </div>
               {/* {/ email  /} */}
-              <div className="mt-[60px]">
+              <div className="md:mt-[60px]">
                 <div>
                   <label htmlFor="email">Email</label>
                   <input
@@ -177,7 +177,7 @@ function StepForm() {
               </div>
               {errors?.billingAddress && <p>{errors.billingAddress}</p>}
               {/* {/ find location  /} */}
-              <div className="mt-10 w-fit mx-auto cursor-pointer">
+              <div className="mt-10 max-w-fit mx-auto cursor-pointer">
                 <div className="flex items-center gap-2 text-[20px] font-medium text-white bg-primary rounded-[10px] py-4 px-6">
                   <p className="text-[24px]">
                     <CiLocationOn />
@@ -187,7 +187,7 @@ function StepForm() {
               </div>
             </div>
             {/* {/ contact, city & post code  /} */}
-            <div className="grid grid-cols-3 gap-10">
+            <div className="grid md:grid-cols-3 gap-5 md:gap-10">
               {/* {/ contact  /} */}
               <div className="mt-[60px]">
                 <label htmlFor="contact">Contact</label>
@@ -205,7 +205,7 @@ function StepForm() {
                 />
               </div>
               {/* {/ city  /} */}
-              <div className="mt-[60px]">
+              <div className="md:mt-[60px]">
                 <div>
                   <label htmlFor="city">City</label>
                   <input
@@ -218,7 +218,7 @@ function StepForm() {
                 {errors?.city && <p>{errors.city}</p>}
               </div>
               {/* {/ post code  /} */}
-              <div className="mt-[60px]">
+              <div className="md:mt-[60px]">
                 <div>
                   <label htmlFor="email">Postcode</label>
                   <input
@@ -235,8 +235,8 @@ function StepForm() {
             </div>
 
             {/* gp name and address */}
-            <div className="flex items-center gap-8 pt-8">
-              <div className="w-5/12  flex flex-col">
+            <div className="flex flex-col md:flex-row items-center gap-8 pt-8">
+              <div className="max-w-5/12  flex flex-col">
                 <label htmlFor="">GP Name</label>
                 <input
                   className="border rounded-lg px-4 py-2"
@@ -246,7 +246,7 @@ function StepForm() {
                   id=""
                 />
               </div>
-              <div className="w-7/12  flex flex-col ">
+              <div className="max-w-7/12  flex flex-col ">
                 <label htmlFor="">GP Address</label>
                 <input
                   className="border rounded-lg px-4 py-2"
@@ -259,7 +259,7 @@ function StepForm() {
             </div>
             {/* {/ add prescription  /} */}
             <div className="mt-[100px] add-prescription">
-              <h4 className="text-[36px] text-primryDark font-bold mb-10">
+              <h4 className="text-[28px] sm:text-[36px] text-primryDark font-bold mb-10">
                 Add your prescription file
               </h4>
               <div className="flex flex-col items-center p-[50px] rounded-[10px] border border-dashed border-[#A7A7A7]">
@@ -267,10 +267,9 @@ function StepForm() {
                 <div>
                   <div>
                     <img
-                      className="w-[120px] h-[120px] mb-5"
-                      src={`${
-                        uploadedFile.originalFile ? pdfIcon : prescriptionIcon
-                      }`}
+                      className="max-w-[120px] h-[120px] mb-5"
+                      src={`${uploadedFile.originalFile ? pdfIcon : prescriptionIcon
+                        }`}
                       alt=""
                     />
                     <p className="mb-5 text-[18px] font-semibold">
@@ -302,18 +301,18 @@ function StepForm() {
 
             {/* {/ delivery information  /} */}
             <div>
-              <div className="text-center w-[882px] mx-auto mt-[172px]">
-                <h3 className="text--xl mb-5">Delivery Information</h3>
-                <p className="text-[24px] text-primary">
+              <div className="text-center max-w-[882px] mx-auto mt-[172px]">
+                <h3 className="md:text--xl text-3xl sm:text-4xl text-primary font-bold mb-5">Delivery Information</h3>
+                <p className="text-lg sm:text-xl md:text-[24px] text-primary">
                   {deliveryData?.description}
                 </p>
-                <p className="text-[24px] text-primary mt-[30px]">
+                <p className="text-lg sm:text-xl md:text-[24px] text-primary mt-[30px]">
                   <span className="text-[#FF6607]">Please note:</span> Orders
                   {deliveryData?.note}
                 </p>
               </div>
               {/* {/ Royal Mail Tracked /} */}
-              <div className="mt-[100px] royalmail-radio-wrap">
+              <div className="mt-[50px] sm:mt-[100px] royalmail-radio-wrap">
                 <input
                   className="hidden"
                   id="royalMail"
@@ -324,11 +323,11 @@ function StepForm() {
                   htmlFor="royalMail"
                   className="royalMail-radio relative py-[36px] pr-10 pl-[100px] bg-primaryLight border-[2px] border-primryDark rounded-[10px] cursor-pointer"
                 >
-                  <div className="w-[800px]">
-                    <h4 className="text-[24px] font-semibold text-primryDark mb-[10px]">
+                  <div className="max-w-[800px]">
+                    <h4 className="text-xl md:text-[24px] font-semibold text-primryDark mb-[10px]">
                       {deliveryData?.option_name}
                     </h4>
-                    <p>{deliveryData?.option_sub_description}</p>
+                    <p className="text-lg">{deliveryData?.option_sub_description}</p>
                   </div>
                 </label>
               </div>
@@ -336,7 +335,7 @@ function StepForm() {
             {/* {/ button  /} */}
             <div>
               <div
-                className="py-[22px] px-20 bg-primryDark rounded-[10px] text-[24px] font-bold text-white w-fit mx-auto mt-10 cursor-pointer"
+                className="py-2 sm:py-[22px] px-10 sm:px-20 bg-primryDark rounded-[10px] sm:text-[24px] font-bold text-white w-fit mx-auto mt-10 cursor-pointer"
                 onClick={handleNext}
               >
                 Continue to payment
@@ -366,7 +365,7 @@ function StepForm() {
                 <p className="text-[18px] font-bold text-primryDark mb-[10px]">
                   Mounjaro® starting dose 2.5mg
                 </p>
-                <ul className="treatment-preference-medicine w-[640px]">
+                <ul className="treatment-preference-medicine max-w-[640px]">
                   <li>
                     <p>1 pen (4 doses)</p>
                     <p>€149.99</p>
@@ -389,7 +388,7 @@ function StepForm() {
               </h3>
               {/* {/ address  /} */}
               <div className="flex items-center justify-between">
-                <div className="w-[820px]">
+                <div className="max-w-[820px]">
                   {!isAddressEditMode ? (
                     <p className="text-[24px] text-[rgba(0,0,0,0.60)]">
                       {deliveryAddress}
@@ -434,7 +433,7 @@ function StepForm() {
                         htmlFor={`suggested-${index}`}
                         className="!flex items-start justify-between py-[30px] pl-[110px] pr-[105px] border-[2px] border-[rgba(0,0,0,0.20)] rounded-[10px] mt-10 cursor-pointer"
                       >
-                        <div className="w-[650px]">
+                        <div className="max-w-[650px]">
                           <h4 className="text-[24px] text-primryDark leading-[31px]">
                             {item?.name}
                           </h4>
@@ -444,7 +443,7 @@ function StepForm() {
                         </div>
                         <div>
                           <img
-                            className="w-[167px] h-[140px]"
+                            className="max-w-[167px] h-[140px]"
                             src={item?.imgUrl}
                             alt={item?.name}
                           />
