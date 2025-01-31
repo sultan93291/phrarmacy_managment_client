@@ -1,4 +1,4 @@
-import FeedbackModal from "@/components/Modals/FeedbackModal";
+aimport FeedbackModal from "@/components/Modals/FeedbackModal";
 import { Modal } from "@/components/Modals/Modal";
 import {
   FeedbackSvg,
@@ -37,23 +37,23 @@ const UserOrderDetails = () => {
       </div>
 
       {/* Order Details */}
-      <div className="px-12 py-16 bg-white rounded-lg mt-5">
+      <div className="px-5 lg:px-12 py-10 lg:py-16 bg-white rounded-lg mt-5">
         {/* Title and Buttons */}
-        <div className="w-full flex items-center justify-between">
-          <h2 className="text-[#052D4C] text-3xl font-semibold">
+        <div className="w-full flex-col md:flex-row gap-5 flex items-center justify-between">
+          <h2 className="text-[#052D4C] text-2xl sm:text-3xl font-semibold">
             Order History
           </h2>
 
-          <div className="flex items-center gap-5">
+          <div className="flex flex-wrap justify-center items-center gap-5">
             {/* Print Button */}
-            <button className="px-8 py-3 rounded-full bg-primary text-white flex items-center justify-center gap-2">
+            <button className="px-5 sm:px-8 py-2 text-sm sm:text-base sm:py-3 rounded-full bg-primary text-white flex items-center justify-center gap-2">
               <PrintSvg /> <span>Download Invoice</span>
             </button>
 
             {/* Feedback Button */}
             <button
               onClick={() => setOpen(true)}
-              className="px-8 py-3 rounded-full bg-[#FF963A] text-white flex items-center justify-center gap-2"
+              className="px-5 sm:px-8 py-2 text-sm sm:text-base sm:py-3 rounded-full bg-[#FF963A] text-white flex items-center justify-center gap-2"
             >
               <FeedbackSvg /> <span>Give a Feedback</span>
             </button>
@@ -63,10 +63,10 @@ const UserOrderDetails = () => {
         {/* Order Description */}
         <div className="mt-12">
           {/* User Information */}
-          <div className="w-full flex items-start justify-start mb-6 text-start">
-            <div className="w-1/2 pr-4">
-              <h3 className="font-bold text-xl mb-2">Billed To</h3>
-              <div className="space-y-2 text-base mt-5">
+          <div className="w-full flex flex-col gap-10 sm:flex-row items-start justify-start mb-6 text-start">
+            <div className="w-1/2 sm:pr-4">
+              <h3 className="font-bold text-xl sm:mb-2">Billed To</h3>
+              <div className="space-y-2 text-base mt-3 sm:mt-5">
                 <p className="font-bold text-base">{billingAdress?.name}</p>
                 <p className="font-bold">{billingAdress?.email}</p>
                 <p>
@@ -75,9 +75,9 @@ const UserOrderDetails = () => {
                 <p>{billingAdress?.contact}</p>
               </div>
             </div>
-            <div className="w-1/2 pl-4">
-              <h3 className="font-bold text-xl mb-2">Shipping To</h3>
-              <div className="space-y-2 text-base mt-5">
+            <div className="w-1/2 sm:pl-4">
+              <h3 className="font-bold text-xl sm:mb-2">Shipping To</h3>
+              <div className="space-y-2 text-base mt-3 sm:mt-5">
                 <p className="font-bold text-base">{billingAdress?.name}</p>
                 <p className="font-bold">{billingAdress?.email}</p>
                 <p>
@@ -89,7 +89,7 @@ const UserOrderDetails = () => {
           </div>
 
           {/* Order Items */}
-          <div className="mt-12">
+          <div className="mt-12 overflow-x-auto">
             <div className="w-full flex items-center pb-4 border-b border-[#E7EBF4]">
               <div className="w-1/2 text-start">
                 <h2 className="font-bold text-lg">Description</h2>
@@ -122,10 +122,10 @@ const UserOrderDetails = () => {
         </div>
 
         {/* Doctor Notes */}
-        <div className="mt-12 w-1/2">
+        <div className="mt-12 sm:w-1/2">
           <h2 className="font-bold text-lg">Doctor Notes</h2>
           <div className="mt-3">
-            <p className="p-5 rounded-xl border border-black/20 text-black/60">
+            <p className="sm:p-5 px-5 py-2 rounded-xl border border-black/20 text-black/60">
               {data?.data?.note || "No notes available"}
             </p>
           </div>
