@@ -1,5 +1,5 @@
 import { FaStar } from "react-icons/fa";
-import { Link,  useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import CommonButtonV2 from "../Common/CommonButtonV2";
 
 function TestKitProductCard({ item }) {
@@ -31,8 +31,8 @@ function TestKitProductCard({ item }) {
             </div>
             <p className="text-sm mt-3">({item.review})</p>
           </div>
-          <h3 className="text-[18px] font-medium capitalize mt-4 text-categoryBtnColor">
-            {item.description}
+          <h3 className="sm:text-[18px] font-medium capitalize mt-4 text-categoryBtnColor">
+            {item.description.slice(0, 60)}...
           </h3>
           <p className="mt-[10px] text-[20px] font-bold text-primary">
             ${item.price}

@@ -114,7 +114,7 @@ const DashboardLayout = () => {
           } />
 
           {/* dashboard contents */}
-          <div className="min-h-[calc(100%-88px)] p-5 sm:p-10 max-h-[calc(100%-88px)] overflow-y-auto bg-[#F7F7FE] rounded-md">
+          <div className="min-h-[calc(100%-88px)] p-5 sm:p-7 xl:p-10 max-h-[calc(100%-88px)] overflow-y-auto bg-[#F7F7FE] rounded-md">
             <Outlet />
           </div>
         </div>

@@ -11,63 +11,46 @@ import { useParams } from "react-router-dom";
 
 const UserOrderDetails = () => {
   const [open, setOpen] = useState(false);
-  const medicineInfo = [
-    {
-      name: "Paracetamol",
-      quantity: 5,
-      price: 900,
-      totalPrice: 4500,
-    },
-    {
-      name: "Ibuprofen",
-      quantity: 3,
-      price: 700,
-      totalPrice: 2100,
-    },
-  ];
   const { id } = useParams();
-  console.log(id, "redirect id");
+  const [billingAdress, setBillingAddress] = useState(null);
+  const [allMedicne, setAllMedicine] = useState([]);
 
-  const [billingAdress, setbillingAdress] = useState([]);
-  const [allMedicne, setallMedicine] = useState([]);
+  const { data, error, isLoading } = useGetUserOrderDetailsIntentQuery({ id });
 
-  const { data, error, isLoading } = useGetUserOrderDetailsIntentQuery({
-    id: id,
-  });
+  useEffect(() => {
+    if (data?.data) {
+      setBillingAddress(data.data.billing_address);
+      setAllMedicine(data.data.order_items);
+    }
+  }, [data]);
 
   if (isLoading) return <p>Loading order details...</p>;
   if (error) return <p>Error fetching order details.</p>;
 
-  useEffect(() => {
-    setbillingAdress(data.data.billing_address);
-    setallMedicine(data.data.order_items);
-  }, [data]);
-
   return (
     <section className="font-nunito text-[#333333]">
-      {/* top title */}
+      {/* Top title */}
       <div className="text-[#052D4C99] flex items-center font-semibold text-lg gap-2">
         <h2>Order History</h2>
         <RightArrowSvg />
         <h2>Order Details</h2>
       </div>
 
-      {/* Details */}
+      {/* Order Details */}
       <div className="px-12 py-16 bg-white rounded-lg mt-5">
-        {/* title */}
+        {/* Title and Buttons */}
         <div className="w-full flex items-center justify-between">
           <h2 className="text-[#052D4C] text-3xl font-semibold">
             Order History
           </h2>
 
-          {/* buttons */}
           <div className="flex items-center gap-5">
-            {/* print btn */}
+            {/* Print Button */}
             <button className="px-8 py-3 rounded-full bg-primary text-white flex items-center justify-center gap-2">
               <PrintSvg /> <span>Download Invoice</span>
             </button>
 
-            {/* feedback btn */}
+            {/* Feedback Button */}
             <button
               onClick={() => setOpen(true)}
               className="px-8 py-3 rounded-full bg-[#FF963A] text-white flex items-center justify-center gap-2"
@@ -77,37 +60,36 @@ const UserOrderDetails = () => {
           </div>
         </div>
 
-        {/* description */}
+        {/* Order Description */}
         <div className="mt-12">
-          {/* user information */}
+          {/* User Information */}
           <div className="w-full flex items-start justify-start mb-6 text-start">
-            <div className="w-1/2 pr-4 ">
+            <div className="w-1/2 pr-4">
               <h3 className="font-bold text-xl mb-2">Billed To</h3>
               <div className="space-y-2 text-base mt-5">
                 <p className="font-bold text-base">{billingAdress?.name}</p>
                 <p className="font-bold">{billingAdress?.email}</p>
                 <p>
-                  {billingAdress.address},{billingAdress.city}
+                  {billingAdress?.address}, {billingAdress?.city}
                 </p>
-                <p>{billingAdress.contact}</p>
+                <p>{billingAdress?.contact}</p>
               </div>
             </div>
-            <div className="w-1/2 pl-4 ">
+            <div className="w-1/2 pl-4">
               <h3 className="font-bold text-xl mb-2">Shipping To</h3>
               <div className="space-y-2 text-base mt-5">
                 <p className="font-bold text-base">{billingAdress?.name}</p>
                 <p className="font-bold">{billingAdress?.email}</p>
                 <p>
-                  {billingAdress.address},{billingAdress.city}
+                  {billingAdress?.address}, {billingAdress?.city}
                 </p>
-                <p>{billingAdress.contact}</p>
+                <p>{billingAdress?.contact}</p>
               </div>
             </div>
           </div>
 
-          {/* order information */}
+          {/* Order Items */}
           <div className="mt-12">
-            {/* table title */}
             <div className="w-full flex items-center pb-4 border-b border-[#E7EBF4]">
               <div className="w-1/2 text-start">
                 <h2 className="font-bold text-lg">Description</h2>
@@ -119,7 +101,7 @@ const UserOrderDetails = () => {
               </div>
             </div>
 
-            {/* table body */}
+            {/* Table Body */}
             {allMedicne?.map(med => (
               <div
                 key={med.name}
@@ -127,7 +109,7 @@ const UserOrderDetails = () => {
               >
                 <div className="w-1/2 text-start space-y-2">
                   <h2 className="font-bold text-base">{med?.medicine}</h2>
-                  <p className="text-sm">{med?.quantity} Medicine included </p>
+                  <p className="text-sm">{med?.quantity} Medicine included</p>
                 </div>
                 <div className="w-1/2 font-bold text-center text-base flex items-center justify-between pl-5">
                   <h2>{med?.quantity}</h2>
@@ -139,21 +121,18 @@ const UserOrderDetails = () => {
           </div>
         </div>
 
-        {/* doctor notes */}
+        {/* Doctor Notes */}
         <div className="mt-12 w-1/2">
-          {/* title */}
           <h2 className="font-bold text-lg">Doctor Notes</h2>
-          {/* note */}
           <div className="mt-3">
             <p className="p-5 rounded-xl border border-black/20 text-black/60">
-              {UserOrderDetails?.note ? UserOrderDetails.note : "no  notes available"}
+              {data?.data?.note || "No notes available"}
             </p>
           </div>
         </div>
       </div>
 
       {/* Modal */}
-
       <Modal open={open} setOpen={setOpen}>
         <FeedbackModal setOpen={setOpen} />
       </Modal>

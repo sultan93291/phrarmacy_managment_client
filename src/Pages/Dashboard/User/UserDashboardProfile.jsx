@@ -198,7 +198,7 @@ const UserDashboardProfile = () => {
   };
 
   return (
-    <div className="bg-white rounded-md px-5 py-8 sm:px-16 sm:py-10">
+    <div className="bg-white rounded-md px-5 py-8 sm:px-10 xl:px-16 sm:py-10">
       <DashboardTitle title="Personal Information" />
 
       {/* form */}

@@ -6,12 +6,14 @@ import TableBody from "./TableBody";
 const DashboardTable = ({ orders, status, doctor, pharmacist }) => {
   console.log(orders);
 
+
+
+
   const headers = orders?.length > 0 ? Object.keys(orders[0]) : [];
 
   if (!orders || orders.length === 0) {
     return <p className="py-5">No orders available.</p>;
   }
-
 
   return (
     <div className="rounded-lg bg-white md:rounded-xl lg:rounded-2xl">

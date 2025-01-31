@@ -21,8 +21,8 @@ const UserReviewCard = ({ review }) => {
   const emptyStars = 5 - rating;
   const fullStars = 5 - emptyStars;
   return (
-    <div className="flex justify-center sm:justify-start items-center sm:items-start flex-col md:flex-row gap-5 sm:gap-10  font-nunito">
-      <div className="h-4/5 flex flex-col md:flex-row gap-7 xl:gap-10  ">
+    <div className="flex justify-center sm:justify-between items-center sm:items-start flex-col md:flex-row gap-5 sm:gap-10  font-nunito">
+      <div className="h-4/5 flex flex-col md:flex-row sm:gap-7 xl:gap-10  ">
         <div className="sm:flex-shrink-0 sm:size-52 xl:size-60">
           <img
             className="w-full h-full object-cover rounded-lg"
@@ -30,7 +30,7 @@ const UserReviewCard = ({ review }) => {
             alt=""
           />
         </div>
-        <div className="space-y-5 text-center sm:text-left md:w-2/3">
+        <div className="space-y-3 sm:space-y-5 text-center sm:text-left md:w-2/3">
           <h3 className="text-xl xl:text-3xl font-semibold">{`Order id : #${review?.order_uuid}`}</h3>
           <p>{review?.review?.review}</p>
         </div>

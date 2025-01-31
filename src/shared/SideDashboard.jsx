@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 import Logo from '@/assets/images/logo/logo.svg';
 import userIcon from '@/assets/images/icon/User-rounded.svg';
 import { RxCross2 } from "react-icons/rx";
-
+import dashboardLogo from "../assets/images/logo/dashboard_upper_logo.png"
 import {
     DashboardLogoutSvg,
     LogoSvg,
@@ -33,7 +33,7 @@ const SideDashboard = ({ isOpen, setOpen, dashboardNavLinks }) => {
                     {/* logo */}
                     <div className="w-full flex items-center justify-center">
                         <Link to="/">
-                            <LogoSvg />
+                            <img src={dashboardLogo} alt="logo" />
                         </Link>
                     </div>
 
@@ -41,7 +41,7 @@ const SideDashboard = ({ isOpen, setOpen, dashboardNavLinks }) => {
                     <div className="w-full border-dashed border-t border-[#5D69F4]/30 my-6" />
 
                     {/* dashboard navLinks */}
-                    <DashboardSidebarNavLinks dashboardNavLinks={dashboardNavLinks} />
+                    <DashboardSidebarNavLinks setOpen={setOpen} dashboardNavLinks={dashboardNavLinks} />
 
                     {/* logout */}
                     <div onClick={() => { handleLogout() }} className="mt-4 w-full flex gap-3 items-center px-6 py-3 rounded-2xl group duration-500 transition hover:bg-[#0CA6FC] cursor-pointer">
