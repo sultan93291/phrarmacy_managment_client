@@ -69,6 +69,14 @@ export const apiSlice = createApi({
       }),
     }),
 
+    // getUserPharmaCistOrderIntent: builder.query({
+    //   query: () => ({
+    //     url: "/api/orders?column=&value=&sort=&page=&per_page=",
+    //     method: "POST",
+    //     includeToken: true,
+    //   }),
+    // }),
+
     getUserOrderDetailsIntent: builder.query({
       query: ({ id }) => ({
         url: `/api/order/${id}`,
@@ -138,6 +146,14 @@ export const apiSlice = createApi({
         includeToken: true,
       }),
     }),
+
+    getPharmaCistOverViewDataIntent: builder.query({
+      query: () => ({
+        url: "/api/orders/overview",
+        method: "GET",
+        includeToken: true,
+      }),
+    }),
   }),
 });
 
@@ -156,5 +172,6 @@ export const {
   useDeleteSubsCreationIntentMutation,
   useGetNotificationsIntentQuery,
   useGetAssesMentResultIntentQuery,
-  useGetUserOverViewDataIntentQuery
+  useGetUserOverViewDataIntentQuery,
+  useGetPharmaCistOverViewDataIntentQuery
 } = apiSlice;

@@ -12,7 +12,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useState } from 'react';
+import { useGetUserOrderIntentQuery } from '@/Redux/features/api/apiSlice';
+import { useEffect, useState } from 'react';
+
 
 const PharmacistOrderManagement = () => {
   const totalPages = 8;
@@ -20,6 +22,22 @@ const PharmacistOrderManagement = () => {
   const handlePageChange = (pageNumber) => {
     setActivePage(pageNumber);
   };
+
+  
+  const [allOrder, setAllOrder] = useState([]);
+
+  const {
+    data: orderdData,
+    isLoading,
+    isError,
+    error,
+  } = useGetUserOrderIntentQuery();
+
+  useEffect(() => {
+    setAllOrder(orderdData?.data?.orders);
+  }, [orderdData]);
+
+
   const orders = [
     {
       orderId: '#101',
@@ -129,7 +147,7 @@ const PharmacistOrderManagement = () => {
       {/* Table */}
       <div className="bg-white rounded-md px-16 py-10 mt-12">
         <DashboardTitle title="All Order" />
-        <DashboardTable orders={orders} doctor={true} />
+        <DashboardTable orders={allOrder} pharmacist={true} />
       </div>
       {/* Pagination */}
       <div className="mt-20 border-t border-[#E5E7EB] w-full flex items-center justify-between py-6">
