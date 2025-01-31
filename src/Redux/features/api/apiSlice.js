@@ -130,6 +130,14 @@ export const apiSlice = createApi({
         includeToken: true,
       }),
     }),
+
+    getUserOverViewDataIntent: builder.query({
+      query: () => ({
+        url: "/api/orders/user-overview",
+        method: "GET",
+        includeToken: true,
+      }),
+    }),
   }),
 });
 
@@ -147,5 +155,6 @@ export const {
   useGetSubsCreptionDetailsIntentQuery,
   useDeleteSubsCreationIntentMutation,
   useGetNotificationsIntentQuery,
-  useGetAssesMentResultIntentQuery
+  useGetAssesMentResultIntentQuery,
+  useGetUserOverViewDataIntentQuery
 } = apiSlice;

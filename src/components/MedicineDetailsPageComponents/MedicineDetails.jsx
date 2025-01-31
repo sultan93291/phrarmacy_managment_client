@@ -12,10 +12,8 @@ import {
 } from "@/components/ui/select";
 import { Link } from "react-router-dom";
 
-
 function MedicineDetails({ data }) {
   console.log("my details ", data);
-
 
   const images = [
     {
@@ -31,18 +29,22 @@ function MedicineDetails({ data }) {
         "https://images.unsplash.com/photo-1512069772995-ec65ed45afd6?q=80&w=1937&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
   ];
-  const [preview, setPreview] = useState(images[0].img_url);
+  const [preview, setPreview] = useState(data?.avatars?.[0]?.avatar || "");
+
+  useEffect(() => {
+    setPreview(data?.avatars[0]?.avatar);
+  }, [data]);
   const myStyles = {
     itemShapes: RoundedStar,
     activeFillColor: "#FBBA58",
     inactiveFillColor: "#fbf1a9",
   };
 
+  const SiteURl = import.meta.env.VITE_SITE_URL;
+
   const handlePreview = img => {
     setPreview(img);
   };
-
-
 
   return (
     <div
@@ -57,23 +59,23 @@ function MedicineDetails({ data }) {
             <div className="w-full h-[250px] sm:h-[400px] lg:h-[350px]  xl:h-[500px]  bg-white rounded-lg overflow-hidden">
               <img
                 className="w-full hover:scale-110  duration-300 rounded-lg h-full object-cover "
-                src={preview}
+                src={`${SiteURl}/${preview}`}
                 alt=""
               />
             </div>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 ">
-            {images.map((img, index) => (
+            {data?.avatars?.map((img, index) => (
               <div key={index} className="p-4 bg-white">
                 <div
-                  onClick={() => handlePreview(img.img_url)}
+                  onClick={() => handlePreview(img.avatar)}
                   key={index}
                   className="h-[100px] xl:h-[200px] cursor-pointer  bg-white object-cover rounded-lg overflow-hidden"
                 >
                   {" "}
                   <img
                     className="w-full hover:scale-110 duration-300 h-full object-cover rounded-lg"
-                    src={img.img_url}
+                    src={`${SiteURl}/${img.avatar}`}
                     alt=""
                   />{" "}
                 </div>

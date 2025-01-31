@@ -1,10 +1,12 @@
 import { useGetNotificationsIntentQuery } from "@/Redux/features/api/apiSlice";
 import DashboardNotification from "./DashboardNotification";
 import user from "@/assets/images/user.png";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 /* eslint-disable react/prop-types */
 const DashboardNotificationsContainer = ({ showNotifications }) => {
+  const SiteURl = import.meta.env.VITE_SITE_URL;
   const allNotifications = [
     {
       image: user,
@@ -80,14 +82,56 @@ const DashboardNotificationsContainer = ({ showNotifications }) => {
     },
   ];
 
+  const [notificiationData, setNotificationData] = useState([]);
+
+  const loggedInUser = useSelector(
+    state => state.loggedInuserSlice.loggedInUserData
+  );
+
   const { data, isLoading, isError, error } = useGetNotificationsIntentQuery();
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
+    if (data?.data && loggedInUser?.avatar && SiteURl) {
+      // Map through each item in the data and add the avatar
+      const formattedData = data.data.map(item => ({
+        ...item, // Spread the existing item data
+        avatar: `${SiteURl}/${loggedInUser.avatar}`,
+        timeAgo: getTimeAgo(item.created_at),
+      }));
 
-  console.log(data);
-  
+      setNotificationData(formattedData); // Update the notification data with the formatted items
+    }
+  }, [data, loggedInUser, SiteURl]); // Added dependencies to ensure the effect runs when these values change
+
+  function getTimeAgo(createdAt) {
+    // Parse the created_at date
+    const createdDate = new Date(createdAt);
+
+    // Get the current time
+    const now = new Date();
+
+    // Calculate the difference in milliseconds
+    const timeDiff = now - createdDate;
+
+    // Convert the difference to a more readable format
+    const seconds = Math.floor(timeDiff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    // Display the time difference in a human-readable format
+    if (days > 0) {
+      return `${days} day(s) ago`;
+    } else if (hours > 0) {
+      return `${hours} hour(s) ago`;
+    } else if (minutes > 0) {
+      return `${minutes} minute(s) ago`;
+    } else {
+      return `${seconds} second(s) ago`;
+    }
+  }
+
+
 
   return (
     <div
@@ -109,7 +153,7 @@ const DashboardNotificationsContainer = ({ showNotifications }) => {
       {/* all notifications */}
 
       <div className="custom_scrollbar flex h-fit max-h-[500px] flex-col gap-5 overflow-y-auto py-5 pl-2 pr-5">
-        {allNotifications?.map((notification, index) => (
+        {notificiationData?.map((notification, index) => (
           <DashboardNotification key={index} notification={notification} />
         ))}
       </div>
