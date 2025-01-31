@@ -156,14 +156,48 @@ export const apiSlice = createApi({
     }),
 
     updateMedicineStatusDataIntent: builder.mutation({
-      query: ({ id, status }) => ({
-        url: `/api/order-status-note-update/${id}`,
+      query: ({ id, status, note }) => {
+        const body = { status };
+        if (note) {
+          body.note = note;
+        }
+        return {
+          url: `/api/order-status-note-update/${id}`,
+          method: "POST",
+          data: body,
+          includeToken: true,
+        };
+      },
+    }),
+    createMeetingIntent: builder.mutation({
+      query: ({ id, title, description, date, time }) => ({
+        url: `/api/meeting/${id}`,
         method: "POST",
-        data: { status },
+        body: { title, description, date, time },
+        includeToken: true,
+      }),
+    }),
+
+    // get all meetings
+    getAllMeetingsIntent: builder.query({
+      query: () => ({
+        url: "/api/meetings",
+        method: "GET",
+        includeToken: true,
+      }),
+    }),
+
+    updateMeetingIntent: builder.mutation({
+      query: ({ id, status }) => ({
+        url: `/api/meeting-update/${id}`,
+        method: "PUT", // Use PUT or PATCH for updates
+        body: { status },
         includeToken: true,
       }),
     }),
   }),
+
+  // create meeting
 });
 
 // Export hooks for each endpoint
@@ -185,4 +219,7 @@ export const {
   useGetPharmaCistOverViewDataIntentQuery,
   useGetPharmaCistSingelOrderDetailsIntentQuery,
   useUpdateMedicineStatusDataIntentMutation,
+  useCreateMeetingIntentMutation,
+  useGetAllMeetingsIntentQuery,
+  useUpdateMeetingIntentMutation,
 } = apiSlice;

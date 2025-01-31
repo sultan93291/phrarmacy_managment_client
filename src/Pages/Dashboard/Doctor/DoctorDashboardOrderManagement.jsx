@@ -1,95 +1,111 @@
-import DashboardTable from '@/components/Dashboard/Table/DashboardTable';
+import DashboardTable from "@/components/Dashboard/Table/DashboardTable";
 import {
   NextSvg,
   PrevSvg,
   SearchSvg,
-} from '@/components/SvgContainer/SvgContainer';
+} from "@/components/SvgContainer/SvgContainer";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
+import { useGetUserOrderIntentQuery } from "@/Redux/features/api/apiSlice";
+
 const orders = [
   {
-    orderId: '#101',
-    orderDate: '12/11/24',
-    deliveryDate: '18/11/24',
+    orderId: "#101",
+    orderDate: "12/11/24",
+    deliveryDate: "18/11/24",
     price: 450,
-    status: 'delivered',
+    status: "delivered",
   },
   {
-    orderId: '#102',
-    orderDate: '13/11/24',
-    deliveryDate: '20/11/24',
+    orderId: "#102",
+    orderDate: "13/11/24",
+    deliveryDate: "20/11/24",
     price: 250,
-    status: 'pending',
+    status: "pending",
   },
   {
-    orderId: '#103',
-    orderDate: '10/11/24',
-    deliveryDate: '15/11/24',
+    orderId: "#103",
+    orderDate: "10/11/24",
+    deliveryDate: "15/11/24",
     price: 550,
-    status: 'delivered',
+    status: "delivered",
   },
   {
-    orderId: '#104',
-    orderDate: '09/11/24',
-    deliveryDate: '14/11/24',
+    orderId: "#104",
+    orderDate: "09/11/24",
+    deliveryDate: "14/11/24",
     price: 300,
-    status: 'pending',
+    status: "pending",
   },
   {
-    orderId: '#105',
-    orderDate: '11/11/24',
-    deliveryDate: '16/11/24',
+    orderId: "#105",
+    orderDate: "11/11/24",
+    deliveryDate: "16/11/24",
     price: 400,
-    status: 'delivered',
+    status: "delivered",
   },
   {
-    orderId: '#106',
-    orderDate: '08/11/24',
-    deliveryDate: '13/11/24',
+    orderId: "#106",
+    orderDate: "08/11/24",
+    deliveryDate: "13/11/24",
     price: 500,
-    status: 'delivered',
+    status: "delivered",
   },
   {
-    orderId: '#107',
-    orderDate: '14/11/24',
-    deliveryDate: '19/11/24',
+    orderId: "#107",
+    orderDate: "14/11/24",
+    deliveryDate: "19/11/24",
     price: 600,
-    status: 'delivered',
+    status: "delivered",
   },
   {
-    orderId: '#108',
-    orderDate: '07/11/24',
-    deliveryDate: '12/11/24',
+    orderId: "#108",
+    orderDate: "07/11/24",
+    deliveryDate: "12/11/24",
     price: 350,
-    status: 'delivered',
+    status: "delivered",
   },
   {
-    orderId: '#109',
-    orderDate: '15/11/24',
-    deliveryDate: '20/11/24',
+    orderId: "#109",
+    orderDate: "15/11/24",
+    deliveryDate: "20/11/24",
     price: 450,
-    status: 'pending',
+    status: "pending",
   },
   {
-    orderId: '#110',
-    orderDate: '06/11/24',
-    deliveryDate: '11/11/24',
+    orderId: "#110",
+    orderDate: "06/11/24",
+    deliveryDate: "11/11/24",
     price: 700,
-    status: 'delivered',
+    status: "delivered",
   },
 ];
-import { useState } from 'react';
+import { useEffect, useState } from "react";
 const DoctorDashboardOrderManagement = () => {
   const totalPages = 8;
   const [activePage, setActivePage] = useState(1);
-  const handlePageChange = (pageNumber) => {
+  const handlePageChange = pageNumber => {
     setActivePage(pageNumber);
   };
+
+  const [allOrder, setAllOrder] = useState([]);
+
+  const {
+    data: orderdData,
+    isLoading,
+    isError,
+    error,
+  } = useGetUserOrderIntentQuery();
+
+  useEffect(() => {
+    setAllOrder(orderdData?.data?.orders);
+  }, [orderdData]);
+
   return (
     <div>
       {/* filter*/}
@@ -117,7 +133,7 @@ const DoctorDashboardOrderManagement = () => {
             <SelectTrigger className="w-full border h-12 sm:h-16 rounded-xl px-5 sm:px-8 py-1 text-lg text-[#6B7280] font-md">
               <SelectValue placeholder="All Order" />
             </SelectTrigger>
-            <SelectContent className={'font-medium'}>
+            <SelectContent className={"font-medium"}>
               <SelectItem value="All Order">All Order</SelectItem>
               <SelectItem value="Recent">Recent</SelectItem>
               <SelectItem value="Old">Old</SelectItem>
@@ -134,7 +150,7 @@ const DoctorDashboardOrderManagement = () => {
           </h2>
         </div>
 
-        <DashboardTable orders={orders} pharmacist={true} />
+        <DashboardTable orders={allOrder} pharmacist={true} />
 
         {/* Pagination */}
         <div className="mt-10 sm:mt-20 border-t border-[#E5E7EB] w-full flex flex-col md:flex-row gap-5 items-center justify-between py-6">
@@ -159,10 +175,11 @@ const DoctorDashboardOrderManagement = () => {
                   className={`
                 size-10  border text-[#374151] border-black/10 px-4 py-2
                 transition-all duration-200 ease-in-out
-                ${activePage === pageNumber
-                      ? 'bg-primary !text-white'
-                      : 'hover:bg-primary hover:!text-white'
-                    }
+                ${
+                  activePage === pageNumber
+                    ? "bg-primary !text-white"
+                    : "hover:bg-primary hover:!text-white"
+                }
               `}
                   onClick={() => handlePageChange(pageNumber)}
                 >
