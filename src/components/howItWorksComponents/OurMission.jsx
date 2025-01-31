@@ -35,7 +35,7 @@ function OurMission() {
   const SiteURl = import.meta.env.VITE_SITE_URL;
   console.log(`${SiteURl}/api/doctores`);
   console.log('hello world');
-  
+
 
   useEffect(() => {
     axios({
@@ -51,19 +51,19 @@ function OurMission() {
       });
   }, []);
 
-  console.log('this is doctor data' , DoctorData);
-  
+  console.log('this is doctor data', DoctorData);
+
 
   return (
     <section className="pb-[140px]">
       <div className="container">
-        <div className="w-[692px] text-center mx-auto mb-10">
-          <h3 className="text--xl text-primryDark">
+        <div className="max-w-[692px] text-center mx-auto mb-10">
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold lg:text--xl text-primary">
             Our mission provide medical equipment in order to.
           </h3>
         </div>
-        <div className="grid grid-cols-4 gap-5">
-          {DoctorData.map((item,index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {DoctorData.map((item, index) => (
             <TeamCard key={index} item={item} />
           ))}
         </div>

@@ -37,7 +37,7 @@ function MedicineDetailsPage() {
   useEffect(() => {
     axios({
       method: "get",
-      url: `${SiteURl}/api/medicine/1/review?sort=&per_page=&page=`,
+      url: `${SiteURl}/api/medicine/review?sort=&per_page=&page=`,
     })
       .then(res => {
         console.log(res.data.data, " all review  data");
@@ -87,7 +87,7 @@ function MedicineDetailsPage() {
             </div>
             <div className="flex flex-col gap-4">
               {allReview.map((review, index) => {
-                return <SingleReviews data={review}  key={index} ></SingleReviews>;
+                return <SingleReviews data={review} key={index} ></SingleReviews>;
               })}
             </div>
           </div>

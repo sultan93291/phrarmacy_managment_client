@@ -121,8 +121,9 @@ function SignupPage() {
   });
 
   return (
-    <div className="min-h-[800px] flex justify-center items-center">
-      <div className="container w-4/12">
+    // min-h-[800px]
+    <div className="py-10 xl:py-7 flex flex-col lg:flex-row justify-center items-center">
+      <div className="container lg:w-4/12">
         <div className="pb-4">
           <h3
             data-aos="zoom-up"
@@ -300,7 +301,7 @@ function SignupPage() {
         </div>
 
         <div
-          onClick={() => {}}
+          onClick={() => { }}
           data-aos="zoom-up"
           data-aos-duration="2000"
           className=" w-full"
@@ -367,7 +368,7 @@ function SignupPage() {
         </div>
       </div>
 
-      <div data-aos="zoom-in" data-aos-duration="2000" className="w-7/12 p-20">
+      <div data-aos="zoom-in" data-aos-duration="2000" className="lg:w-7/12 hidden md:block p-20">
         <img
           className="w-full"
           src="https://i.ibb.co.com/1RHw2mj/aa0ada24ef439cbe3b561d248f33efd6.png"

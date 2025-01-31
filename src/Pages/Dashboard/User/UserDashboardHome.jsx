@@ -6,6 +6,8 @@ import {
   DeliverySvg,
   OrderSvg,
 } from '@/components/SvgContainer/SvgContainer';
+import { useGetUserOrderIntentQuery } from '@/Redux/features/api/apiSlice';
+import { useEffect, useState } from 'react';
 
 const UserDashboardHome = () => {
   const userStats = [
@@ -99,11 +101,26 @@ const UserDashboardHome = () => {
     },
   ];
 
+  const [allOrder, setAllOrder] = useState([]);
+  
+    const {
+      data: orderdData,
+      isLoading,
+      isError,
+      error,
+    } = useGetUserOrderIntentQuery();
+  
+    useEffect(() => {
+      setAllOrder(orderdData?.data?.orders);
+    }, [orderdData]);
+
+
+
   return (
     <div>
       {/* user stats */}
       <div className="grid grid-cols-3 gap-8">
-        {userStats?.map((stat,idx) => (
+        {userStats?.map((stat, idx) => (
           <UserStatCard key={idx} stat={stat} />
         ))}
       </div>
@@ -112,7 +129,7 @@ const UserDashboardHome = () => {
       <div className="mt-12 bg-white rounded-md px-16 py-10">
         <DashboardTitle title="My Order" />
 
-        <DashboardTable orders={orders} />
+        <DashboardTable orders={allOrder} />
       </div>
     </div>
   );

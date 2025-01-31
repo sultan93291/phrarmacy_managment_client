@@ -2,7 +2,7 @@
 
 function ProcessCard({ item }) {
   console.log(item);
-  
+
   return (
     <div>
       <img
@@ -11,8 +11,8 @@ function ProcessCard({ item }) {
         alt={item.title}
       />
       <div className="text-center mt-6">
-        <h4 className="text-[24px] font-semibold text-black">{item.title}</h4>
-        <p className="text-[18px] text-black">{item.sub_title}</p>
+        <h4 className="text-[22px] sm:text-[24px] font-semibold text-black">{item.title}</h4>
+        <p className="sm:text-[18px] text-black">{item.sub_title}</p>
       </div>
     </div>
   );

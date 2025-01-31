@@ -10,9 +10,7 @@ function HowItWorksPage() {
       <InnerSection bgImg={bgImg} service="How It Works" />
       <WorkingProcess />
       <OurMission />
-      <div className="pb-[140px]">
-        <TestimonialSection />
-      </div>
+      <TestimonialSection />
     </div>
   );
 }

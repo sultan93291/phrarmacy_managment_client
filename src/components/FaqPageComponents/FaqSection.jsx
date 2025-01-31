@@ -118,7 +118,7 @@ function FaqSection() {
         // setfaqData(res?.data?.data);
         console.log(res.data.data);
         setfaqDatas(res?.data?.data)
-        
+
       })
       .catch(err => {
         console.log(err);
@@ -127,10 +127,10 @@ function FaqSection() {
 
   console.log(faqDatas, " this is a faq data ");
   return (
-    <section className="py-[140px] w-[1000px] mx-auto faq-section">
+    <section className="my-10 sm:my-20 max-w-[1000px] mx-auto faq-section">
       <div className="container">
         <div className="text-center mb-5">
-          <h1 className="text--xl text-primryDark">
+          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold sm:mb-10  text-primryDark">
             Frequently Asked Questions
           </h1>
         </div>
@@ -138,18 +138,18 @@ function FaqSection() {
           {faqDatas?.map((item, index) => {
             return (
               <div key={index}>
-                <h4 className="text-[36px] font-bold text-primryDark mb-[50px] mt-[60px]">
+                <h4 className="text-2xl sm:text-[36px] font-bold text-primryDark mb-[50px] mt-[60px]">
                   {item?.category}
                 </h4>
                 <div>
                   <Accordion type="single" collapsible className="w-full">
                     {item?.questions.map(faq => (
                       <AccordionItem
-                        className="bg-primaryLight rounded-[24px] p-6 mt-5"
+                        className="bg-primaryLight rounded-lg sm:rounded-[24px] p-4 sm:p-6 mt-5"
                         key={`${item.category}-${faq.question}`}
                         value={`${item.category}-${faq.question}`}
                       >
-                        <AccordionTrigger className="text-[24px] text-primryDark p-0">
+                        <AccordionTrigger className="text-lg sm:text-[24px] text-primryDark p-0">
                           {faq.question}
                         </AccordionTrigger>
                         <AccordionContent className="text-[18px] mt-5">
@@ -161,7 +161,7 @@ function FaqSection() {
                 </div>
               </div>
             )
-          } )}
+          })}
         </div>
       </div>
     </section>
