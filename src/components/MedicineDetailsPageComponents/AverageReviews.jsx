@@ -36,7 +36,7 @@ function AverageReviews() {
     <div
       data-aos="zoom-up"
       data-aos-duration="2000"
-      className="flex gap-12 w-full items-center py-8 border-b border-dashed border-t "
+      className="flex flex-col sm:flex-row gap-12 w-full items-center py-8 border-b border-dashed border-t "
     >
       <div
         data-aos="zoom-up"

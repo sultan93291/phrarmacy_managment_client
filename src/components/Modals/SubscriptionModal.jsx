@@ -72,7 +72,7 @@ const SubscriptionModal = ({ setOpen, id }) => {
   };
 
   return (
-    <DialogContent className="sm:max-w-[650px] px-10 py-6 text-center font-nunito">
+    <DialogContent className="sm:max-w-[650px] max-w-[320px] px-10 py-6 text-center font-nunito">
       <div className="max-h-[80vh] overflow-y-auto scrollbar-hide">
         <DialogHeader>
           <DialogTitle className="text-xl text-[#052D4C] font-bold font-poppins "></DialogTitle>
@@ -81,27 +81,27 @@ const SubscriptionModal = ({ setOpen, id }) => {
             <div className="w-full mt-4">
               <div className="flex items-center justify-between font-semibold py-4 border-b borer-[#000000CC]">
                 <p className="text-[#00000066]">Your current plan</p>
-                <p className="text-lg  text-[#000000CC]">
+                <p className="sm:text-lg  text-[#000000CC]">
                   Your active plan is €{allSubscreptionData.currentPlan}
                 </p>
               </div>
               <div className="flex items-center justify-between font-semibold py-4 border-b borer-[#000000CC]">
                 <p className="text-[#00000066]">Billing Cycle</p>
-                <p className="text-lg  text-[#000000CC]">
+                <p className="sm:text-lg  text-[#000000CC]">
                   You will be charged €{allSubscreptionData.currentPlan}{" "}
                   {allSubscreptionData.current_period_end}
                 </p>
               </div>
               <div className="flex items-center justify-between font-semibold py-4 border-b borer-[#000000CC]">
                 <p className="text-[#00000066]">Payment Information</p>
-                <p className="text-lg  text-[#000000CC]">
+                <p className="sm:text-lg  text-[#000000CC]">
                   You will be charged €{allSubscreptionData.currentPlan}{" "}
                   {allSubscreptionData.current_period_end}
                 </p>
               </div>
               <div className="flex items-center justify-between font-semibold py-4 border-b borer-[#000000CC]">
                 <p className="text-[#00000066]">Card Information</p>
-                <p className="text-lg  text-[#000000CC]">
+                <p className="sm:text-lg  text-[#000000CC]">
                   {allSubscreptionData.cardBrand} ending with{" "}
                   {allSubscreptionData.card_last4}
                 </p>

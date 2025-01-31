@@ -41,7 +41,7 @@ function MedicineDetailsAccordion() {
               <AccordionTrigger className="text-lg sm:text-xl lg:text-2xl xl:text-[32px] text-menuLinkColor font-semibold py-3 md:py-5 px-3 sm:px-[30px] md:px-[50px] bg-headerBg">
                 {item.question}
               </AccordionTrigger>
-              <AccordionContent className="pt-5 pb-8 px-4 sm:px-[55px] bg-white text-[18px] lg:text-[20px] xl:text-[24px] leading-[40px]">
+              <AccordionContent className="pt-5 pb-8 px-4 sm:px-[55px] bg-white text-[18px] lg:text-[20px] xl:text-[24px] leading-[27px] sm:leading-[40px]">
                 {item.answer}
               </AccordionContent>
             </AccordionItem>

@@ -92,11 +92,11 @@ const UserDashboardOrder = () => {
 
 
 
-  console.log(orderdData?.data?.orders , "all oreders" );
+  console.log(orderdData?.data?.orders, "all oreders");
 
   return (
     <div>
-      <div className=" bg-white rounded-md px-16 py-10">
+      <div className=" bg-white rounded-md px-5 sm:px-10 xl:px-16 py-10">
         <DashboardTitle title="My Order" />
 
         <DashboardTable orders={allOrder} />

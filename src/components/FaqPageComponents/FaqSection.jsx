@@ -138,7 +138,7 @@ function FaqSection() {
           {faqDatas?.map((item, index) => {
             return (
               <div key={index}>
-                <h4 className="text-2xl sm:text-[36px] font-bold text-primryDark mb-[50px] mt-[60px]">
+                <h4 className="text-2xl sm:text-[36px] font-bold text-primryDark sm:mb-[50px] mt-[60px]">
                   {item?.category}
                 </h4>
                 <div>
@@ -149,10 +149,10 @@ function FaqSection() {
                         key={`${item.category}-${faq.question}`}
                         value={`${item.category}-${faq.question}`}
                       >
-                        <AccordionTrigger className="text-lg sm:text-[24px] text-primryDark p-0">
+                        <AccordionTrigger className="text-lg text-left sm:text-[24px] text-primryDark p-0">
                           {faq.question}
                         </AccordionTrigger>
-                        <AccordionContent className="text-[18px] mt-5">
+                        <AccordionContent className="text-[17px] text-lg mt-5">
                           {faq.answer}
                         </AccordionContent>
                       </AccordionItem>

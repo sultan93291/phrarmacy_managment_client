@@ -220,7 +220,7 @@ function SignupPage() {
                 type={toggle ? "password" : "text"}
                 id="password"
                 name="password"
-                className="peer  bg-transparent h-12 w-full rounded-md text-[#232323] placeholder-transparent ring-1 px-4 ring-gray-300 focus:ring-[#367AFF] focus:outline-none "
+                className="peer  bg-transparent h-12 w-full rounded-md text-[#232323] placeholder-transparent ring-1 pe-12 ps-4 ring-gray-300 focus:ring-[#367AFF] focus:outline-none "
                 placeholder="******"
                 {...register("password", { required: true })}
               />
@@ -253,7 +253,7 @@ function SignupPage() {
                 type={toggle2 ? "password" : "text"}
                 id="confirm_password"
                 name="confirm_password"
-                className="peer  bg-transparent h-12 w-full rounded-md text-[#232323] placeholder-transparent ring-1 px-4 ring-gray-300 focus:ring-[#367AFF] focus:outline-none "
+                className="peer  bg-transparent h-12 w-full rounded-md text-[#232323] placeholder-transparent ring-1 pe-12 ps-4 ring-gray-300 focus:ring-[#367AFF] focus:outline-none "
                 placeholder="******"
                 {...register("confirm_password", { required: true })}
               />

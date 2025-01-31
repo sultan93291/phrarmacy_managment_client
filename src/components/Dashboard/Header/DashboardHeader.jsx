@@ -77,7 +77,7 @@ const DashboardHeader = ({ dashboardNavLinks }) => {
         {/* temporary role switch */}
         {/* Hamburger */}
         <div className="min-[1200px]:hidden">
-          <Hamburger size={30} toggled={isOpen} toggle={setOpen} />
+          <Hamburger size={28} toggled={isOpen} toggle={setOpen} />
         </div>
         {/* Notification */}
         <div

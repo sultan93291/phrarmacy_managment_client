@@ -106,15 +106,15 @@ const DoctorDashboardHomepage = () => {
   return (
     <div>
       {/* user stats */}
-      <div className="grid grid-cols-3 gap-8">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
         {doctorStats?.map((stat, idx) => (
           <UserStatCard key={idx} stat={stat} />
         ))}
       </div>
 
       {/* order table */}
-      <div className="mt-12 bg-white rounded-md px-16 py-10">
-        <div className="w-full flex items-center justify-between">
+      <div className="mt-8 xl:mt-12 bg-white rounded-md px-5 md:px-10 xl:px-16 py-8 xl:py-10">
+        <div className="w-full flex flex-col md:flex-row gap-5 mb-8 items-center justify-between">
           <h2 className="font-semibold text-3xl text-categoryBtnColor">
             All order
           </h2>

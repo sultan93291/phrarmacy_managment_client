@@ -6,8 +6,8 @@ import TableBody from "./TableBody";
 const DashboardTable = ({ orders, status, doctor, pharmacist }) => {
   console.log(orders);
 
-  
-  
+
+
 
   const headers = orders?.length > 0 ? Object.keys(orders[0]) : [];
 

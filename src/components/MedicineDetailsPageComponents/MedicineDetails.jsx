@@ -52,9 +52,9 @@ function MedicineDetails({ data }) {
       data-aos-duration="2000"
       className="p-5 sm:p-8 xl:p-14 rounded-xl bg-[#EFF8FF]"
     >
-      <div className="grid lg:grid-cols-2 gap-20 xl:gap-24 items-center">
+      <div className="grid lg:grid-cols-2 gap-10 sm:gap-20 xl:gap-24 items-center">
         {/* image container */}
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-5 sm:gap-6">
           <div className="p-5 sm:p-8 bg-white">
             <div className="w-full h-[250px] sm:h-[400px] lg:h-[350px]  xl:h-[500px]  bg-white rounded-lg overflow-hidden">
               <img
@@ -159,7 +159,7 @@ function MedicineDetails({ data }) {
           </div>
 
           <Link to={"/checkout"} className="block pt-20">
-            <button className="px-8 py-4 text-xl rounded-full bg-[#2EB7FF] text-white w-full font-bold">
+            <button className="px-6 sm:px-8 py-2 sm:py-4 text-xl rounded-full bg-[#2EB7FF] text-white w-full font-bold">
               Go to Checkout
             </button>
           </Link>

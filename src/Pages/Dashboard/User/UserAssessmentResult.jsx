@@ -314,7 +314,7 @@ const UserAssessmentResult = () => {
       <div className="mt-10">
         {AllAssesmentData?.map(data => {
           console.log(data, "single dat");
-          
+
           return (
             <Accordion
             key={data?.id}
@@ -331,13 +331,12 @@ const UserAssessmentResult = () => {
             >
               {/* title */}
 
-              <AccordionTrigger className="text-2xl text-[#052D4C] font-semibold py-3 sm:py-5 px-3 sm:px-10">
-                <div className="flex items-center sm:gap-12">
-                  <p className="text-lg">#{data.id}</p>
-                  <h5 className="text-lg sm:text-xl">{data.question}</h5>
-
-                </div>
-              </AccordionTrigger>
+             <AccordionTrigger className="sm:text-lg xl:text-2xl text-[#052D4C] font-semibold py-4 xl:py-5 px-5 xl:px-10">
+                  <div className="flex items-start text-left gap-3 sm:gap-5 xl:gap-12">
+                    <p className="text-lg">#{data.id}</p>
+                    <h5 className="xl:text-xl">{data.question}</h5>
+                  </div>
+                </AccordionTrigger>
 
               {/* details */}
 
