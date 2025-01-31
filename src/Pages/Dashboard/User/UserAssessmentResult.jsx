@@ -317,32 +317,34 @@ const UserAssessmentResult = () => {
 
           return (
             <Accordion
-              key={data?.id}
-              type="single"
-              collapsible
-              className="w-full"
+            key={data?.id}
+            type="single"
+            collapsible
+            className="w-full"
+          >
+            {/* item */}
+            <AccordionItem
+              data-aos="zoom-in"
+              data-aos-duration="1000"
+              value={`item-1`}
+              className="border border-[#084772] rounded-lg sm:rounded-[10px] overflow-hidden mt-[14px] accordion-item"
             >
-              {/* item */}
-              <AccordionItem
-                data-aos="zoom-in"
-                data-aos-duration="1000"
-                value={`item-1`}
-                className="border border-[#084772] rounded-lg sm:rounded-[10px] overflow-hidden mt-[14px] accordion-item"
-              >
-                {/* title */}
-                <AccordionTrigger className="sm:text-lg xl:text-2xl text-[#052D4C] font-semibold py-4 xl:py-5 px-5 xl:px-10">
+              {/* title */}
+
+             <AccordionTrigger className="sm:text-lg xl:text-2xl text-[#052D4C] font-semibold py-4 xl:py-5 px-5 xl:px-10">
                   <div className="flex items-start text-left gap-3 sm:gap-5 xl:gap-12">
                     <p className="text-lg">#{data.id}</p>
                     <h5 className="xl:text-xl">{data.question}</h5>
                   </div>
                 </AccordionTrigger>
 
-                {/* details */}
-                <AccordionContent className="py-10 px-8 xl:px-[55px] bg-white">
-                  <AssessmentResult questions={data} />
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
+              {/* details */}
+
+              <AccordionContent className="pt-5 pb-8 px-5 sm:px-7 lg:px-[55px] bg-white" >
+                <AssessmentResult questions={data} />
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
           )
 
         })}

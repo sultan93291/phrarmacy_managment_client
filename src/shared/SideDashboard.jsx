@@ -4,6 +4,7 @@ import Logo from '@/assets/images/logo/logo.svg';
 import userIcon from '@/assets/images/icon/User-rounded.svg';
 import { RxCross2 } from "react-icons/rx";
 import dashboardLogo from "../assets/images/logo/dashboard_upper_logo.png"
+
 import {
     DashboardLogoutSvg,
     LogoSvg,
@@ -41,6 +42,7 @@ const SideDashboard = ({ isOpen, setOpen, dashboardNavLinks }) => {
                     <div className="w-full border-dashed border-t border-[#5D69F4]/30 my-6" />
 
                     {/* dashboard navLinks */}
+
                     <DashboardSidebarNavLinks setOpen={setOpen} dashboardNavLinks={dashboardNavLinks} />
 
                     {/* logout */}

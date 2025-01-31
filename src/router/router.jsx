@@ -175,7 +175,7 @@ const router = createBrowserRouter(
           element: <PharmacistOrderManagement />,
         },
         {
-          path: "pharmacist/order-details",
+          path: "pharmacist/order-details/:id",
           element: <PharmacistOrderDetailsPage />,
         },
       ],

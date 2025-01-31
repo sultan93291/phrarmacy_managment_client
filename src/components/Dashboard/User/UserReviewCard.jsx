@@ -23,6 +23,7 @@ const UserReviewCard = ({ review }) => {
   return (
     <div className="flex justify-center sm:justify-between items-center sm:items-start flex-col md:flex-row gap-5 sm:gap-10  font-nunito">
       <div className="h-4/5 flex flex-col md:flex-row sm:gap-7 xl:gap-10  ">
+
         <div className="sm:flex-shrink-0 sm:size-52 xl:size-60">
           <img
             className="w-full h-full object-cover rounded-lg"

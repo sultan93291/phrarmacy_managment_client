@@ -77,6 +77,14 @@ export const apiSlice = createApi({
       }),
     }),
 
+    getPharmaCistSingelOrderDetailsIntent: builder.query({
+      query: ({ id }) => ({
+        url: `/api/order-details/${id}`,
+        method: "GET",
+        includeToken: true,
+      }),
+    }),
+
     getSubsCreptionDetailsIntent: builder.query({
       query: () => ({
         url: `/api/my-subscriptions`,
@@ -130,6 +138,31 @@ export const apiSlice = createApi({
         includeToken: true,
       }),
     }),
+
+    getUserOverViewDataIntent: builder.query({
+      query: () => ({
+        url: "/api/orders/user-overview",
+        method: "GET",
+        includeToken: true,
+      }),
+    }),
+
+    getPharmaCistOverViewDataIntent: builder.query({
+      query: () => ({
+        url: "/api/orders/overview",
+        method: "GET",
+        includeToken: true,
+      }),
+    }),
+
+    updateMedicineStatusDataIntent: builder.mutation({
+      query: ({ id, status }) => ({
+        url: `/api/order-status-note-update/${id}`,
+        method: "POST",
+        data: { status },
+        includeToken: true,
+      }),
+    }),
   }),
 });
 
@@ -147,5 +180,9 @@ export const {
   useGetSubsCreptionDetailsIntentQuery,
   useDeleteSubsCreationIntentMutation,
   useGetNotificationsIntentQuery,
-  useGetAssesMentResultIntentQuery
+  useGetAssesMentResultIntentQuery,
+  useGetUserOverViewDataIntentQuery,
+  useGetPharmaCistOverViewDataIntentQuery,
+  useGetPharmaCistSingelOrderDetailsIntentQuery,
+  useUpdateMedicineStatusDataIntentMutation,
 } = apiSlice;

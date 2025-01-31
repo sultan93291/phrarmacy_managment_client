@@ -6,13 +6,20 @@ import InnerSection from "@/components/Common/InnerSection";
 import assesmentBg from "../assets/images/assesment-bg.png";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { setassesmentData } from "@/Redux/features/assesmentSlice";
+import { useDispatch } from "react-redux";
 
 function AssessmentPage() {
-  const { name } = useParams();
+
   const navigate = useNavigate();
   const { id } = useParams();
   const [healthQuestion, sethealthQuestion] = useState([]);
   const SiteURl = import.meta.env.VITE_SITE_URL;
+
+  const dispatch = useDispatch();
+
+  console.log(id);
+  
 
   useEffect(() => {
     axios({
@@ -36,6 +43,16 @@ function AssessmentPage() {
   } = useForm();
   const onSubmit = data => {
     console.log(data);
+    const filteredData = Object.fromEntries(
+      Object.entries(data).filter(
+        ([_, value]) => value !== null && value !== ""
+      )
+    );
+    console.log(filteredData);
+    const medicineData = { ...filteredData, id };
+
+    dispatch(setassesmentData(medicineData));
+
     // navigate("/medicine-details");
   };
 
@@ -58,41 +75,34 @@ function AssessmentPage() {
                   className="flex flex-col space-y-5"
                 >
                   <div className="flex items-center flex-wrap gap-5">
-                    {item.options.map((option, optionIndex) => {
-                      return (
-                        <div key={option?.id}>
-                          <input
-                            className="peer hidden"
-                            type="radio"
-                            name={`${item.id}-${option?.name}`} // Make the name unique per question
-                            id={`${item?.id}-${option?.name}-${option?.id}`}
-                            {...register(`${item.id}-${option?.name}`, {
-                              required: true,
-                            })}
-                          />
-                          <label
-                            className="px-3 text-xs sm:text-base sm:px-6 cursor-pointer peer-checked:bg-primary peer-checked:text-white py-2 sm:py-1.5 text-primary rounded-full bg-[#DEF0FF] "
-                            htmlFor={`${item?.id}-${option?.name}-${option?.id}`}
-                          >
-                            {option.value}
-                          </label>
-                        </div>
-                      );
-                    })}
+                    {item.options.map(option => (
+                      <div key={option?.id}>
+                        <input
+                          className="peer hidden"
+                          type="radio"
+                          name={item.name} // Ensure consistency
+                          id={`${item.id}-${option?.id}`} // Unique per option
+                          {...register(item.name, { required: true })} // Register using item.name
+                        />
+                        <label
+                          className="px-3 text-xs sm:text-base sm:px-6 cursor-pointer peer-checked:bg-primary peer-checked:text-white py-2 sm:py-1.5 text-primary rounded-full bg-[#DEF0FF]"
+                          htmlFor={`${item.id}-${option?.id}`}
+                        >
+                          {option.value}
+                        </label>
+                      </div>
+                    ))}
                   </div>
+
                   {item.note && (
                     <div className="flex flex-col gap-2">
-                      <label className="text-subtitleText" htmlFor="">
-                        {item?.note}
-                      </label>
+                      <label className="text-subtitleText">{item?.note}</label>
                       <textarea
-                        className="rounded-xl h-20 resize-none border border-borderLight p-4 text-sm "
+                        className="rounded-xl h-20 resize-none border border-borderLight p-4 text-sm"
                         placeholder="Write here.."
-                        name={`${item.id}-note`} // Make this unique per question too
-                        id=""
-                        {...register(`${item.id}-note`, {
-                          required: true,
-                        })}
+                        {...register(`${item.name}_note`, {
+                          required: !!item.note,
+                        })} // Register only if note exists
                       ></textarea>
                     </div>
                   )}

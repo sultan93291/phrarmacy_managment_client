@@ -61,6 +61,7 @@ const UserSubscription = () => {
   return (
     <div>
       <div className=" bg-white rounded-md px-7 xl:px-16 py-10">
+
         <DashboardTitle title="Subscription" />
         <DashboardTable orders={allSubscreptionData} status={true} />
       </div>
