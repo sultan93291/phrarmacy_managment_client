@@ -49,7 +49,7 @@ function MedicineDetailsPage() {
   }, []);
 
   return (
-    <div className="py-24 font-dmsans">
+    <div className="py-10 sm:py-20 font-dmsans">
       <div className="container">
         <MedicineDetails data={medicineDetails}></MedicineDetails>
         <MedicineDetailsAccordion
@@ -57,7 +57,7 @@ function MedicineDetailsPage() {
         ></MedicineDetailsAccordion>
 
         {/* reviews */}
-        <div className="border rounded-lg p-10  w-full flex flex-col">
+        <div className="border rounded-lg p-5 sm:p-10  w-full flex flex-col">
           <div className="w-full ">
             <h3 className="pb-6 text-xl font-semibold text-[#222E48]">
               Average Reviews
@@ -73,7 +73,7 @@ function MedicineDetailsPage() {
                 <h4 className="text-[#404A60]">Sort By: </h4>
                 <div>
                   <Select>
-                    <SelectTrigger className="w-[120px]">
+                    <SelectTrigger className="max-w-[120px]">
                       <SelectValue placeholder="Theme" />
                     </SelectTrigger>
                     <SelectContent>
