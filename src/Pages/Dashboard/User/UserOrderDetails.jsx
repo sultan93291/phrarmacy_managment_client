@@ -1,4 +1,4 @@
-aimport FeedbackModal from "@/components/Modals/FeedbackModal";
+import FeedbackModal from "@/components/Modals/FeedbackModal";
 import { Modal } from "@/components/Modals/Modal";
 import {
   FeedbackSvg,
