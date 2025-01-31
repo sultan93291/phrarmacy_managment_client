@@ -91,12 +91,10 @@ const UserDashboardProfile = () => {
         loggedInUser.address ||
         "1234 Elm Street, Los Angeles, CA 90001, United States",
     });
-    setDob(loggedInUser.date_of_birth)
+    setDob(loggedInUser.date_of_birth);
     setDob(loggedInUser.date_of_birth);
     setSelectedGender(loggedInUser.gender);
   }, [loggedInUser]);
-
-
 
   const handleFormData = e => {
     const { name, value } = e.target; // Destructure name and value directly from e.target
@@ -198,7 +196,7 @@ const UserDashboardProfile = () => {
   };
 
   return (
-    <div className="bg-white rounded-md px-5 py-8 sm:px-16 sm:py-10">
+    <div className="bg-white rounded-md px-5 py-8 sm:px-10 xl:px-16 sm:py-10">
       <DashboardTitle title="Personal Information" />
 
       {/* form */}

@@ -70,7 +70,7 @@ function AboutHealthProblem(data) {
                   <AccordionTrigger className="text-lg sm:text-xl md:text-[24px] text-menuLinkColor font-medium py-3 md:py-5 px-5 md:px-[50px] bg-headerBg">
                     {item.question}
                   </AccordionTrigger>
-                  <AccordionContent className="pt-5 pb-8 px-5 md:px-[55px] bg-[#eff8ff] text-lg md:text-[24px] leading-[40px]">
+                  <AccordionContent className="pt-5 pb-8 px-5 md:px-[55px] bg-[#eff8ff] text-lg md:text-[24px] sm:leading-[40px]">
                     {item.answer}
                   </AccordionContent>
                 </AccordionItem>

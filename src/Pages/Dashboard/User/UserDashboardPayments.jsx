@@ -39,11 +39,11 @@ const UserDashboardPayments = () => {
         onClose={handleModalClose}
         modalData={modalData}
       />
-      <div className="bg-white rounded-md px-16 py-10">
+      <div className="bg-white rounded-md px-7 xl:px-16 py-10">
         <DashboardTitle title="My Payments" />
 
         {/* cards */}
-        <div className="mt-10 grid grid-cols-3 gap-12">
+        <div className="mt-10 grid md:grid-cols-2 2xl:grid-cols-3 gap-5 2xl:gap-8">
           {cardData?.data?.length > 0 &&
             cardData.data.map((item, index) => {
               console.log(item);
