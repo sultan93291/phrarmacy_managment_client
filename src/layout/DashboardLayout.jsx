@@ -18,7 +18,7 @@ import useAuth from '@/Hooks/useAuth';
 
 const DashboardLayout = () => {
   const { role } = useAuth();
-    
+
 
   const userDashboardNavLinks = [
     {
@@ -97,18 +97,24 @@ const DashboardLayout = () => {
             role === 'user'
               ? userDashboardNavLinks
               : role == 'doctor'
-              ? doctorDashboardNavLinks
-              : pharmacistDashboardNavLinks
+                ? doctorDashboardNavLinks
+                : pharmacistDashboardNavLinks
           }
         />
 
         {/* dashboard */}
-        <div className="w-[calc(100%-350px)] min-h-screen max-h-screen">
+        <div className="min-[1200px]:w-[calc(100%-350px)] w-full min-h-screen max-h-screen">
           {/* dashboard header */}
-          <DashboardHeader />
+          <DashboardHeader dashboardNavLinks={
+            role === 'user'
+              ? userDashboardNavLinks
+              : role == 'doctor'
+                ? doctorDashboardNavLinks
+                : pharmacistDashboardNavLinks
+          } />
 
           {/* dashboard contents */}
-          <div className="min-h-[calc(100%-88px)] p-10 max-h-[calc(100%-88px)] overflow-y-auto bg-[#F7F7FE] rounded-md">
+          <div className="min-h-[calc(100%-88px)] p-5 sm:p-10 max-h-[calc(100%-88px)] overflow-y-auto bg-[#F7F7FE] rounded-md">
             <Outlet />
           </div>
         </div>

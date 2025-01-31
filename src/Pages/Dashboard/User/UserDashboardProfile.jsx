@@ -96,7 +96,7 @@ const UserDashboardProfile = () => {
     setSelectedGender(loggedInUser.gender);
   }, [loggedInUser]);
 
-  
+
 
   const handleFormData = e => {
     const { name, value } = e.target; // Destructure name and value directly from e.target
@@ -198,7 +198,7 @@ const UserDashboardProfile = () => {
   };
 
   return (
-    <div className="bg-white rounded-md px-16 py-10">
+    <div className="bg-white rounded-md px-5 py-8 sm:px-16 sm:py-10">
       <DashboardTitle title="Personal Information" />
 
       {/* form */}
@@ -369,7 +369,7 @@ const UserDashboardProfile = () => {
                   </div>
                 </div>
 
-                <div className="pt-4 md:pt-8">
+                <div className="pt-4 md:pt-8 mb-5">
                   <button
                     onClick={e => {
                       handleUserInfo(e);

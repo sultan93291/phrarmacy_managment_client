@@ -16,7 +16,7 @@ const DashboardTable = ({ orders, status, doctor, pharmacist }) => {
   }
 
   return (
-    <div className="rounded-lg bg-white  md:rounded-xl lg:rounded-2xl">
+    <div className="rounded-lg bg-white md:rounded-xl lg:rounded-2xl">
       <div className="overflow-x-auto">
         <table className="  w-full font-inter md:mt-10">
           <thead>

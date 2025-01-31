@@ -60,12 +60,12 @@ const UserDashboardPayments = () => {
               );
             })}
 
-          <div className="h-72 bg-cover bg-center border border-black/20 bg-no-repeat font-dmsans rounded-2xl p-5 flex flex-col items-center justify-center">
+          <div className="h-56 sm:h-72 bg-cover bg-center border border-black/20 bg-no-repeat font-dmsans rounded-2xl px-20 p-5 flex flex-col items-center justify-center">
             <div className="flex flex-col items-center justify-center gap-4">
               <div onClick={() => setOpen(true)} className="cursor-pointer">
                 <AddIconSvg />
               </div>
-              <p className="font-nunito font-semibold text-lg">
+              <p className="font-nunito font-semibold text-center sm:text-lg">
                 Add Payment Method
               </p>
             </div>
