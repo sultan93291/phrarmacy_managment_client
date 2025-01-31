@@ -1,94 +1,133 @@
-import DashboardTitle from '@/components/Dashboard/User/DashboardTitle';
-import { DeleteSvg } from '@/components/SvgContainer/SvgContainer';
-import { Link } from 'react-router-dom';
+import DashboardTitle from "@/components/Dashboard/User/DashboardTitle";
+import { DeleteSvg } from "@/components/SvgContainer/SvgContainer";
+import { Link } from "react-router-dom";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
+import {
+  useGetAllMeetingsIntentQuery,
+  useUpdateMeetingIntentMutation,
+} from "@/Redux/features/api/apiSlice";
+import { useEffect, useState } from "react";
 
 const DoctorDashboardMeetingManagement = () => {
+  const [
+    updateMeeting,
+    {
+      isLoading: isupdateLoading,
+      isSuccess,
+      isError: isMeetingError,
+      error: meeingEror,
+    },
+  ] = useUpdateMeetingIntentMutation();
+
   const tableHead = [
-    'Meeting Date',
-    'Meeting Time',
-    'Meeting URL',
-    'User Name',
-    'Meeting status',
-    'Action',
+    "Meeting Date",
+    "Meeting Time",
+    "Meeting URL",
+    "User Name",
+    "Meeting status",
+    "Action",
   ];
+
+  const [value, setvalue] = useState();
+
+  const handleUpdate = async ({ value, id }) => {
+    console.log(value, id);
+
+    return;
+    try {
+      const response = await updateMeeting({ id: meetingId, status }).unwrap();
+      console.log("Meeting updated successfully:", response);
+      // Handle success (e.g., display a success message)
+    } catch (err) {
+      console.error("Error updating meeting:", err);
+      // Handle error (e.g., display an error message)
+    }
+  };
+
+  const [allMeetingData, setallMeetingData] = useState([]);
+
+  const { data, error, isLoading, isError } = useGetAllMeetingsIntentQuery();
+
+  useEffect(() => {
+    setallMeetingData(data?.data);
+  }, [data]);
 
   const tableData = [
     {
-      meetingDate: '12/11/24',
-      meetingTime: '12:00AM',
-      meetingUrl: 'https://zoom.us/i/1983475281',
-      userName: 'Cody Fisher',
-      meetingStatus: 'Pending',
+      meetingDate: "12/11/24",
+      meetingTime: "12:00AM",
+      meetingUrl: "https://zoom.us/i/1983475281",
+      userName: "Cody Fisher",
+      meetingStatus: "Pending",
     },
     {
-      meetingDate: '12/12/24',
-      meetingTime: '1:00PM',
-      meetingUrl: 'https://zoom.us/i/1983475282',
-      userName: 'Amelia Rose',
-      meetingStatus: 'Scheduled',
+      meetingDate: "12/12/24",
+      meetingTime: "1:00PM",
+      meetingUrl: "https://zoom.us/i/1983475282",
+      userName: "Amelia Rose",
+      meetingStatus: "Scheduled",
     },
     {
-      meetingDate: '12/13/24',
-      meetingTime: '2:00PM',
-      meetingUrl: 'https://zoom.us/i/1983475283',
-      userName: 'Liam Carter',
-      meetingStatus: 'Completed',
+      meetingDate: "12/13/24",
+      meetingTime: "2:00PM",
+      meetingUrl: "https://zoom.us/i/1983475283",
+      userName: "Liam Carter",
+      meetingStatus: "Completed",
     },
     {
-      meetingDate: '12/14/24',
-      meetingTime: '3:00AM',
-      meetingUrl: 'https://zoom.us/i/1983475284',
-      userName: 'Emma Lewis',
-      meetingStatus: 'Pending',
+      meetingDate: "12/14/24",
+      meetingTime: "3:00AM",
+      meetingUrl: "https://zoom.us/i/1983475284",
+      userName: "Emma Lewis",
+      meetingStatus: "Pending",
     },
     {
-      meetingDate: '12/15/24',
-      meetingTime: '4:00PM',
-      meetingUrl: 'https://zoom.us/i/1983475285',
-      userName: 'Jack Smith',
-      meetingStatus: 'Scheduled',
+      meetingDate: "12/15/24",
+      meetingTime: "4:00PM",
+      meetingUrl: "https://zoom.us/i/1983475285",
+      userName: "Jack Smith",
+      meetingStatus: "Scheduled",
     },
     {
-      meetingDate: '12/16/24',
-      meetingTime: '5:00AM',
-      meetingUrl: 'https://zoom.us/i/1983475286',
-      userName: 'Sophia Johnson',
-      meetingStatus: 'Completed',
+      meetingDate: "12/16/24",
+      meetingTime: "5:00AM",
+      meetingUrl: "https://zoom.us/i/1983475286",
+      userName: "Sophia Johnson",
+      meetingStatus: "Completed",
     },
     {
-      meetingDate: '12/17/24',
-      meetingTime: '6:00PM',
-      meetingUrl: 'https://zoom.us/i/1983475287',
-      userName: 'James Davis',
-      meetingStatus: 'Pending',
+      meetingDate: "12/17/24",
+      meetingTime: "6:00PM",
+      meetingUrl: "https://zoom.us/i/1983475287",
+      userName: "James Davis",
+      meetingStatus: "Pending",
     },
     {
-      meetingDate: '12/18/24',
-      meetingTime: '7:00AM',
-      meetingUrl: 'https://zoom.us/i/1983475288',
-      userName: 'Mia Robinson',
-      meetingStatus: 'Scheduled',
+      meetingDate: "12/18/24",
+      meetingTime: "7:00AM",
+      meetingUrl: "https://zoom.us/i/1983475288",
+      userName: "Mia Robinson",
+      meetingStatus: "Scheduled",
     },
     {
-      meetingDate: '12/19/24',
-      meetingTime: '8:00PM',
-      meetingUrl: 'https://zoom.us/i/1983475289',
-      userName: 'Benjamin Lee',
-      meetingStatus: 'Completed',
+      meetingDate: "12/19/24",
+      meetingTime: "8:00PM",
+      meetingUrl: "https://zoom.us/i/1983475289",
+      userName: "Benjamin Lee",
+      meetingStatus: "Completed",
     },
     {
-      meetingDate: '12/20/24',
-      meetingTime: '9:00AM',
-      meetingUrl: 'https://zoom.us/i/1983475290',
-      userName: 'Isabella Clark',
-      meetingStatus: 'Pending',
+      meetingDate: "12/20/24",
+      meetingTime: "9:00AM",
+      meetingUrl: "https://zoom.us/i/1983475290",
+      userName: "Isabella Clark",
+      meetingStatus: "Pending",
     },
   ];
 
@@ -103,7 +142,7 @@ const DoctorDashboardMeetingManagement = () => {
             <table className="  w-full font-inter mt-5 xl:mt-10">
               <thead>
                 <tr className="bg-[#F2F3F4] text-sm font-bold text-[#222E48CC] md:text-base lg:text-lg">
-                  {tableHead.map((item) => (
+                  {tableHead.map(item => (
                     <th
                       key={item}
                       className="px-4 py-2 text-left md:px-5 md:py-4 capitalize"
@@ -149,12 +188,19 @@ const DoctorDashboardMeetingManagement = () => {
                     <td
                       className={`whitespace-nowrap px-4 py-2 text-[#898989] md:px-5 md:py-4`}
                     >
-                      <Select>
+                      <Select
+                        onValueChange={value => {
+                          setvalue(value);
+                          handleUpdate({ value, id:1 });
+                        }}
+                      >
                         <SelectTrigger className="border h-10 w-32 rounded-xl px-4 py-1 text-base text-[#6B7280] font-md">
                           <SelectValue placeholder="Select" />
                         </SelectTrigger>
-                        <SelectContent className={'font-medium'}>
-                          <SelectItem value="Select" disabled>Select</SelectItem>
+                        <SelectContent className={"font-medium"}>
+                          <SelectItem value="Select" disabled>
+                            Select
+                          </SelectItem>
                           <SelectItem value="Scheduled">Scheduled</SelectItem>
                           <SelectItem value="Pending">Pending</SelectItem>
                           <SelectItem value="Completed">Completed</SelectItem>

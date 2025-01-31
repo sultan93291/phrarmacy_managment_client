@@ -4,21 +4,41 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { LinkSvg, ZoomSvg } from '../SvgContainer/SvgContainer';
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
+} from "@/components/ui/dialog";
+import { LinkSvg, ZoomSvg } from "../SvgContainer/SvgContainer";
+import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useCreateMeetingIntentMutation } from "@/Redux/features/api/apiSlice";
 
 const MeetingScheduleModal = ({ setOpen }) => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => {
-    if (data) {
-      toast.success("Meeting Scheduled successfully!"); 
-      navigate('/dashboard/doctor/meeting-management');
+
+  const [createMeeting, { isLoading, isError, error, isSuccess }] =
+    useCreateMeetingIntentMutation();
+
+  const onSubmit = async data => {
+    console.log(data);
+    try {
+      const response = await createMeeting({
+        title: data?.topic,
+        description: data?.description,
+        date: data?.date,
+        time: data?.time,
+      }).unwrap();
+
+      if (response.code === 200) {
+        toast.success(response?.message);
+        navigate("/dashboard/doctor/meeting-management");
+      }
+      console.log("Response:", response);
+    } catch (err) {
+      console.error("Error creating meeting:", err);
+      toast.error(`Error: ${err.message || "An unexpected error occurred"}`);
     }
   };
+
   return (
     <DialogContent className="sm:max-w-[650px] px-10 py-6 text-center font-nunito">
       {/* Wrap everything in a container that can scroll and hide scrollbar */}
@@ -45,7 +65,7 @@ const MeetingScheduleModal = ({ setOpen }) => {
                       Title *
                     </legend>
                     <input
-                      {...register('topic', { required: true })}
+                      {...register("topic", { required: true })}
                       type="text"
                       placeholder="Enter Topic"
                       name="topic"
@@ -58,7 +78,7 @@ const MeetingScheduleModal = ({ setOpen }) => {
                     </legend>
                     <textarea
                       rows={3}
-                      {...register('description', { required: true })}
+                      {...register("description", { required: true })}
                       type="text"
                       placeholder="Enter Description"
                       name="description"
@@ -66,33 +86,31 @@ const MeetingScheduleModal = ({ setOpen }) => {
                     />
                   </fieldset>
 
-                  {/* zoom meeting link */}
-                  <div>
-                    <div className="flex items-center gap-4">
-                      <div>
-                        <LinkSvg />
-                      </div>
-                      <div className="bg-[#F6F6F6] px-4 py-2 w-full rounded-lg">
-                        <div className="flex items-center gap-3">
-                          <ZoomSvg />
-                          <span className="text-xl font-semibold">Zoom</span>
-                        </div>
-                      </div>
-                    </div>
+                  {/* Date field */}
+                  <fieldset className="border border-gray-300 rounded-md p-2">
+                    <legend className="text-sm font-medium text-gray-500 px-2">
+                      Date *
+                    </legend>
+                    <input
+                      {...register("date", { required: true })}
+                      type="date"
+                      name="date"
+                      className="w-full border-0 outline-none px-2 py-1 text-gray-700"
+                    />
+                  </fieldset>
 
-                    <fieldset className="border border-gray-300 rounded-md p-2 mt-4">
-                      <legend className="text-sm font-medium text-gray-500 px-2">
-                        Meeting Link *
-                      </legend>
-                      <input
-                        {...register('meetingLink', { required: true })}
-                        type="text"
-                        defaultValue="https://zoom.us/i/1983475281"
-                        name="meetingLink"
-                        className="w-full border-0 outline-none px-2 py-1 text-gray-700"
-                      />
-                    </fieldset>
-                  </div>
+                  {/* Time field */}
+                  <fieldset className="border border-gray-300 rounded-md p-2">
+                    <legend className="text-sm font-medium text-gray-500 px-2">
+                      Time *
+                    </legend>
+                    <input
+                      {...register("time", { required: true })}
+                      type="time"
+                      name="time"
+                      className="w-full border-0 outline-none px-2 py-1 text-gray-700"
+                    />
+                  </fieldset>
 
                   <div className="w-full space-y-3">
                     <button

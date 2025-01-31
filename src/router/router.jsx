@@ -153,7 +153,7 @@ const router = createBrowserRouter(
           element: <DoctorDashboardHomepage />,
         },
         {
-          path: "doctor/order-details",
+          path: "doctor/order-details/:id",
           element: <OrderDetailsDoctor />,
         },
         {

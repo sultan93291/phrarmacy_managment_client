@@ -1,54 +1,110 @@
-import MeetingScheduleModal from '@/components/Modals/MeetingScheduleModal';
-import { Modal } from '@/components/Modals/Modal';
+import MeetingScheduleModal from "@/components/Modals/MeetingScheduleModal";
+import { Modal } from "@/components/Modals/Modal";
 import {
   MeetingSvg,
   RightArrowSvg,
-} from '@/components/SvgContainer/SvgContainer';
+} from "@/components/SvgContainer/SvgContainer";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion';
+} from "@/components/ui/accordion";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
-import { Link } from 'react-router-dom';
+} from "@/components/ui/select";
+import {
+  useGetPharmaCistSingelOrderDetailsIntentQuery,
+  useUpdateMedicineStatusDataIntentMutation,
+} from "@/Redux/features/api/apiSlice";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
 
 const OrderDetailsDoctor = () => {
   const [open, setOpen] = useState(false);
 
-  const { register, handleSubmit } = useForm();
+  const [
+    updateStatus,
+    { isLoading: updateLoading, isSuccess, isError, error: updateError },
+  ] = useUpdateMedicineStatusDataIntentMutation();
+
+  const loggedInUser = useSelector(
+    state => state.loggedInuserSlice?.loggedInUserData
+  );
+
+  const [Note, setNote] = useState("");
+
+  const [selectedValue, setSelectedValue] = useState("Select");
+
+  const [MedicindeInfo, setMedicindeInfo] = useState();
+
+  const { id } = useParams();
+
+  const { data, error, isLoading } =
+    useGetPharmaCistSingelOrderDetailsIntentQuery({ id });
+
+  useEffect(() => {
+    setMedicindeInfo(data?.data);
+  }, [data]);
+
+  console.log(MedicindeInfo, "medicine info");
+
+  const formatDate = isoDateStr => {
+    const date = new Date(isoDateStr);
+
+    return date.toLocaleDateString("en-US", {
+      weekday: "long", // Optional: Adds day of the week
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  const handleUpdateStatus = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await updateStatus({
+        id,
+        status: selectedValue,
+        note: Note,
+      }).unwrap();
+      if (response.code === 200) {
+        toast.success(response?.message);
+      }
+      console.log(response);
+
+      // Additional success handling (e.g., display a success message)
+    } catch (err) {
+      console.error("Update failed:", err);
+      // Additional error handling (e.g., display an error message)
+      toast.error(
+        `Update failed: ${err.message || "An unexpected error occurred"}`
+      );
+    }
+  };
+
   const medicineInfo = [
     {
-      name: 'Paracetamol',
+      name: "Paracetamol",
       quantity: 5,
       price: 900,
       totalPrice: 4500,
     },
     {
-      name: 'Ibuprofen',
+      name: "Ibuprofen",
       quantity: 3,
       price: 700,
       totalPrice: 2100,
     },
   ];
 
-  //functions:
-  const onSubmit = (data) => {
-    console.log(data);
-    if (data) {
-      toast.success('Note saved successfully');
-      //navigate('/dashboard/doctor/meeting-management');
-    }
-  };
   return (
     <div>
       {/* top title */}
@@ -79,27 +135,43 @@ const OrderDetailsDoctor = () => {
             <div className="text-[#052D4C] mt-7 space-y-3">
               <div className="flex items-center justify-between">
                 <p className="text-lg font-bold ">Order ID :</p>
-                <span className="font-medium">27346733</span>
+                <span className="font-medium">
+                  {" "}
+                  #{MedicindeInfo?.order?.details?.order_id}{" "}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <p className="text-lg font-bold ">Name :</p>
-                <span className="font-medium">Meloni D</span>
+                <span className="font-medium">
+                  {MedicindeInfo?.order?.details?.name}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <p className="text-lg font-bold ">Email :</p>
-                <span className="font-medium">meloniD@gmail.com</span>
+                <span className="font-medium">
+                  {MedicindeInfo?.order?.details?.email}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <p className="text-lg font-bold ">Date of Birth :</p>
-                <span className="font-medium">23/02/1996</span>
+                <span className="font-medium">
+                  {formatDate(MedicindeInfo?.order?.details?.date_of_birth)}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <p className="text-lg font-bold ">Gender :</p>
-                <span className="font-medium">Female6</span>
+                <span className="font-medium">
+                  {loggedInUser?.gender
+                    ? loggedInUser.gender
+                    : "not selected yet"}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <p className="text-lg font-bold ">Phone :</p>
-                <span className="font-medium">+234*********</span>
+                <span className="font-medium">
+                  {" "}
+                  {MedicindeInfo?.order?.details?.phone}{" "}
+                </span>
               </div>
             </div>
 
@@ -119,21 +191,21 @@ const OrderDetailsDoctor = () => {
                 </div>
 
                 {/* table body */}
-                {medicineInfo?.map((med) => (
+                {MedicindeInfo?.order?.order_items?.map(med => (
                   <div
-                    key={med.name}
+                    key={med.medicine}
                     className="w-full flex items-center py-2 border-b border-[#E7EBF4]"
                   >
                     <div className="w-1/2 text-start space-y-2">
-                      <h2 className="font-bold text-base">{med?.name}</h2>
+                      <h2 className="font-bold text-base">{med?.medicine}</h2>
                       <p className="text-sm">
-                        {med?.quantity} Medicine included{' '}
+                        {med?.quantity} Medicine included{" "}
                       </p>
                     </div>
                     <div className="w-1/2 font-bold text-center text-base flex items-center justify-between pl-5">
                       <h2>{med?.quantity}</h2>
-                      <h2>$ {med?.price}</h2>
-                      <h2>$ {med?.totalPrice}</h2>
+                      <h2>$ {med?.unit_price}</h2>
+                      <h2>$ {med?.total_price}</h2>
                     </div>
                   </div>
                 ))}
@@ -147,354 +219,118 @@ const OrderDetailsDoctor = () => {
 
             {/* orders */}
             <Accordion type="single" collapsible className="mt-10 space-y-3">
-              <AccordionItem
-                value="item-1"
-                className="border-b-0 bg-white px-5 rounded-lg"
-              >
-                <AccordionTrigger>
-                  {/* Header */}
-                  <div className="flex items-center gap-10 text-[#052D4C] ">
-                    <h2 className="text-lg font-semibold">Order ID :</h2>
-                    <p className="font-medium">#27346733</p>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="bg-white rounded-lg py-6">
-                    {/* title */}
-                    <h2 className="text-2xl font-bold text-[#052D4C]">
-                      Order Details
-                    </h2>
+              {MedicindeInfo?.past_orders?.map((item, index) => {
+                return (
+                  <AccordionItem
+                    key={item?.details?.order_id}
+                    value={item?.details?.order_id}
+                    className="border-b-0 bg-white px-5 rounded-lg"
+                  >
+                    <AccordionTrigger>
+                      {/* Header */}
+                      <div className="flex items-center gap-10 text-[#052D4C] ">
+                        <h2 className="text-lg font-semibold">Order ID :</h2>
+                        <p className="font-medium">
+                          #{item?.details?.order_id}
+                        </p>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="bg-white rounded-lg py-6">
+                        {/* title */}
+                        <h2 className="text-2xl font-bold text-[#052D4C]">
+                          Order Details
+                        </h2>
 
-                    {/* description */}
-                    <div className="text-[#052D4C] mt-7 space-y-3">
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Order ID :</p>
-                        <span className="font-medium">27346733</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Name :</p>
-                        <span className="font-medium">Meloni D</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Email :</p>
-                        <span className="font-medium">meloniD@gmail.com</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Date of Birth :</p>
-                        <span className="font-medium">23/02/1996</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Gender :</p>
-                        <span className="font-medium">Female6</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Phone :</p>
-                        <span className="font-medium">+234*********</span>
-                      </div>
-                    </div>
-
-                    {/* order information */}
-                    <div className="mt-12">
-                      <div className="mt-12">
-                        {/* table title */}
-                        <div className="w-full flex items-center pb-4 border-b border-[#E7EBF4]">
-                          <div className="w-1/2 text-start">
-                            <h2 className="font-bold text-lg">Description</h2>
+                        {/* description */}
+                        <div className="text-[#052D4C] mt-7 space-y-3">
+                          <div className="flex items-center justify-between">
+                            <p className="text-lg font-bold ">Order ID :</p>
+                            <span className="font-medium">
+                              #{item?.details?.order_id}
+                            </span>
                           </div>
-                          <div className="w-1/2 font-bold text-lg flex items-center justify-between">
-                            <h2>Quantity</h2>
-                            <h2 className="mr-8">Price</h2>
-                            <h2>Amount</h2>
+                          <div className="flex items-center justify-between">
+                            <p className="text-lg font-bold ">Name :</p>
+                            <span className="font-medium">
+                              {item?.details?.name}
+                            </span>
                           </div>
-                        </div>
-
-                        {/* table body */}
-                        {medicineInfo?.map((med) => (
-                          <div
-                            key={med.name}
-                            className="w-full flex items-center py-2 border-b border-[#E7EBF4]"
-                          >
-                            <div className="w-1/2 text-start space-y-2">
-                              <h2 className="font-bold text-base">
-                                {med?.name}
-                              </h2>
-                              <p className="text-sm">
-                                {med?.quantity} Medicine included{' '}
-                              </p>
-                            </div>
-                            <div className="w-1/2 font-bold text-center text-base flex items-center justify-between pl-5">
-                              <h2>{med?.quantity}</h2>
-                              <h2>$ {med?.price}</h2>
-                              <h2>$ {med?.totalPrice}</h2>
-                            </div>
+                          <div className="flex items-center justify-between">
+                            <p className="text-lg font-bold ">Email :</p>
+                            <span className="font-medium">
+                              {item?.details?.email}
+                            </span>
                           </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem
-                value="item-2"
-                className="border-b-0 bg-white px-5 rounded-lg"
-              >
-                <AccordionTrigger>
-                  {/* Header */}
-                  <div className="flex items-center gap-10 text-[#052D4C] ">
-                    <h2 className="text-lg font-semibold">Order ID :</h2>
-                    <p className="font-medium">#27346733</p>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="bg-white rounded-lg py-6">
-                    {/* title */}
-                    <h2 className="text-2xl font-bold text-[#052D4C]">
-                      Order Details
-                    </h2>
-
-                    {/* description */}
-                    <div className="text-[#052D4C] mt-7 space-y-3">
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Order ID :</p>
-                        <span className="font-medium">27346733</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Name :</p>
-                        <span className="font-medium">Meloni D</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Email :</p>
-                        <span className="font-medium">meloniD@gmail.com</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Date of Birth :</p>
-                        <span className="font-medium">23/02/1996</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Gender :</p>
-                        <span className="font-medium">Female6</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Phone :</p>
-                        <span className="font-medium">+234*********</span>
-                      </div>
-                    </div>
-
-                    {/* order information */}
-                    <div className="mt-12">
-                      <div className="mt-12">
-                        {/* table title */}
-                        <div className="w-full flex items-center pb-4 border-b border-[#E7EBF4]">
-                          <div className="w-1/2 text-start">
-                            <h2 className="font-bold text-lg">Description</h2>
+                          <div className="flex items-center justify-between">
+                            <p className="text-lg font-bold ">
+                              Date of Birth :
+                            </p>
+                            <span className="font-medium">
+                              {formatDate(item?.details?.date_of_birth)}
+                            </span>
                           </div>
-                          <div className="w-1/2 font-bold text-lg flex items-center justify-between">
-                            <h2>Quantity</h2>
-                            <h2 className="mr-8">Price</h2>
-                            <h2>Amount</h2>
+                          <div className="flex items-center justify-between">
+                            <p className="text-lg font-bold ">Gender :</p>
+                            <span className="font-medium">
+                              {loggedInUser.gender
+                                ? loggedInUser.gender
+                                : "gender not selected"}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <p className="text-lg font-bold ">Phone :</p>
+                            <span className="font-medium">
+                              {item?.details?.email}
+                            </span>
                           </div>
                         </div>
 
-                        {/* table body */}
-                        {medicineInfo?.map((med) => (
-                          <div
-                            key={med.name}
-                            className="w-full flex items-center py-2 border-b border-[#E7EBF4]"
-                          >
-                            <div className="w-1/2 text-start space-y-2">
-                              <h2 className="font-bold text-base">
-                                {med?.name}
-                              </h2>
-                              <p className="text-sm">
-                                {med?.quantity} Medicine included{' '}
-                              </p>
+                        {/* order information */}
+                        <div className="mt-12">
+                          <div className="mt-12">
+                            {/* table title */}
+                            <div className="w-full flex items-center pb-4 border-b border-[#E7EBF4]">
+                              <div className="w-1/2 text-start">
+                                <h2 className="font-bold text-lg">
+                                  Description
+                                </h2>
+                              </div>
+                              <div className="w-1/2 font-bold text-lg flex items-center justify-between">
+                                <h2>Quantity</h2>
+                                <h2 className="mr-8">Price</h2>
+                                <h2>Amount</h2>
+                              </div>
                             </div>
-                            <div className="w-1/2 font-bold text-center text-base flex items-center justify-between pl-5">
-                              <h2>{med?.quantity}</h2>
-                              <h2>$ {med?.price}</h2>
-                              <h2>$ {med?.totalPrice}</h2>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem
-                value="item-3"
-                className="border-b-0 bg-white px-5 rounded-lg"
-              >
-                <AccordionTrigger>
-                  {/* Header */}
-                  <div className="flex items-center gap-10 text-[#052D4C] ">
-                    <h2 className="text-lg font-semibold">Order ID :</h2>
-                    <p className="font-medium">#27346733</p>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="bg-white rounded-lg py-6">
-                    {/* title */}
-                    <h2 className="text-2xl font-bold text-[#052D4C]">
-                      Order Details
-                    </h2>
 
-                    {/* description */}
-                    <div className="text-[#052D4C] mt-7 space-y-3">
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Order ID :</p>
-                        <span className="font-medium">27346733</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Name :</p>
-                        <span className="font-medium">Meloni D</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Email :</p>
-                        <span className="font-medium">meloniD@gmail.com</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Date of Birth :</p>
-                        <span className="font-medium">23/02/1996</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Gender :</p>
-                        <span className="font-medium">Female6</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Phone :</p>
-                        <span className="font-medium">+234*********</span>
-                      </div>
-                    </div>
-
-                    {/* order information */}
-                    <div className="mt-12">
-                      <div className="mt-12">
-                        {/* table title */}
-                        <div className="w-full flex items-center pb-4 border-b border-[#E7EBF4]">
-                          <div className="w-1/2 text-start">
-                            <h2 className="font-bold text-lg">Description</h2>
-                          </div>
-                          <div className="w-1/2 font-bold text-lg flex items-center justify-between">
-                            <h2>Quantity</h2>
-                            <h2 className="mr-8">Price</h2>
-                            <h2>Amount</h2>
+                            {/* table body */}
+                            {item?.order_items?.map(med => (
+                              <div
+                                key={med.medicine}
+                                className="w-full flex items-center py-2 border-b border-[#E7EBF4]"
+                              >
+                                <div className="w-1/2 text-start space-y-2">
+                                  <h2 className="font-bold text-base">
+                                    {med?.medicine}
+                                  </h2>
+                                  <p className="text-sm">
+                                    {med?.quantity} Medicine included{" "}
+                                  </p>
+                                </div>
+                                <div className="w-1/2 font-bold text-center text-base flex items-center justify-between pl-5">
+                                  <h2>{med?.quantity}</h2>
+                                  <h2>$ {med?.unit_price}</h2>
+                                  <h2>$ {med?.total_price}</h2>
+                                </div>
+                              </div>
+                            ))}
                           </div>
                         </div>
-
-                        {/* table body */}
-                        {medicineInfo?.map((med) => (
-                          <div
-                            key={med.name}
-                            className="w-full flex items-center py-2 border-b border-[#E7EBF4]"
-                          >
-                            <div className="w-1/2 text-start space-y-2">
-                              <h2 className="font-bold text-base">
-                                {med?.name}
-                              </h2>
-                              <p className="text-sm">
-                                {med?.quantity} Medicine included{' '}
-                              </p>
-                            </div>
-                            <div className="w-1/2 font-bold text-center text-base flex items-center justify-between pl-5">
-                              <h2>{med?.quantity}</h2>
-                              <h2>$ {med?.price}</h2>
-                              <h2>$ {med?.totalPrice}</h2>
-                            </div>
-                          </div>
-                        ))}
                       </div>
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem
-                value="item-4"
-                className="border-b-0 bg-white px-5 rounded-lg"
-              >
-                <AccordionTrigger>
-                  {/* Header */}
-                  <div className="flex items-center gap-10 text-[#052D4C] ">
-                    <h2 className="text-lg font-semibold">Order ID :</h2>
-                    <p className="font-medium">#27346733</p>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="bg-white rounded-lg py-6">
-                    {/* title */}
-                    <h2 className="text-2xl font-bold text-[#052D4C]">
-                      Order Details
-                    </h2>
-
-                    {/* description */}
-                    <div className="text-[#052D4C] mt-7 space-y-3">
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Order ID :</p>
-                        <span className="font-medium">27346733</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Name :</p>
-                        <span className="font-medium">Meloni D</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Email :</p>
-                        <span className="font-medium">meloniD@gmail.com</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Date of Birth :</p>
-                        <span className="font-medium">23/02/1996</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Gender :</p>
-                        <span className="font-medium">Female6</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold ">Phone :</p>
-                        <span className="font-medium">+234*********</span>
-                      </div>
-                    </div>
-
-                    {/* order information */}
-                    <div className="mt-12">
-                      <div className="mt-12">
-                        {/* table title */}
-                        <div className="w-full flex items-center pb-4 border-b border-[#E7EBF4]">
-                          <div className="w-1/2 text-start">
-                            <h2 className="font-bold text-lg">Description</h2>
-                          </div>
-                          <div className="w-1/2 font-bold text-lg flex items-center justify-between">
-                            <h2>Quantity</h2>
-                            <h2 className="mr-8">Price</h2>
-                            <h2>Amount</h2>
-                          </div>
-                        </div>
-
-                        {/* table body */}
-                        {medicineInfo?.map((med) => (
-                          <div
-                            key={med.name}
-                            className="w-full flex items-center py-2 border-b border-[#E7EBF4]"
-                          >
-                            <div className="w-1/2 text-start space-y-2">
-                              <h2 className="font-bold text-base">
-                                {med?.name}
-                              </h2>
-                              <p className="text-sm">
-                                {med?.quantity} Medicine included{' '}
-                              </p>
-                            </div>
-                            <div className="w-1/2 font-bold text-center text-base flex items-center justify-between pl-5">
-                              <h2>{med?.quantity}</h2>
-                              <h2>$ {med?.price}</h2>
-                              <h2>$ {med?.totalPrice}</h2>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
+                    </AccordionContent>
+                  </AccordionItem>
+                );
+              })}
             </Accordion>
           </div>
         </div>
@@ -510,7 +346,11 @@ const OrderDetailsDoctor = () => {
             {/* filter */}
             <div className="mt-6 flex items-center gap-10">
               <div>
-                <Select>
+                <Select
+                  onValueChange={value => {
+                    setSelectedValue(value);
+                  }}
+                >
                   <SelectTrigger className="w-40 border font-semibold text-base h-12 rounded-xl px-8 font-nunito">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
@@ -518,8 +358,11 @@ const OrderDetailsDoctor = () => {
                     <SelectItem value="Select" disabled>
                       Select
                     </SelectItem>
-                    <SelectItem value="Approve">Approve</SelectItem>
-                    <SelectItem value="Cancel">Cancel</SelectItem>
+                    <SelectItem value="processing">processing</SelectItem>
+                    <SelectItem value="shipped">shipped</SelectItem>
+                    <SelectItem value="delivered">delivered</SelectItem>
+                    <SelectItem value="cancelled">cancelled</SelectItem>
+                    <SelectItem value="failed">failed</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -538,14 +381,12 @@ const OrderDetailsDoctor = () => {
             <div className="mt-10">
               <h4 className="text-xl font-bold text-[#052D4C]">Add a Note</h4>
 
-              <form
-                onSubmit={handleSubmit(onSubmit)}
-                action=""
-                className="w-full mt-3"
-              >
+              <form  className="w-full mt-3">
                 <textarea
                   rows={5}
-                  {...register('note', { required: true })}
+                  onChange={e => {
+                    setNote(e.target.value);
+                  }}
                   className="p-5 rounded-lg border border-[#00000033] w-full resize-none focus:outline-none"
                   placeholder="write your notes..."
                   name="note"
@@ -553,6 +394,9 @@ const OrderDetailsDoctor = () => {
                 ></textarea>
 
                 <button
+                  onClick={e => {
+                    handleUpdateStatus(e);
+                  }}
                   type="submit"
                   className="mt-5 font-semibold px-5 py-3 rounded-lg bg-primary text-white"
                 >
