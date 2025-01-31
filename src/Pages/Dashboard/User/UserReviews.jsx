@@ -17,15 +17,15 @@ const UserReviews = () => {
   }, [reviewData]);
 
 
-  
+
 
   if (isLoading) return <div>Loading reviews...</div>;
   if (isError) return <div>Error loading reviews: {error?.message}</div>;
 
   return (
-    <div className="bg-white rounded-md px-16 py-10">
+    <div className="bg-white rounded-md px-5 py-8 lg:px-16 lg:py-10">
       <DashboardTitle title="My Review" />
-      <div className="mt-10 space-y-7">
+      <div className=" mt-10 space-y-7">
         {allReview?.map((review, idx) => {
           console.log(review);
           return <UserReviewCard review={review} key={idx} />

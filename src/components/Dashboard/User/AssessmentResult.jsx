@@ -3,9 +3,9 @@ const AssessmentResult = ({ questions }) => {
   console.log("I'm the question", questions);
 
   return (
-    <div className="w-full flex text-[#052D4C] max-h-[80vh] overflow-y-auto user-assessment-result">
+    <div className="w-full flex flex-col lg:flex-row text-[#052D4C] max-h-[80vh] overflow-y-auto user-assessment-result">
       {/* Left Section - Questions */}
-      <div className="w-4/5 h-full space-y-8">
+      <div className="lg:w-4/5 h-full space-y-8">
         <div key={questions?.id} className="mb-5">
           {/* Question Title */}
           <h4 className="text-xl font-semibold">
@@ -26,7 +26,7 @@ const AssessmentResult = ({ questions }) => {
                     checked={option.value === questions?.answer}
                   />
                   <label
-                    className={`px-4 cursor-pointer py-2 text-primary rounded-full bg-[#DEF0FF] ${
+                    className={`px-2 text-xs sm:text-base lg:px-4 cursor-pointer text-primary py-2 rounded-full bg-[#DEF0FF] ${
                       option.value === questions?.answer
                         ? "bg-primary text-white"
                         : ""
@@ -40,11 +40,12 @@ const AssessmentResult = ({ questions }) => {
             </div>
           </div>
 
+
           {/* Additional Information */}
           {questions?.note && (
             <div className="mt-8">
               <h5 className="text-xl font-semibold">Additional Information</h5>
-              <div className="mt-3 border rounded-xl border-black/20 p-4 text-base w-3/4">
+              <div className="mt-3 border rounded-xl border-black/20 p-4 text-base lg:w-3/4">
                 {questions?.note}
               </div>
             </div>
@@ -52,8 +53,12 @@ const AssessmentResult = ({ questions }) => {
         </div>
       </div>
 
+
+      {/* result */}
+     
       {/* Right Section - Results Summary */}
-      <div className="w-1/5 h-fit flex flex-col items-center">
+      <div className="lg:w-1/5 h-fit flex flex-col items-center">
+
         <div className="size-32 text-2xl font-semibold rounded-full border border-[#0CA6FC] text-[#0CA6FC] flex items-center justify-center">
           <p className="z-10">10/20</p>
         </div>
