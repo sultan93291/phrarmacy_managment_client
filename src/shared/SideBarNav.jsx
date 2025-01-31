@@ -34,7 +34,7 @@ const SideBarNav = ({ isOpen, setOpen, navLinks }) => {
         <ul className="flex flex-col w-full gap-4 mt-8">
           {navLinks?.map((navLink) => (
             <li key={navLink?.path} data-aos="zoom-up" data-aos-duration="2000">
-              <NavLink to={navLink?.path} className="menu-item text-sm">
+              <NavLink onClick={() => setOpen(false)} to={navLink?.path} className="menu-item text-sm">
                 {navLink?.title}
               </NavLink>
             </li>

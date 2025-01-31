@@ -136,6 +136,8 @@ const UserDashboardHome = () => {
 
   const [allOrder, setAllOrder] = useState([]);
 
+
+
   const {
     data: orderdData,
     isLoading,
@@ -151,6 +153,7 @@ const UserDashboardHome = () => {
     <div>
       {/* user stats */}
 
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-8">
         {userStats?.map((stat, idx) => (
           <UserStatCard key={idx} stat={stat} />
@@ -158,7 +161,11 @@ const UserDashboardHome = () => {
       </div>
 
       {/* order table */}
-      <div className="mt-5 sm:mt-12 bg-white rounded-md px-5 sm:px-16 py-7 sm:py-10">
+
+      <div className="mt-5 sm:mt-7 xl:mt-12 bg-white rounded-md px-5 sm:px-10 xl:px-16 py-7 sm:py-10">
+
+   <div className="mt-5 sm:mt-7 xl:mt-12 bg-white rounded-md px-5 sm:px-10 xl:px-16 py-7 sm:py-10">
+
         <DashboardTitle title="My Order" />
 
         <DashboardTable orders={allOrder} />

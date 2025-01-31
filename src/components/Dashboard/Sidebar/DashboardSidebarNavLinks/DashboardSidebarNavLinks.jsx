@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import { NavLink, useLocation } from 'react-router-dom';
 
-const DashboardSidebarNavLinks = ({ dashboardNavLinks }) => {
+const DashboardSidebarNavLinks = ({ dashboardNavLinks, setOpen }) => {
   const currentPath = useLocation().pathname;
+
   return (
     <div className="w-full space-y-4">
       {dashboardNavLinks?.map((navLink) => (
@@ -15,8 +16,9 @@ const DashboardSidebarNavLinks = ({ dashboardNavLinks }) => {
               : ''
             }`
           }
+          onClick={() => setOpen(false)} // Close sidebar on click
         >
-          <navLink.icon light={currentPath == navLink?.path} />
+          <navLink.icon light={currentPath === navLink?.path} />
           <span
             className={`sm:text-lg group-hover:text-white transition duration-500 ${currentPath === navLink?.path ? 'text-white' : 'text-textColor'
               }`}

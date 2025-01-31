@@ -87,10 +87,10 @@ function FaqSection() {
                 value={`item-${index}`}
                 className="border border-[#084772] rounded-[10px] overflow-hidden mt-[14px] accordion-item"
               >
-                <AccordionTrigger className="text-xl md:text-2xl lg:text-[32px] text-menuLinkColor font-semibold md:py-5 px-2 md:px-[50px] bg-headerBg">
+                <AccordionTrigger className="text-left text-[19px] xl:text-xl md:text-2xl lg:text-[32px] text-menuLinkColor font-semibold md:py-5 px-2 md:px-[50px] bg-headerBg">
                   {item.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-lg md:text-xl lg:text-[24px] pt-5 pb-8 px-5 md:px-[55px] bg-white leading-[40px]">
+                <AccordionContent className="text-lg md:text-xl lg:text-[24px] pt-5 pb-8 px-5 md:px-[55px] bg-white sm:leading-[40px]">
                   {item.answer}
                 </AccordionContent>
               </AccordionItem>

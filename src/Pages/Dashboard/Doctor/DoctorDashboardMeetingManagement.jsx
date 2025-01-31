@@ -94,13 +94,13 @@ const DoctorDashboardMeetingManagement = () => {
 
   return (
     <div>
-      <div className=" bg-white rounded-md px-16 py-10">
+      <div className=" bg-white rounded-md px-5 xl:px-16 py-7 xl:py-10">
         <DashboardTitle title="Meeting Management" />
 
         {/* Table */}
         <div className="rounded-lg bg-white  md:rounded-xl lg:rounded-2xl">
           <div className="overflow-x-auto">
-            <table className="  w-full font-inter md:mt-10">
+            <table className="  w-full font-inter mt-5 xl:mt-10">
               <thead>
                 <tr className="bg-[#F2F3F4] text-sm font-bold text-[#222E48CC] md:text-base lg:text-lg">
                   {tableHead.map((item) => (
