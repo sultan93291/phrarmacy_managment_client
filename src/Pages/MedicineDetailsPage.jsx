@@ -34,6 +34,9 @@ function MedicineDetailsPage() {
       });
   }, [id]);
 
+  console.log(medicineDetails , ' this is the medicine details');
+  
+
   useEffect(() => {
     axios({
       method: "get",

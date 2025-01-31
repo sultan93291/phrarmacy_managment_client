@@ -8,14 +8,14 @@ const DashboardNotification = ({ notification }) => {
         <div className="size-8 overflow-hidden rounded-full md:size-12">
           <img
             className="h-full w-full object-cover"
-            src={notification?.image}
+            src={notification?.avatar}
             alt=""
           />
         </div>
       </div>
       <div className="flex flex-col gap-2 text-xs md:text-base">
-        <Link>{notification?.title}</Link>
-        <p className="text-[10px]">{notification?.time}</p>
+        <Link>{notification?.message}</Link>
+        <p className="text-[10px]">{notification?.timeAgo}</p>
       </div>
     </div>
   );
