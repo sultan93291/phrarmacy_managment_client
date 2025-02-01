@@ -10,7 +10,7 @@ import { MdOutlinePhone } from "react-icons/md";
 
 function Footer() {
   return (
-    <footer className="px-5 xl:px-[47px] text-white mt-10 mb-5 sm:my-10">
+    <footer className="px-4 xl:px-[47px] text-white mt-10 mb-5 sm:my-10">
       <div data-aos="zoom-up"
         data-aos-duration="1000" className="py-10 sm:pt-[70px] sm:pb-[90px] xl:pb-[117px] bg-primryDark rounded-2xl md:rounded-[40px]">
         <div className="container">
@@ -79,7 +79,7 @@ function Footer() {
               data-aos-duration="2000" className="footer--box lg:mt-6 links">
               <h4 data-aos="zoom-up"
                 data-aos-duration="2000">Our Services</h4>
-              <ul className="-mt-7">
+              <ul className="-mt-7 lg:-mt-5">
                 <li data-aos="zoom-up"
                   data-aos-duration="2000">
                   <Link to={"/"}>Medical Billing</Link>
@@ -115,7 +115,7 @@ function Footer() {
               data-aos-duration="2000" className="footer--box lg:mt-6 links">
               <h4 data-aos="zoom-up"
                 data-aos-duration="2000">Customer Support</h4>
-              <ul className="-mt-7">
+              <ul className="-mt-7 lg:-mt-5">
                 <li data-aos="zoom-up"
                   data-aos-duration="2000">
                   <Link to={"/"}>FAQ’s</Link>
@@ -139,7 +139,7 @@ function Footer() {
               data-aos-duration="2000" className="footer--box lg:mt-6 links">
               <h4 data-aos="zoom-up"
                 data-aos-duration="2000">Useful Links</h4>
-              <ul className="-mt-7">
+              <ul className="-mt-7 lg:-mt-5">
                 <li data-aos="zoom-up"
                   data-aos-duration="2000">
                   <Link to={"/"}>Careers</Link>

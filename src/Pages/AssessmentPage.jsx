@@ -19,7 +19,7 @@ function AssessmentPage() {
   const dispatch = useDispatch();
 
   console.log(id);
-  
+
 
   useEffect(() => {
     axios({
@@ -62,7 +62,7 @@ function AssessmentPage() {
       <div data-aos="zoom-up" data-aos-duration="2000" className="container ">
         <FormHeader></FormHeader>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="py-14 space-y-2.5">
+        <form onSubmit={handleSubmit(onSubmit)} className="py-8 sm:py-14 space-y-2.5">
           {healthQuestion.map((item, index) => {
             return (
               <CommonQuestionBox
@@ -85,7 +85,7 @@ function AssessmentPage() {
                           {...register(item.name, { required: true })} // Register using item.name
                         />
                         <label
-                          className="px-3 text-xs sm:text-base sm:px-6 cursor-pointer peer-checked:bg-primary peer-checked:text-white py-2 sm:py-1.5 text-primary rounded-full bg-[#DEF0FF]"
+                          className="px-4 text-xs sm:text-base sm:px-6 cursor-pointer peer-checked:bg-primary peer-checked:text-white py-2 sm:py-1.5 text-primary rounded-full bg-[#DEF0FF]"
                           htmlFor={`${item.id}-${option?.id}`}
                         >
                           {option.value}
@@ -98,7 +98,7 @@ function AssessmentPage() {
                     <div className="flex flex-col gap-2">
                       <label className="text-subtitleText">{item?.note}</label>
                       <textarea
-                        className="rounded-xl h-20 resize-none border border-borderLight p-4 text-sm"
+                        className="rounded-xl h-20 resize-none border border-borderLight p-3 sm:p-4 text-sm"
                         placeholder="Write here.."
                         {...register(`${item.name}_note`, {
                           required: !!item.note,

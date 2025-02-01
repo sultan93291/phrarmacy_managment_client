@@ -57,7 +57,7 @@ function TestKitOptions() {
   }, []);
 
   return (
-    <section className="mt-20">
+    <section className="mt-14 sm:mt-20">
       <div className="container">
         {/* section title  */}
         <div className="mb-[30px]">

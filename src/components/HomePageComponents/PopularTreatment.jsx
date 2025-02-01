@@ -29,13 +29,13 @@ function PopularTreatment() {
         <section className='my-14 sm:my-20'>
             <div className='container'>
                 {/* section-title  */}
-                <div className="flex flex-col md:flex-row items-center justify-between mb-10">
+                <div className="flex flex-col md:flex-row items-center justify-between mb-5 sm:mb-10">
                     <h2 data-aos="zoom-up"
-                        data-aos-duration="1000" className="text-2xl 2xl:text--xl font-bold text-primary leading-normal">Most Popular Treatment </h2>
+                        data-aos-duration="1000" className="text-2xl 2xl:text--xl font-bold text-primary mb-1 leading-normal">Most Popular Treatment </h2>
                     <Link data-aos="zoom-up"
                         data-aos-duration="2000" to={'/'} className="text-xl 2xl:text-[24px] font-semibold text-[#01548B]">See All</Link>
                 </div>
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5'>
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 sm:gap-5'>
                     {
                         popularTreatmentData.map((item) => (
                             <div data-aos="zoom-in"
