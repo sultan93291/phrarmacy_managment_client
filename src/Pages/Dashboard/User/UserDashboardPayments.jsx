@@ -39,7 +39,7 @@ const UserDashboardPayments = () => {
         onClose={handleModalClose}
         modalData={modalData}
       />
-      <div className="bg-white rounded-md px-7 xl:px-16 py-10">
+      <div className="bg-white rounded-md px-5 sm:px-7 xl:px-16 py-10">
         <DashboardTitle title="My Payments" />
 
         {/* cards */}
@@ -60,7 +60,7 @@ const UserDashboardPayments = () => {
               );
             })}
 
-          <div className="h-56 sm:h-72 bg-cover bg-center border border-black/20 bg-no-repeat font-dmsans rounded-2xl px-20 p-5 flex flex-col items-center justify-center">
+          <div className="h-56 sm:h-72 bg-cover bg-center border border-black/20 bg-no-repeat font-dmsans rounded-2xl sm:px-20 p-5 flex flex-col items-center justify-center">
             <div className="flex flex-col items-center justify-center gap-4">
               <div onClick={() => setOpen(true)} className="cursor-pointer">
                 <AddIconSvg />

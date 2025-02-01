@@ -481,8 +481,8 @@ function StepForm() {
                 className="hidden"
               />
               <label
-                htmlFor="deliveryAgreements"
-                className="relative cursor-pointer pl-8 lg:pl-[60px]"
+                htmlFor="deliveryAgreements"a
+                className="relative cursor-pointer pl-[60px]"
               >
                 I Consist to MYHEALTHLONDON Connecting to my GP and to the
                 sharing of information

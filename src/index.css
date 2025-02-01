@@ -335,7 +335,7 @@
   .checkout-stepform textarea {
     @apply h-[200px] resize-none;
   }
-  .checkout-stepform .setp-two input:checked + label:after {
-    margin: -5px 4px 5px 1px;
+  .footer--box.links li a {
+    @apply inline-block mt-4;
   }
 }

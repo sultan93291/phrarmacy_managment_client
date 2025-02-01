@@ -16,7 +16,7 @@ const PaymentCard = ({ data }) => {
   return (
     <>
       <div
-        className="h-72 cursor-pointer bg-cover bg-center object-cover bg-no-repeat font-dmsans rounded-2xl p-5 flex flex-col items-center justify-center"
+        className="sm:h-72 cursor-pointer bg-cover bg-center object-cover bg-no-repeat font-dmsans rounded-2xl p-5 flex flex-col items-center justify-center"
         style={{ backgroundImage: `url(${cardTemplate})` }}
       >
         <div className="flex w-full justify-end">
