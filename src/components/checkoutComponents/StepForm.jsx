@@ -44,7 +44,7 @@ function StepForm() {
   const [isAddressEditMode, setIsAddressEditMode] = useState(false);
   const [uploadedFile, setUploadedFile] = useState([]);
 
-  const handleUploadComplete = files => {
+  const handleUploadComplete = (files) => {
     const file = files[0];
     if (file && file?.originalFile?.file?.type !== "application/pdf") {
       alert("Please upload only PDF files.");
@@ -60,11 +60,11 @@ function StepForm() {
       method: "get",
       url: `${SiteURl}/api/get-delivery-info-data`,
     })
-      .then(res => {
+      .then((res) => {
         console.log(res.data.data);
         setdeliveryData(res.data.data);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }, []);
@@ -80,12 +80,12 @@ function StepForm() {
     setIsAddressEditMode(!isAddressEditMode);
   };
 
-  const onSumbit = data => {
+  const onSumbit = (data) => {
     console.log(data);
   };
 
   const handleNext = () => {
-    setCurrentStep(prevStep => (prevStep < 3 ? prevStep + 1 : prevStep));
+    setCurrentStep((prevStep) => (prevStep < 3 ? prevStep + 1 : prevStep));
     window.scrollTo(0, 0);
   };
 
@@ -98,7 +98,7 @@ function StepForm() {
     <div>
       {/* {/ step indicator  /} */}
       <div className="relative z-[1] max-w-[790px] mx-auto">
-        <ul className="step-indicators flex items-center justify-between">
+        <ul className="step-indicators flex gap-2 lg:gap-0 items-center justify-between">
           <li className={currentStep >= 1 ? "active" : ""}>
             <p className="icon">1</p>
             <span>Delivery</span>
@@ -121,10 +121,10 @@ function StepForm() {
           <div className="step-one">
             {/* {/ step title /} */}
             <div className="max-w-[882px] mx-auto text-center mt-12 md:my-[100px]">
-              <h3 className="md:text--xl text-primary text-[27px] sm:text-4xl font-bold mb-[20px] sm:mb-[60px]">
+              <h3 className="md:text--xl text-primary text-[24px] sm:text-4xl font-bold mb-[20px] sm:mb-[60px]">
                 Where should we deliver your order?
               </h3>
-              <p className="text-lg sm:text-xl text-left sm:text-center md:text-[24px] text-[rgba(0,0,0,0.60)]">
+              <p className="text-base sm:text-xl text-left sm:text-center md:text-[24px] text-[rgba(0,0,0,0.60)]">
                 We ensure all packages are shipped in discreet, plain packaging
                 with no mention of MyHealthNeedsLondon, guaranteeing your
                 privacy.
@@ -178,7 +178,7 @@ function StepForm() {
               {errors?.billingAddress && <p>{errors.billingAddress}</p>}
               {/* {/ find location  /} */}
               <div className="mt-10 max-w-fit mx-auto cursor-pointer">
-                <div className="flex items-center gap-2 text-[20px] font-medium text-white bg-primary rounded-[10px] py-4 px-6">
+                <div className="flex items-center gap-2 text-base sm:text-[20px] font-medium text-white bg-primary rounded-[10px] py-2 sm:py-4 px-2 sm:px-6">
                   <p className="sm:text-[24px]">
                     <CiLocationOn />
                   </p>
@@ -189,8 +189,13 @@ function StepForm() {
             {/* {/ contact, city & post code  /} */}
             <div className="grid md:grid-cols-3 gap-5 md:gap-10">
               {/* {/ contact  /} */}
-              <div className="mt-[60px]">
-                <label htmlFor="contact">Contact</label>
+              <div className="mt-8 md:mt-[77px]">
+                <label
+                  className="text-xs sm:text-sm lg:text-[22px]"
+                  htmlFor="contact"
+                >
+                  Contact
+                </label>
                 <Controller
                   control={control}
                   name="phone"
@@ -198,7 +203,7 @@ function StepForm() {
                     <PhoneInput
                       country={"us"}
                       value={field.value}
-                      onChange={phone => field.onChange(phone)}
+                      onChange={(phone) => field.onChange(phone)}
                     />
                   )}
                   rules={{ required: "Phone number is required" }}
@@ -235,8 +240,11 @@ function StepForm() {
             </div>
 
             {/* gp name and address */}
-            <div className="flex flex-col md:flex-row items-center gap-8 pt-8">
-              <div className="max-w-5/12  flex flex-col">
+            <div
+              className="flex-col block space-y-5 lg:space-y-0 lg:flex md:flex-row items-center 
+            gap-3 lg:gap-8 pt-8"
+            >
+              <div className="max-w-5/12 flex flex-col">
                 <label htmlFor="">GP Name</label>
                 <input
                   className="border rounded-lg px-4 py-2"
@@ -258,8 +266,8 @@ function StepForm() {
               </div>
             </div>
             {/* {/ add prescription  /} */}
-            <div className="mt-[100px] add-prescription">
-              <h4 className="text-[28px] sm:text-[36px] text-primryDark font-bold mb-10">
+            <div className="mt-14 lg:mt-[100px] add-prescription">
+              <h4 className="text-2xl sm:text-[36px] text-primryDark font-bold mb-10">
                 Add your prescription file
               </h4>
               <div className="flex flex-col items-center p-[50px] rounded-[10px] border border-dashed border-[#A7A7A7]">
@@ -268,8 +276,9 @@ function StepForm() {
                   <div>
                     <img
                       className="max-w-[120px] h-[120px] mb-5"
-                      src={`${uploadedFile.originalFile ? pdfIcon : prescriptionIcon
-                        }`}
+                      src={`${
+                        uploadedFile.originalFile ? pdfIcon : prescriptionIcon
+                      }`}
                       alt=""
                     />
                     <p className="mb-5 text-[18px] font-semibold">
@@ -284,7 +293,7 @@ function StepForm() {
                     render={({ field }) => (
                       <UploadButton
                         options={options}
-                        onComplete={files => {
+                        onComplete={(files) => {
                           handleUploadComplete(files);
                           field.onChange(files[0]);
                         }}
@@ -301,12 +310,14 @@ function StepForm() {
 
             {/* {/ delivery information  /} */}
             <div>
-              <div className="text-center max-w-[882px] mx-auto mt-[172px]">
-                <h3 className="md:text--xl text-3xl sm:text-4xl text-primary font-bold mb-5">Delivery Information</h3>
-                <p className="text-lg sm:text-xl md:text-[24px] text-primary">
+              <div className="text-center max-w-[882px] mx-auto mt-14 lg:mt-[172px]">
+                <h3 className="md:text--xl text-2xl sm:text-4xl text-primary font-bold mb-5">
+                  Delivery Information
+                </h3>
+                <p className="text-left sm:text-xl md:text-[24px] text-primary">
                   {deliveryData?.description}
                 </p>
-                <p className="text-lg sm:text-xl md:text-[24px] text-primary mt-[30px]">
+                <p className="text-left sm:text-xl md:text-[24px] text-primary mt-[30px]">
                   <span className="text-[#FF6607]">Please note:</span> Orders
                   {deliveryData?.note}
                 </p>
@@ -321,13 +332,15 @@ function StepForm() {
                 />
                 <label
                   htmlFor="royalMail"
-                  className="royalMail-radio relative py-[36px] pr-10 pl-[100px] bg-primaryLight border-[2px] border-primryDark rounded-[10px] cursor-pointer"
+                  className="royalMail-radio relative lg:py-[36px] lg:pr-10 pl-[50px] lg:pl-[100px] bg-primaryLight border-[2px] border-primryDark rounded-[10px] cursor-pointer"
                 >
-                  <div className="max-w-[800px]">
-                    <h4 className="text-xl md:text-[24px] font-semibold text-primryDark mb-[10px]">
+                  <div className="max-w-[800px] py-4 sm:py-10 lg:py-0">
+                    <h4 className="text-base md:text-[24px] font-semibold text-primryDark mb-[10px]">
                       {deliveryData?.option_name}
                     </h4>
-                    <p className="text-lg">{deliveryData?.option_sub_description}</p>
+                    <p className="text-sm md:text-lg">
+                      {deliveryData?.option_sub_description}
+                    </p>
                   </div>
                 </label>
               </div>
@@ -335,7 +348,7 @@ function StepForm() {
             {/* {/ button  /} */}
             <div>
               <div
-                className="py-2 sm:py-[22px] px-10 sm:px-20 bg-primryDark rounded-[10px] sm:text-[24px] font-bold text-white w-fit mx-auto mt-10 cursor-pointer"
+                className="py-2 lg:py-[22px] px-10 lg:px-20 bg-primryDark rounded-[10px] sm:text-[24px] font-bold text-white w-fit mx-auto mt-10 cursor-pointer"
                 onClick={handleNext}
               >
                 Continue to payment
@@ -343,21 +356,20 @@ function StepForm() {
             </div>
           </div>
         )}
-
         {/* {/ step 2   /} */}
         {currentStep === 2 && (
-          <div className="setp-two mt-[110px]">
+          <div className="setp-two mt-12 lg:mt-[110px]">
             {/* {/ step title  /} */}
             <div className="text-center">
-              <h3 className="text--xl mb-5 text-primryDark">
+              <h3 className="text--xl mb-2 lg:mb-5 text-primryDark">
                 Check your order
               </h3>
-              <p className="text-[24px] text-primary">
+              <p className="text-lg lg:text-[24px] text-primary">
                 Check your order details and Enter promo code if you have one.
               </p>
             </div>
             {/* {/ treatment preference  /} */}
-            <div className="py-12 px-[75px] bg-primaryLight rounded-[10px] mt-[100px]">
+            <div className="py-5 lg:py-12 px-5 lg:px-[75px] bg-primaryLight rounded-[10px] mt-10 lg:mt-[100px]">
               <h4 className="text-[24px] font-bold mb-[30px] text-primryDark">
                 Your treatment preference
               </h4>
@@ -366,7 +378,7 @@ function StepForm() {
                   Mounjaro® starting dose 2.5mg
                 </p>
                 <ul className="treatment-preference-medicine max-w-[640px]">
-                  <li>
+                  <li className="lg:text-lg text-base">
                     <p>1 pen (4 doses)</p>
                     <p>€149.99</p>
                   </li>
@@ -382,21 +394,21 @@ function StepForm() {
               </div>
             </div>
             {/* {/ delivery address  /} */}
-            <div className="py-12 px-[75px] bg-primaryLight rounded-[10px] mt-[100px]">
+            <div className="lg:py-12 py-5 lg:px-[75px] px-5 bg-primaryLight rounded-[10px] mt-10 lg:mt-[100px]">
               <h3 className="text-[24px] font-bold mb-[14px] text-primryDark">
                 Delivery address:
               </h3>
               {/* {/ address  /} */}
-              <div className="flex items-center justify-between">
+              <div className="flex gap-2 items-center justify-between">
                 <div className="max-w-[820px]">
                   {!isAddressEditMode ? (
-                    <p className="text-[24px] text-[rgba(0,0,0,0.60)]">
+                    <p className="text-base md:text-lg lg:text-[24px] text-[rgba(0,0,0,0.60)]">
                       {deliveryAddress}
                     </p>
                   ) : (
                     <textarea
                       value={deliveryAddress}
-                      onChange={e => setDeliveryAddress(e.target.value)}
+                      onChange={(e) => setDeliveryAddress(e.target.value)}
                       className="text-[24px] text-[rgba(0,0,0,0.60)] !h-[200px] resize-none"
                     />
                   )}
@@ -404,7 +416,7 @@ function StepForm() {
                 <div>
                   {
                     <div
-                      className="text-[24px] font-semibold text-primryDark underline cursor-pointer"
+                      className="text-base md:text-xl lg:text-[24px] font-semibold text-primryDark underline cursor-pointer"
                       onClick={handleDeliveryAddressEdit}
                     >
                       {!isAddressEditMode ? "Edit" : "Save"}
@@ -414,8 +426,8 @@ function StepForm() {
               </div>
             </div>
             {/* {/ suggested medicine  /} */}
-            <div className="suggested-medicine mt-[100px]">
-              <h4 className="text-[32px] font-bold text-primryDark">
+            <div className="suggested-medicine lg:mt-[100px] mt-10">
+              <h4 className="text-2xl lg:text-[32px] font-bold text-primryDark">
                 Add these to complete your treatment:
               </h4>
               <div>
@@ -426,15 +438,15 @@ function StepForm() {
                         type="checkbox"
                         name={`suggested-${index}`}
                         id={`suggested-${index}`}
-                        className="hidden"
+                        className="hidden stemFromCheckbox"
                         {...register(`suggested-${index}`)}
                       />
                       <label
                         htmlFor={`suggested-${index}`}
-                        className="!flex items-start justify-between py-[30px] pl-[110px] pr-[105px] border-[2px] border-[rgba(0,0,0,0.20)] rounded-[10px] mt-10 cursor-pointer"
+                        className="!flex flex-col md:flex-row items-start justify-between lg:py-[30px] pl-[50px] lg:pl-[110px] lg:pr-[105px] pr-6 border-[2px] border-[rgba(0,0,0,0.20)] rounded-[10px] mt-10 cursor-pointer py-5"
                       >
                         <div className="max-w-[650px]">
-                          <h4 className="text-[24px] text-primryDark leading-[31px]">
+                          <h4 className="text-base lg:text-[24px] text-primryDark leading-[31px]">
                             {item?.name}
                           </h4>
                           <p className="text-[18px] font-bold text-primryDark mt-4">
@@ -443,7 +455,7 @@ function StepForm() {
                         </div>
                         <div>
                           <img
-                            className="max-w-[167px] h-[140px]"
+                            className="max-w-[167px] h-[60px] lg:h-[140px] mt-4 lg:mt-0"
                             src={item?.imgUrl}
                             alt={item?.name}
                           />
@@ -453,15 +465,15 @@ function StepForm() {
                   </div>
                 ))}
                 {/* {/ button  /} */}
-                <div className="mt-[60px]">
-                  <div className="py-[20px] px-[60px] bg-primryDark rounded-[10px] text-[24px] font-bold text-white w-fit cursor-pointer duration-200 ease-in-out hover:opacity-90">
+                <div className="mt-8 lg:mt-[60px] flex items-center justify-center">
+                  <div className="lg:py-[20px] py-2 px-4 lg:px-[60px] bg-primryDark rounded-[10px] text-base lg:text-[24px] font-bold text-white w-fit cursor-pointer duration-200 ease-in-out hover:opacity-90">
                     Add Extra Medicine
                   </div>
                 </div>
               </div>
             </div>
             {/* {/ agreements  /} */}
-            <div className="mt-[100px] agreement">
+            <div className="mt-16 lg:mt-[100px] agreement">
               <input
                 type="checkbox"
                 name="deliveryAgreements"
@@ -469,31 +481,25 @@ function StepForm() {
                 className="hidden"
               />
               <label
-                htmlFor="deliveryAgreements"a
-                className="relative cursor-pointer pl-[60px]"
+
+                htmlFor="deliveryAgreements"
+                className="relative cursor-pointer pl-8 lg:pl-[60px]"
               >
                 I Consist to MYHEALTHLONDON Connecting to my GP and to the
                 sharing of information
               </label>
             </div>
             {/* {/ payment options  /} */}
-            <div className="payment-options text-center w-[566px] mx-auto mt-[100px]">
-              <h4 className="text--xl text-primryDark mb-[60px]">
+            <div className="payment-options text-center max-w-[566px] mx-auto mt-10 lg:mt-[100px]">
+              <h4 className="text--xl text-primryDark mb-7 lg:mb-[60px]">
                 Payment Options
               </h4>
-              <div>
+              <div className="flex items-center justify-center">
                 <Link
                   to={"/"}
-                  className="flex w-full items-center justify-center p-[22px] gap-5 bg-primryDark rounded-[10px] text-[24px] font-bold text-white"
+                  className="flex w-[250px] lg:w-[566px] items-center justify-center px-4 py-3 lg:p-[22px] gap-5 bg-primryDark rounded-[10px] text-base lg:text-[24px] font-bold text-white"
                 >
                   Pay with Card
-                </Link>
-                <Link
-                  to={"/"}
-                  className="flex w-full items-center justify-center p-[22px] gap-5 rounded-[10px] bg-[#32C770] text-[24px] font-bold text-white mt-5"
-                >
-                  Pay with
-                  <img className="w-[96px] h-[33px]" src={PaypalIcon} alt="" />
                 </Link>
               </div>
             </div>
@@ -505,3 +511,4 @@ function StepForm() {
 }
 
 export default StepForm;
+// ready to go
