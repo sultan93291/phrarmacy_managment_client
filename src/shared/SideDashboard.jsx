@@ -26,7 +26,7 @@ const SideDashboard = ({ isOpen, setOpen, dashboardNavLinks }) => {
 
             {/* Sidebar */}
             <div
-                className={`fixed overflow-y-scroll left-0 top-0 z-[60] h-full w-[320px] sm:w-[350px] p-5 transform shadow-lg bg-white transition-transform duration-500 px-5 py-8 xl:hidden ${isOpen ? 'translate-x-0' : '-translate-x-full'
+                className={`fixed overflow-y-scroll left-0 top-0 z-[60] h-full w-[300px] sm:w-[350px] p-5 transform shadow-lg bg-white transition-transform duration-500 px-5 py-8 xl:hidden ${isOpen ? 'translate-x-0' : '-translate-x-full'
                     }`}
             >
                 {/* min-h-screen maFx-h-screen w-[350px] p-8 hidden min-[1200px]:block */}

@@ -116,7 +116,7 @@ const DoctorDashboardOrderManagement = () => {
           className="p-4 rounded-xl border border-black/10 w-full flex items-center justify-between max-w-xl bg-white"
         >
           <input
-            className="focus:outline-none px-2 md:px-5 sm:py-1 bg-transparent w-full"
+            className="focus:outline-none px-2 text-base md:px-5 sm:py-1 bg-transparent w-full"
             type="text"
             placeholder="Order ID Search"
             name="searchOrder"
@@ -130,7 +130,7 @@ const DoctorDashboardOrderManagement = () => {
         {/* select */}
         <div>
           <Select>
-            <SelectTrigger className="w-full border h-12 sm:h-16 rounded-xl px-5 sm:px-8 py-1 text-lg text-[#6B7280] font-md">
+            <SelectTrigger className="w-full border h-12 sm:h-16 rounded-xl px-5 sm:px-8 py-1 sm:text-lg text-[#6B7280] font-md">
               <SelectValue placeholder="All Order" />
             </SelectTrigger>
             <SelectContent className={"font-medium"}>
@@ -150,14 +150,16 @@ const DoctorDashboardOrderManagement = () => {
           </h2>
         </div>
 
-        <DashboardTable orders={allOrder} pharmacist={true} />
+        <div className="border sm:border-none rounded">
+          <DashboardTable orders={allOrder} pharmacist={true} />
+        </div>
 
         {/* Pagination */}
         <div className="mt-10 sm:mt-20 border-t border-[#E5E7EB] w-full flex flex-col md:flex-row gap-5 items-center justify-between py-6">
           <p className="text-[#374151]">Showing 1 to 10 of 97 results</p>
 
           {/* pagination btn */}
-          <div className="h-10 border-black/10 rounded-md flex gap-1 flex-wrap items-center">
+          <div className="h-10 border-black/10 rounded-md flex gap-1 flex-wrap justify-center sm:justify-start items-center">
             <button
               disabled={activePage === 1}
               onClick={() => handlePageChange(Math.max(1, activePage - 1))}
@@ -175,11 +177,10 @@ const DoctorDashboardOrderManagement = () => {
                   className={`
                 size-10  border text-[#374151] border-black/10 px-4 py-2
                 transition-all duration-200 ease-in-out
-                ${
-                  activePage === pageNumber
-                    ? "bg-primary !text-white"
-                    : "hover:bg-primary hover:!text-white"
-                }
+                ${activePage === pageNumber
+                      ? "bg-primary !text-white"
+                      : "hover:bg-primary hover:!text-white"
+                    }
               `}
                   onClick={() => handlePageChange(pageNumber)}
                 >

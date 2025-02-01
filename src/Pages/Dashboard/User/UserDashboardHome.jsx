@@ -81,8 +81,12 @@ const UserDashboardHome = () => {
       </div>
 
       {/* order table */}
-      <DashboardTitle title="My Order" />
-      <DashboardTable orders={allOrder} />
+      <div className="py-10 pb-5">
+        <DashboardTitle title="My Order" />
+      </div>
+      <div className=" bg-white border sm:border-none rounded-md  sm:px-10 xl:px-16">
+        <DashboardTable orders={allOrder} />
+      </div>
     </div>
   );
 };

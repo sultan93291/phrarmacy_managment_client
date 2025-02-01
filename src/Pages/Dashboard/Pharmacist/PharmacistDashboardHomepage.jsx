@@ -48,17 +48,17 @@ const PharmacistDashboardHomepage = () => {
 
   const [allOrder, setAllOrder] = useState([]);
 
-   const {
-      data: orderdData,
-      isLoading,
-      isError,
-      error,
-    } = useGetUserOrderIntentQuery();
-  
+  const {
+    data: orderdData,
+    isLoading,
+    isError,
+    error,
+  } = useGetUserOrderIntentQuery();
 
-    useEffect(() => {
-      setAllOrder(orderdData?.data?.orders);
-    }, [orderdData]);
+
+  useEffect(() => {
+    setAllOrder(orderdData?.data?.orders);
+  }, [orderdData]);
 
   const orders = [
     {
@@ -160,9 +160,15 @@ const PharmacistDashboardHomepage = () => {
         ))}
       </div>
 
-      {/* order table */}
-      <div className="mt-12 bg-white rounded-md px-5 md:px-16 py-10">
+      <div className="mt-10 sm:hidden">
         <DashboardTitle title="All Order" />
+      </div>
+
+      {/* order table */}
+      <div className="mt-10 border sm:border-none bg-white rounded-md sm:px-5 md:px-16 sm:py-10">
+        <div className="hidden sm:block">
+          <DashboardTitle title="All Order" />
+        </div>
 
         {/* table */}
 
