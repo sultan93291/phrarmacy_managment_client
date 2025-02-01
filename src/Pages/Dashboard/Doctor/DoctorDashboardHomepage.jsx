@@ -104,43 +104,43 @@ const DoctorDashboardHomepage = () => {
   }, [orderdData]);
 
 
-   const {
-      data: overviewData,
-      error: overViewerror,
-      isLoading: isOverviewLoading,
-    } = useGetPharmaCistOverViewDataIntentQuery();
-  
-    const [delivery, setDelivery] = useState(null);
-    const [placeOrder, setPlaceOrder] = useState(null);
-    const [consultation, setConsultation] = useState(null);
-  
-    useEffect(() => {
-      // Loading state
-      if (isOverviewLoading) {
-        console.log("Loading user overview data...");
-        return;
-      }
-  
-      // Error state
-      if (overViewerror) {
-        console.error("Error fetching user overview data:", overViewerror);
-        return;
-      }
-  
-      // Successfully fetched data
-      if (overviewData) {
-        console.log(overviewData?.data, "i'm getting overview data");
-  
-        const { delivered, pending, total } = overviewData?.data || {};
-  
-        // Safely set state values
-        setDelivery(delivered ?? 0); // Default to 0 if undefined
-        setPlaceOrder(pending ?? 0); // Default to 0 if undefined
-        setConsultation(total ?? 0); // Default to 0 if undefined
-      }
-    }, [overviewData, isOverviewLoading, overViewerror]);
-  
-  
+  const {
+    data: overviewData,
+    error: overViewerror,
+    isLoading: isOverviewLoading,
+  } = useGetPharmaCistOverViewDataIntentQuery();
+
+  const [delivery, setDelivery] = useState(null);
+  const [placeOrder, setPlaceOrder] = useState(null);
+  const [consultation, setConsultation] = useState(null);
+
+  useEffect(() => {
+    // Loading state
+    if (isOverviewLoading) {
+      console.log("Loading user overview data...");
+      return;
+    }
+
+    // Error state
+    if (overViewerror) {
+      console.error("Error fetching user overview data:", overViewerror);
+      return;
+    }
+
+    // Successfully fetched data
+    if (overviewData) {
+      console.log(overviewData?.data, "i'm getting overview data");
+
+      const { delivered, pending, total } = overviewData?.data || {};
+
+      // Safely set state values
+      setDelivery(delivered ?? 0); // Default to 0 if undefined
+      setPlaceOrder(pending ?? 0); // Default to 0 if undefined
+      setConsultation(total ?? 0); // Default to 0 if undefined
+    }
+  }, [overviewData, isOverviewLoading, overViewerror]);
+
+
 
 
   const doctorStats = [
@@ -170,8 +170,8 @@ const DoctorDashboardHomepage = () => {
       </div>
 
       {/* order table */}
-      <div className="mt-8 xl:mt-12 bg-white rounded-md px-5 md:px-10 xl:px-16 py-8 xl:py-10">
-        <div className="w-full flex flex-col md:flex-row gap-5 mb-8 items-center justify-between">
+      <div className="mt-8 xl:mt-12 bg-white rounded-md px-3 md:px-10 xl:px-16 py-8 xl:py-10">
+        <div className="w-full flex flex-col md:flex-row gap-5 mb-8 md:mb-0 items-center justify-between">
           <h2 className="font-semibold text-3xl text-categoryBtnColor">
             All order
           </h2>
@@ -188,8 +188,9 @@ const DoctorDashboardHomepage = () => {
             </Select>
           </div>
         </div>
-
-        <DashboardTable orders={allOrder} doctor={true} />
+        <div className="border rounded sm:border-none">
+          <DashboardTable orders={allOrder} doctor={true} />
+        </div>
       </div>
     </div>
   );

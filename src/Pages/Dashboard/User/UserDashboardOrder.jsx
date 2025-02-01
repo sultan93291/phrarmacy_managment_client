@@ -96,8 +96,13 @@ const UserDashboardOrder = () => {
 
   return (
     <div>
-      <div className=" bg-white rounded-md px-5 sm:px-10 xl:px-16 py-10">
+      <div className="mb-5 sm:hidden">
         <DashboardTitle title="My Order" />
+      </div>
+      <div className=" bg-white border sm:border-none rounded-md sm:px-10 xl:px-16 sm:py-10">
+        <div className="hidden sm:block">
+          <DashboardTitle title="My Order" />
+        </div>
 
         <DashboardTable orders={allOrder} />
       </div>

@@ -23,7 +23,7 @@ const PharmacistOrderManagement = () => {
     setActivePage(pageNumber);
   };
 
-  
+
   const [allOrder, setAllOrder] = useState([]);
 
   const {
@@ -145,16 +145,21 @@ const PharmacistOrderManagement = () => {
         </div>
       </div>
       {/* Table */}
-      <div className="bg-white rounded-md px-5 md:px-16 py-10 mt-12">
+      <div className="mt-10 sm:hidden">
         <DashboardTitle title="All Order" />
+      </div>
+      <div className="bg-white border sm:border-none rounded-md sm:px-5 md:px-16 sm:py-10 mt-10">
+        <div className="hidden sm:block">
+          <DashboardTitle title="All Order" />
+        </div>
         <DashboardTable orders={allOrder} pharmacist={true} />
       </div>
       {/* Pagination */}
-      <div className="mt-20 border-t border-[#E5E7EB] w-full flex flex-col md:flex-row gap-5 items-center justify-between py-6">
+      <div className="sm:mt-20 mt-10 border-t border-[#E5E7EB] w-full flex flex-col md:flex-row gap-5 items-center justify-between py-6">
         <p className="text-[#374151]">Showing 1 to 10 of 97 results</p>
 
         {/* pagination btn */}
-        <div className="h-10 border border-black/10 rounded-md flex gap-1 flex-wrap items-center">
+        <div className="h-10 rounded-md flex gap-1 justify-center sm:justify-start flex-wrap items-center">
           <button
             disabled={activePage === 1}
             onClick={() => handlePageChange(Math.max(1, activePage - 1))}

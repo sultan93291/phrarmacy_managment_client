@@ -5,7 +5,7 @@ const DashboardSidebarNavLinks = ({ dashboardNavLinks, setOpen }) => {
   const currentPath = useLocation().pathname;
 
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full space-y-3 sm:space-y-4">
       {dashboardNavLinks?.map((navLink) => (
         <NavLink
           key={navLink?.path}
