@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import checkImg from "../../assets/images/icon/check.svg";
 import CommonButtonV2 from "../Common/CommonButtonV2";
 import consulttionImg from "../../assets/images/consultation.png";
@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 function QuickConsultation() {
   const SiteURl = import.meta.env.VITE_SITE_URL;
   const [consultationData, setconsultationData] = useState();
+
+  const { id } = useParams();
 
   useEffect(() => {
     axios({
@@ -30,7 +32,9 @@ function QuickConsultation() {
           <div className="flex flex-col gap-10 md:gap-0 lg:flex-row items-center justify-between">
             {/* text wrapper  */}
             <div className="lg:max-w-[513px]">
-              <h3 className="xl:text--xl text-primary font-bold md:text-4xl text-2xl sm:text-3xl">{consultationData?.title}</h3>
+              <h3 className="xl:text--xl text-primary font-bold md:text-4xl text-2xl sm:text-3xl">
+                {consultationData?.title}
+              </h3>
               <p className="sm:text-[20px] mt-[10px] leading-[164%]">
                 {consultationData?.sub_description}
               </p>
@@ -38,20 +42,26 @@ function QuickConsultation() {
               <ul className="quick-consultation-feature mt-5">
                 <li>
                   <img src={checkImg} alt="checkImg" />
-                  <p className="sm:text-[18px] leading-[164%]">{consultationData?.features.feature1}</p>
+                  <p className="sm:text-[18px] leading-[164%]">
+                    {consultationData?.features.feature1}
+                  </p>
                 </li>
                 <li>
                   <img src={checkImg} alt="checkImg" />
-                  <p className="sm:text-[18px] leading-[164%]">{consultationData?.features.feature2}</p>
+                  <p className="sm:text-[18px] leading-[164%]">
+                    {consultationData?.features.feature2}
+                  </p>
                 </li>
                 <li>
                   <img src={checkImg} alt="checkImg" />
-                  <p className="sm:text-[18px] leading-[164%]">{<p>{consultationData?.features.feature3}</p>}</p>
+                  <p className="sm:text-[18px] leading-[164%]">
+                    {<p>{consultationData?.features.feature3}</p>}
+                  </p>
                 </li>
               </ul>
               {/* btn  */}
               <div className="mt-9">
-                <Link to={"/consultation"}>
+                <Link to={`/treatment/consultation/${consultationData?.id}`}>
                   <CommonButtonV2
                     type="fill"
                     text={consultationData?.button?.name}

@@ -15,6 +15,13 @@ import { Link } from "react-router-dom";
 function MedicineDetails({ data }) {
   console.log("my details ", data);
 
+  const [selectedValue, setSelectedValue] = useState("1"); // State to store selected value
+
+  const handleValueChange = value => {
+    setSelectedValue(value); // Update the selected value
+    console.log("Selected Value:", value); // Log it for debugging
+  };
+
   const images = [
     {
       img_url:
@@ -129,25 +136,27 @@ function MedicineDetails({ data }) {
           <div className="border-[#78D0FF] relative rounded-lg border-4 mt-14 p-8 max-w-[400px]">
             <div>
               <h3 className="text-[#02558A] font-semibold pb-4">Quantity</h3>
-              <Select>
+              <Select onValueChange={handleValueChange}>
                 <SelectTrigger className="w-full bg-[#DFF1FF] border-[#DFF1FF]">
-                  <SelectValue placeholder="1 month supply (60 tablets) " />
+                  <SelectValue
+                    placeholder={`1 month supply (${data?.quantity * 1})`}
+                  />
                 </SelectTrigger>
                 <SelectContent className={"font-medium"}>
                   <SelectItem value="1">
-                    1 month supply (60 tablets){" "}
+                    1 month supply ({data?.quantity * 1}){" "}
                   </SelectItem>
                   <SelectItem value="2">
-                    2 month supply (60 tablets){" "}
+                    2 month supply ({data?.quantity * 2}){" "}
                   </SelectItem>
                   <SelectItem value="3">
-                    3 month supply (60 tablets){" "}
+                    3 month supply ({data?.quantity * 3}){" "}
                   </SelectItem>
                 </SelectContent>
               </Select>
 
               <h3 className="font-bold text-[#02558A] text-xl pt-5">
-                £ {data?.price}{" "}
+                £ {data?.price * selectedValue}{" "}
               </h3>
             </div>
 

@@ -56,19 +56,19 @@ function Footer() {
               </ul>
               {/* footer contacts  */}
               <ul data-aos="zoom-up"
-                data-aos-duration="2000" className="footer-contacts mt-[50px]">
+                data-aos-duration="2000" className="footer-contacts mt-[30px] sm:mt-[50px]">
                 <li data-aos="zoom-up"
                   data-aos-duration="2000">
                   <TiLocationOutline />
                   23 Main Street, 12345,Pakistan
                 </li>
                 <li data-aos="zoom-up"
-                  data-aos-duration="2000" className="mt-7">
+                  data-aos-duration="2000" className="mt-4 sm:mt-7">
                   <MdOutlineEmail />
                   <Link to={"/"}>alihassanux@gmail.com</Link>
                 </li>
                 <li data-aos="zoom-up"
-                  data-aos-duration="2000" className="mt-7">
+                  data-aos-duration="2000" className="mt-4 sm:mt-7">
                   <MdOutlinePhone />
                   <Link to={"/"}>1234567890</Link>
                 </li>

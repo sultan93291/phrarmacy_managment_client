@@ -481,6 +481,7 @@ function StepForm() {
                 className="hidden"
               />
               <label
+
                 htmlFor="deliveryAgreements"
                 className="relative cursor-pointer pl-8 lg:pl-[60px]"
               >

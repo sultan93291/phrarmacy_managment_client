@@ -98,10 +98,10 @@ const PharmacistOrderDetailsPage = () => {
       </div>
 
       {/* Details */}
-      <div className="mt-5 flex gap-10 font-nunito w-full">
+      <div className="mt-5 flex gap-5 xl:gap-10 font-nunito w-full">
         {/* left content */}
         <div className="w-3/5">
-          <div className="bg-white rounded-lg px-12 py-16">
+          <div className="bg-white rounded-lg px-6 xl:px-12 py-10 xl:py-16">
             {/* title */}
             <h2 className="text-3xl font-bold text-[#052D4C]">Order Details</h2>
 
@@ -151,39 +151,37 @@ const PharmacistOrderDetailsPage = () => {
 
             {/* order information */}
             <div className="mt-12">
-              <div className="mt-12">
-                {/* table title */}
-                <div className="w-full flex items-center pb-4 border-b border-[#E7EBF4]">
-                  <div className="w-1/2 text-start">
-                    <h2 className="font-bold text-lg">Description</h2>
+              {/* table title */}
+              <div className="w-full flex items-center pb-4 border-b border-[#E7EBF4]">
+                <div className="w-1/2 text-start">
+                  <h2 className="font-bold text-lg">Description</h2>
+                </div>
+                <div className="w-1/2 font-bold text-lg flex items-center justify-between">
+                  <h2>Quantity</h2>
+                  <h2 className="mr-8">Price</h2>
+                  <h2>Amount</h2>
+                </div>
+              </div>
+
+              {/* table body */}
+              {MedicindeInfo?.order?.order_items?.map(med => (
+                <div
+                  key={med.medicine}
+                  className="w-full flex items-center py-2 border-b border-[#E7EBF4]"
+                >
+                  <div className="w-1/2 text-start space-y-2">
+                    <h2 className="font-bold text-base">{med?.medicine}</h2>
+                    <p className="text-sm">
+                      {med?.quantity} Medicine included{" "}
+                    </p>
                   </div>
-                  <div className="w-1/2 font-bold text-lg flex items-center justify-between">
-                    <h2>Quantity</h2>
-                    <h2 className="mr-8">Price</h2>
-                    <h2>Amount</h2>
+                  <div className="w-1/2 font-bold text-center text-base flex items-center justify-between pl-5">
+                    <h2>{med?.quantity}</h2>
+                    <h2>$ {med?.unit_price}</h2>
+                    <h2>$ {med?.total_price}</h2>
                   </div>
                 </div>
-
-                {/* table body */}
-                {MedicindeInfo?.order?.order_items?.map(med => (
-                  <div
-                    key={med.medicine}
-                    className="w-full flex items-center py-2 border-b border-[#E7EBF4]"
-                  >
-                    <div className="w-1/2 text-start space-y-2">
-                      <h2 className="font-bold text-base">{med?.medicine}</h2>
-                      <p className="text-sm">
-                        {med?.quantity} Medicine included{" "}
-                      </p>
-                    </div>
-                    <div className="w-1/2 font-bold text-center text-base flex items-center justify-between pl-5">
-                      <h2>{med?.quantity}</h2>
-                      <h2>$ {med?.unit_price}</h2>
-                      <h2>$ {med?.total_price}</h2>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              ))}
             </div>
           </div>
 
@@ -326,7 +324,7 @@ const PharmacistOrderDetailsPage = () => {
                     handleUpdateStatus(value);
                   }}
                 >
-                  <SelectTrigger className="w-40 border font-semibold text-base h-12 rounded-xl px-8 font-nunito">
+                  <SelectTrigger className="max-w-40 border font-semibold text-base h-12 rounded-xl font-nunito">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent>
