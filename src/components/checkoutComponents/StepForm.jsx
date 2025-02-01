@@ -121,15 +121,15 @@ function StepForm() {
           <div className="step-one">
             {/* {/ step title /} */}
             <div className="max-w-[882px] mx-auto text-center mt-12 md:my-[100px]">
-              <h3 className="md:text--xl text-primary text-3xl sm:text-4xl font-bold mb-[60px]">
+              <h3 className="md:text--xl text-primary text-[27px] sm:text-4xl font-bold mb-[20px] sm:mb-[60px]">
                 Where should we deliver your order?
               </h3>
-              <p className="text-xl md:text-[24px] text-[rgba(0,0,0,0.60)]">
+              <p className="text-lg sm:text-xl text-left sm:text-center md:text-[24px] text-[rgba(0,0,0,0.60)]">
                 We ensure all packages are shipped in discreet, plain packaging
                 with no mention of MyHealthNeedsLondon, guaranteeing your
                 privacy.
               </p>
-              <p className="text-xl md:text-[24px] text-[rgba(0,0,0,0.60)] mt-[30px]">
+              <p className="text-lg sm:text-xl text-left sm:text-center md:text-[24px] text-[rgba(0,0,0,0.60)] mt-3 sm:mt-[30px]">
                 In the next step, you can select your preferred delivery method.
                 For now, please provide your delivery address to proceed.
               </p>
@@ -137,7 +137,7 @@ function StepForm() {
             {/* {/ name & email  /} */}
             <div className="grid md:grid-cols-2 gap-5 md:gap-10">
               {/* {/ name  /} */}
-              <div className="mt-[60px]">
+              <div className="mt-[40px] sm:mt-[60px]">
                 <div>
                   <label htmlFor="name">Name</label>
                   <input
@@ -164,7 +164,7 @@ function StepForm() {
               </div>
             </div>
             {/* {/ billing address  /} */}
-            <div className="mt-[60px]">
+            <div className="mt-[30px] sm:mt-[60px]">
               <div>
                 <label htmlFor="email">Billing address</label>
                 <textarea
@@ -179,7 +179,7 @@ function StepForm() {
               {/* {/ find location  /} */}
               <div className="mt-10 max-w-fit mx-auto cursor-pointer">
                 <div className="flex items-center gap-2 text-[20px] font-medium text-white bg-primary rounded-[10px] py-4 px-6">
-                  <p className="text-[24px]">
+                  <p className="sm:text-[24px]">
                     <CiLocationOn />
                   </p>
                   Find my address

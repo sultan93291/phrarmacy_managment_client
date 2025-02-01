@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 function PersonalizedSection() {
   return (
-    <section className="px-5 xl:px-[47px]">
+    <section className="px-4 xl:px-[47px]">
       <div
         data-aos="zoom-up"
         data-aos-duration="2000"

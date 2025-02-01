@@ -104,7 +104,7 @@ function Navbar() {
             />
             <button
               type="submit"
-              className="absolute top-[50%] right-2 sm:right-[20px] h-6 w-6 translate-y-[-50%] text-[20px] text-headerSearchbarPlaceHolder"
+              className="absolute top-[50%] right-1 sm:right-[20px] h-6 w-6 translate-y-[-50%] sm:text-[20px] text-headerSearchbarPlaceHolder"
             >
               <GoSearch />
             </button>
