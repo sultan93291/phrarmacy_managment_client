@@ -2,10 +2,11 @@
 import { Link, NavLink } from 'react-router-dom';
 import Logo from '@/assets/images/logo/logo.svg';
 import userIcon from '@/assets/images/icon/User-rounded.svg';
-
+import { AuthContext } from "@/provider/AuthProvider/AuthContextProvider";
+import { useContext } from 'react';
 
 const SideBarNav = ({ isOpen, setOpen, navLinks }) => {
-
+  const { isAuthenticated } = useContext(AuthContext);
   return (
     <>
       {/* Blur Overlay */}
@@ -42,16 +43,18 @@ const SideBarNav = ({ isOpen, setOpen, navLinks }) => {
         </ul>
 
         {/* btn */}
-        <div className='mt-4 w-fit'>
-          <Link to={'/auth/signup'}>
-            <div className="px-4 py-2 btn-gradient rounded-full flex items-center gap-2">
-              <p className="text-sm font-semibold text-white">Sign Up</p>
-              <div className="size-4 bg-white rounded-full flex items-center justify-center">
-                <img src={userIcon} alt="userIcon" />
+        {
+          !isAuthenticated && <div className='mt-4  w-fit'>
+            <Link to={'/auth/signup'}>
+              <div className="px-4 py-2 btn-gradient rounded-full flex items-center gap-2">
+                <p className="text-sm font-semibold text-white">Sign Up</p>
+                <div className="size-4 bg-white rounded-full flex items-center justify-center">
+                  <img src={userIcon} alt="userIcon" />
+                </div>
               </div>
-            </div>
-          </Link>
-        </div>
+            </Link>
+          </div>
+        }
       </div>
     </>
   );

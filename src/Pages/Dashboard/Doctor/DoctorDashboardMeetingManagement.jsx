@@ -133,13 +133,18 @@ const DoctorDashboardMeetingManagement = () => {
 
   return (
     <div>
-      <div className=" bg-white rounded-md px-5 xl:px-16 py-7 xl:py-10">
+      <div className="mb-5 sm:hidden">
         <DashboardTitle title="Meeting Management" />
+      </div>
+      <div className=" bg-white rounded-md sm:px-5 xl:px-16 sm:py-7 xl:py-10">
+        <div className="mb-5 hidden sm:block">
+          <DashboardTitle title="Meeting Management" />
+        </div>
 
         {/* Table */}
-        <div className="rounded-lg bg-white  md:rounded-xl lg:rounded-2xl">
+        <div className="rounded-lg border sm:border-none bg-white  md:rounded-xl lg:rounded-2xl">
           <div className="overflow-x-auto">
-            <table className="  w-full font-inter mt-5 xl:mt-10">
+            <table className="  w-full font-inter xl:mt-10">
               <thead>
                 <tr className="bg-[#F2F3F4] text-sm font-bold text-[#222E48CC] md:text-base lg:text-lg">
                   {tableHead.map(item => (
@@ -191,7 +196,7 @@ const DoctorDashboardMeetingManagement = () => {
                       <Select
                         onValueChange={value => {
                           setvalue(value);
-                          handleUpdate({ value, id:1 });
+                          handleUpdate({ value, id: 1 });
                         }}
                       >
                         <SelectTrigger className="border h-10 w-32 rounded-xl px-4 py-1 text-base text-[#6B7280] font-md">
