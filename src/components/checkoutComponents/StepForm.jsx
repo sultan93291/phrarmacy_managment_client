@@ -9,6 +9,13 @@ import { UploadButton } from "@bytescale/upload-widget-react";
 import prescriptionIcon from "../../assets/images/icon/prescription.svg";
 import pdfIcon from "../../assets/images/icon/pdf.png";
 import axios from "axios";
+//ashiq
+import { Checkbox } from "@/components/ui/checkbox";
+import orderImg from "../../assets/images/cards/orderImg.png";
+import Receipt from "./Receipt";
+import PaymentCard from "@/Pages/Dashboard/User/PaymentCard";
+import { useGetCardDataIntentQuery } from "@/Redux/features/api/apiSlice";
+  
 const SiteURl = import.meta.env.VITE_SITE_URL;
 
 const suggestedMedicine = [
@@ -85,7 +92,8 @@ function StepForm() {
   };
 
   const handleNext = () => {
-    setCurrentStep((prevStep) => (prevStep < 3 ? prevStep + 1 : prevStep));
+    setCurrentStep((prevStep) => (prevStep < 4 ? prevStep + 1 : prevStep));
+
     window.scrollTo(0, 0);
   };
 
@@ -94,6 +102,15 @@ function StepForm() {
     accept: ".pdf",
   };
 
+  const {
+    data: cardData,
+    isLoading,
+    isError,
+    error,
+  } = useGetCardDataIntentQuery();
+
+  console.log(cardData, isLoading, error, isError);
+  const [selectedCard, setSelectedCard] = useState(null);
   return (
     <div>
       {/* {/ step indicator  /} */}
@@ -109,6 +126,10 @@ function StepForm() {
           </li>
           <li className={currentStep >= 3 ? "active" : ""}>
             <p className="icon">3</p>
+            <span>Receipt</span>
+          </li>
+          <li className={currentStep >= 4 ? "active" : ""}>
+            <p className="icon">4</p>
             <span>Receipt</span>
           </li>
         </ul>
@@ -310,11 +331,13 @@ function StepForm() {
 
             {/* {/ delivery information  /} */}
             <div>
+
               <div className="text-center max-w-[882px] mx-auto mt-14 lg:mt-[172px]">
                 <h3 className="md:text--xl text-2xl sm:text-4xl text-primary font-bold mb-5">
                   Delivery Information
                 </h3>
                 <p className="text-left sm:text-xl md:text-[24px] text-primary">
+
                   {deliveryData?.description}
                 </p>
                 <p className="text-left sm:text-xl md:text-[24px] text-primary mt-[30px]">
@@ -338,7 +361,9 @@ function StepForm() {
                     <h4 className="text-base md:text-[24px] font-semibold text-primryDark mb-[10px]">
                       {deliveryData?.option_name}
                     </h4>
+
                     <p className="text-sm md:text-lg">
+
                       {deliveryData?.option_sub_description}
                     </p>
                   </div>
@@ -496,12 +521,146 @@ function StepForm() {
               </h4>
               <div className="flex items-center justify-center">
                 <Link
-                  to={"/"}
-                  className="flex w-[250px] lg:w-[566px] items-center justify-center px-4 py-3 lg:p-[22px] gap-5 bg-primryDark rounded-[10px] text-base lg:text-[24px] font-bold text-white"
+                  onClick={handleNext}
+                   className="flex w-[250px] lg:w-[566px] items-center justify-center px-4 py-3 lg:p-[22px] gap-5 bg-primryDark rounded-[10px] text-base lg:text-[24px] font-bold text-white"
                 >
                   Pay with Card
                 </Link>
               </div>
+            </div>
+          </div>
+        )}
+        {/* Ashiq  */}
+        {/* {/ step 3   /} */}
+        {currentStep === 3 && (
+          <div className="setp-two mt-16 lg:mt-[110px]">
+            {/* payment methord  */}
+            <div className="flex gap-10 xl:gap-40 flex-col lg:flex-row justify-center items-center  ">
+              <div className="flex order-2 lg:order-1 flex-col space-y-8 ">
+                <div>
+                  <p className="text-lg lg:text-[25px] pb-2 font-bold text-primryDark border-b border-[#ACACAC]">
+                    Payment Method
+                  </p>
+                </div>
+
+                <div className="flex sm:flex-row flex-col justify-between gap-4">
+    {cardData?.data?.length > 0 &&
+      cardData.data.map((item, index) => {
+        return (
+          <div
+            key={index}
+            onClick={() => setSelectedCard(index)}
+           
+          >
+            <PaymentCard  className={`h-[200px] bg-left 
+              ${
+                selectedCard === index
+                  ? "border-4 border-blue-500 shadow-2xl"
+                  : "border-4 border-transparent"
+              }`} data={item} />
+          </div>
+        );
+      })}
+  </div>
+
+                <div className="flex items-center gap-2 p-2 lg:p-4 border border-[#0063A9] rounded-lg">
+                  <Checkbox />
+                  <p className=" text-sm lg:text-lg font-nunito ">
+                    Your subscription will automatically renew after 30 days.
+                  </p>
+                </div>
+                <div>
+                  <button
+                    onClick={handleNext}
+                    className="flex w-full text-sm lg:text-base items-center justify-center p-3 lg:p-[20px] gap-5 bg-primryDark rounded-[10px]  text-white"
+                  >
+                    Pay EURO59.28
+                  </button>
+                </div>
+                <div className="lg:w-[620px] mx-auto">
+                  <p className="text-sm text-center font-nunito text-[#ACACAC]">
+                    Your personal data will be used to process your order,
+                    support your experience throughout this website, and for
+                    other purposes described in our privacy policy.
+                  </p>
+                </div>
+              </div>
+
+              <div className="max-w-md order-1 lg:order-2 p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-lg">
+                {/* Order Summary Title */}
+                <h2 className=" text-base lg:text-2xl font-nunito font-semibold text-gray-800 border-b pb-2">
+                  Order Summary
+                </h2>
+
+                {/* Product Info */}
+                <div className="flex items-center gap-4 py-4 border-b">
+                  <img
+                    src={orderImg}
+                    alt="Product"
+                    className="w-12 h-12 rounded-md"
+                  />
+                  <div className="flex-1">
+                    <p className="lg:text-lg text-sm font-semibold font-nunito text-blue-600">
+                      Mounjaro® starting dose 2.5mg
+                    </p>
+                    <p className="text-xs font-nunito text-gray-500">
+                      Mounjaro
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-semibold font-nunito text-gray-800">
+                      $49.80
+                    </p>
+                    <p className="text-xs font-nunito text-gray-500">Qty: 2</p>
+                  </div>
+                </div>
+
+                {/* Discount Code Input */}
+                <div className="flex items-center gap-2 py-4 border-b">
+                  <input
+                    className="placeholder:text-xs lg:placeholder:text-base order-summery py-2 "
+                    style={{ padding: "8px" }}
+                    type="text"
+                    placeholder="Gift or discount code"
+                  />
+                  <button className="px-4 py-3 font-nunito text-sm text-white bg-gray-600 rounded-md hover:bg-gray-700 transition duration-300">
+                    Apply
+                  </button>
+                </div>
+
+                {/* Pricing Details */}
+                <div className="space-y-2 py-4 border-b text-gray-700">
+                  <div className="flex font-nunito justify-between">
+                    <span>Subtotal</span>
+                    <span>$49.80</span>
+                  </div>
+                  <div className="flex font-nunito justify-between">
+                    <span>Royal Mail Tracked</span>
+                    <span>$7.24</span>
+                  </div>
+                </div>
+
+                {/* Total Price */}
+                <div className="pt-4 flex justify-between items-center font-nunito">
+                  <div>
+                    <p className="text-base font-nunito">Total</p>
+                    <p className="text-xs text-gray-500">
+                      Including $2.24 in taxes
+                    </p>
+                  </div>
+                  <p className="text-xl lg:text-2xl  font-bold text-gray-900">
+                    $59.28
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {/* {/ step 4   /} */}
+        {currentStep === 4 && (
+          <div className="setp-two mt-1 lg:mt-[110px]">
+            <div>
+              <Receipt />
             </div>
           </div>
         )}
