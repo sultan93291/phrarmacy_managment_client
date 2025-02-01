@@ -44,7 +44,7 @@ function StepForm() {
   const [isAddressEditMode, setIsAddressEditMode] = useState(false);
   const [uploadedFile, setUploadedFile] = useState([]);
 
-  const handleUploadComplete = files => {
+  const handleUploadComplete = (files) => {
     const file = files[0];
     if (file && file?.originalFile?.file?.type !== "application/pdf") {
       alert("Please upload only PDF files.");
@@ -60,11 +60,11 @@ function StepForm() {
       method: "get",
       url: `${SiteURl}/api/get-delivery-info-data`,
     })
-      .then(res => {
+      .then((res) => {
         console.log(res.data.data);
         setdeliveryData(res.data.data);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }, []);
@@ -80,12 +80,12 @@ function StepForm() {
     setIsAddressEditMode(!isAddressEditMode);
   };
 
-  const onSumbit = data => {
+  const onSumbit = (data) => {
     console.log(data);
   };
 
   const handleNext = () => {
-    setCurrentStep(prevStep => (prevStep < 3 ? prevStep + 1 : prevStep));
+    setCurrentStep((prevStep) => (prevStep < 3 ? prevStep + 1 : prevStep));
     window.scrollTo(0, 0);
   };
 
@@ -178,7 +178,7 @@ function StepForm() {
               {errors?.billingAddress && <p>{errors.billingAddress}</p>}
               {/* {/ find location  /} */}
               <div className="mt-10 max-w-fit mx-auto cursor-pointer">
-                <div className="flex items-center gap-2 text-[20px] font-medium text-white bg-primary rounded-[10px] py-4 px-6">
+                <div className="flex items-center gap-2 text-base lg:text-[20px] font-medium text-white bg-primary rounded-[10px] py-2 lg:py-4 px-2 lg:px-6">
                   <p className="sm:text-[24px]">
                     <CiLocationOn />
                   </p>
@@ -189,8 +189,13 @@ function StepForm() {
             {/* {/ contact, city & post code  /} */}
             <div className="grid md:grid-cols-3 gap-5 md:gap-10">
               {/* {/ contact  /} */}
-              <div className="mt-[60px]">
-                <label htmlFor="contact">Contact</label>
+              <div className="mt-8 lg:mt-[60px]">
+                <label
+                  className="text-xs sm:text-sm lg:text-[22px]"
+                  htmlFor="contact"
+                >
+                  Contact
+                </label>
                 <Controller
                   control={control}
                   name="phone"
@@ -198,7 +203,7 @@ function StepForm() {
                     <PhoneInput
                       country={"us"}
                       value={field.value}
-                      onChange={phone => field.onChange(phone)}
+                      onChange={(phone) => field.onChange(phone)}
                     />
                   )}
                   rules={{ required: "Phone number is required" }}
@@ -235,8 +240,11 @@ function StepForm() {
             </div>
 
             {/* gp name and address */}
-            <div className="flex flex-col md:flex-row items-center gap-8 pt-8">
-              <div className="max-w-5/12  flex flex-col">
+            <div
+              className="flex flex-col md:flex-row items-center 
+            gap-3 lg:gap-8 pt-8"
+            >
+              <div className="max-w-5/12 flex flex-col">
                 <label htmlFor="">GP Name</label>
                 <input
                   className="border rounded-lg px-4 py-2"
@@ -258,7 +266,7 @@ function StepForm() {
               </div>
             </div>
             {/* {/ add prescription  /} */}
-            <div className="mt-[100px] add-prescription">
+            <div className="mt-14 lg:mt-[100px] add-prescription">
               <h4 className="text-[28px] sm:text-[36px] text-primryDark font-bold mb-10">
                 Add your prescription file
               </h4>
@@ -268,8 +276,9 @@ function StepForm() {
                   <div>
                     <img
                       className="max-w-[120px] h-[120px] mb-5"
-                      src={`${uploadedFile.originalFile ? pdfIcon : prescriptionIcon
-                        }`}
+                      src={`${
+                        uploadedFile.originalFile ? pdfIcon : prescriptionIcon
+                      }`}
                       alt=""
                     />
                     <p className="mb-5 text-[18px] font-semibold">
@@ -284,7 +293,7 @@ function StepForm() {
                     render={({ field }) => (
                       <UploadButton
                         options={options}
-                        onComplete={files => {
+                        onComplete={(files) => {
                           handleUploadComplete(files);
                           field.onChange(files[0]);
                         }}
@@ -301,8 +310,10 @@ function StepForm() {
 
             {/* {/ delivery information  /} */}
             <div>
-              <div className="text-center max-w-[882px] mx-auto mt-[172px]">
-                <h3 className="md:text--xl text-3xl sm:text-4xl text-primary font-bold mb-5">Delivery Information</h3>
+              <div className="text-center max-w-[882px] mx-auto mt-14 lg:mt-[172px]">
+                <h3 className="md:text--xl text-3xl sm:text-4xl text-primary font-bold mb-5">
+                  Delivery Information
+                </h3>
                 <p className="text-lg sm:text-xl md:text-[24px] text-primary">
                   {deliveryData?.description}
                 </p>
@@ -321,13 +332,15 @@ function StepForm() {
                 />
                 <label
                   htmlFor="royalMail"
-                  className="royalMail-radio relative py-[36px] pr-10 pl-[100px] bg-primaryLight border-[2px] border-primryDark rounded-[10px] cursor-pointer"
+                  className="royalMail-radio relative lg:py-[36px] lg:pr-10 pl-[50px] lg:pl-[100px] bg-primaryLight border-[2px] border-primryDark rounded-[10px] cursor-pointer"
                 >
-                  <div className="max-w-[800px]">
-                    <h4 className="text-xl md:text-[24px] font-semibold text-primryDark mb-[10px]">
+                  <div className="max-w-[800px] py-2 lg:py-0">
+                    <h4 className="text-base md:text-[24px] font-semibold text-primryDark mb-[10px]">
                       {deliveryData?.option_name}
                     </h4>
-                    <p className="text-lg">{deliveryData?.option_sub_description}</p>
+                    <p className="text-sm md:text-lg">
+                      {deliveryData?.option_sub_description}
+                    </p>
                   </div>
                 </label>
               </div>
@@ -396,7 +409,7 @@ function StepForm() {
                   ) : (
                     <textarea
                       value={deliveryAddress}
-                      onChange={e => setDeliveryAddress(e.target.value)}
+                      onChange={(e) => setDeliveryAddress(e.target.value)}
                       className="text-[24px] text-[rgba(0,0,0,0.60)] !h-[200px] resize-none"
                     />
                   )}

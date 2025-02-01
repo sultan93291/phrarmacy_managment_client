@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -74,7 +74,7 @@
     cursor: pointer;
     transition: background 0.3s;
   }
- 
+
   /* Change the background on hover */
   .range-slider:hover {
     background: #def105;
@@ -189,14 +189,23 @@
     border-radius: 10px;
     outline: none;
     @apply border-[rgba(0,0,0,0.30)];
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      font-size: 20px;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 18px;
+      height: 46px;
+    }
   }
   .royalmail-radio-wrap label::before,
   .royalMail-radio::after {
-    content: '';
-    @apply absolute h-10 w-10 top-1/2 translate-y-[-50%] left-10 bg-white rounded-full border border-[rgba(0,0,0,0.5)];
+    content: "";
+    @apply absolute h-6 w-6 lg:h-10 lg:w-10 top-1/2 translate-y-[-50%] left-2 lg:left-10 bg-white rounded-full border border-[rgba(0,0,0,0.5)];
   }
   .royalmail-radio-wrap input:checked + label::after {
-    content: '';
+    content: "";
     @apply h-6 w-6 bg-primryDark left-[48px];
   }
   .treatment-preference-medicine li {
@@ -212,11 +221,11 @@
     @apply relative;
   }
   .checkout-stepform .setp-two label:before {
-    content: '';
+    content: "";
     @apply absolute top-[30px] left-10 h-[34px] w-[34px] bg-white border border-[rgba(0,0,0,0.6)] rounded-[4px];
   }
   .checkout-stepform .setp-two input:checked + label:after {
-    content: '';
+    content: "";
     @apply absolute top-[35px] left-[47px] w-[9px] h-[18px] border-primryDark;
     border-width: 0 3px 3px 0;
     transform: rotate(45deg);
@@ -239,7 +248,7 @@
   }
 
   .royalmail-radio-wrap input:checked + label::after {
-    content: '';
+    content: "";
     @apply h-6 w-6 bg-primryDark left-[48px];
   }
   .add-prescription button {
@@ -308,7 +317,7 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-@media screen and (max-width:576px) {
+@media screen and (max-width: 576px) {
   .step-indicators li .icon {
     @apply h-10 w-10 flex items-center justify-center rounded-full border-[2px] border-indicatorsColor text-lg font-semibold text-indicatorsColor bg-white;
   }
