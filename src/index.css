@@ -89,7 +89,7 @@
     background: linear-gradient(0deg, #0ca6fc 0%, #6acaff 100%);
   }
   .text--xl {
-    @apply text-base md:text-lg lg:text-[48px] font-bold text-primary leading-normal;
+    @apply text-[24px] sm:text-[26px] lg:text-[48px] font-bold text-primary leading-normal;
   }
   .book-btn {
     @apply h-[42px] w-[42px] px-4 bg-menuLinkColor rounded-full overflow-hidden duration-200 ease-in-out hover:w-[138px];
@@ -202,7 +202,7 @@
   .royalmail-radio-wrap label::before,
   .royalMail-radio::after {
     content: "";
-    @apply absolute h-6 w-6 lg:h-10 lg:w-10 top-1/2 translate-y-[-50%] left-2 lg:left-10 bg-white rounded-full border border-[rgba(0,0,0,0.5)];
+    @apply absolute h-5 w-5 lg:h-10 lg:w-10 top-1/2 translate-y-[-50%] left-2 lg:left-10 bg-white rounded-full border border-[rgba(0,0,0,0.5)];
   }
   .royalmail-radio-wrap input:checked + label::after {
     content: "";
@@ -212,17 +212,17 @@
     @apply flex items-center justify-between;
   }
   .treatment-preference-medicine li p {
-    @apply text-[18px] text-[rgba(0,0,0,0.60)] mt-5 first:mt-0 font-medium;
+    @apply text-base lg:text-[18px] text-[rgba(0,0,0,0.60)] mt-5 first:mt-0 font-medium;
   }
   .treatment-preference-medicine li.total-pay p {
-    @apply text-primryDark;
+    @apply text-base lg:text-[18px] text-primryDark;
   }
   .suggested-medicine label {
     @apply relative;
   }
   .checkout-stepform .setp-two label:before {
     content: "";
-    @apply absolute top-[30px] left-2 lg:left-10 lg:h-[34px] h-6 lg:w-[34px] w-6 bg-white border border-[rgba(0,0,0,0.6)] rounded-[4px];
+    @apply absolute top-[30px] left-2 lg:left-10 lg:h-[34px] h-5 lg:w-[34px] w-5 bg-white border border-[rgba(0,0,0,0.6)] rounded-[4px];
   }
   .checkout-stepform .setp-two input:checked + label:after {
     content: "";
@@ -234,6 +234,7 @@
     border-radius: 0px;
     margin: 0px 15px 5px 5px;
   }
+
   .agreement label:before {
     @apply !top-0 !left-0;
   }
@@ -249,10 +250,10 @@
 
   .royalmail-radio-wrap input:checked + label::after {
     content: "";
-    @apply h-6 w-6 bg-primryDark left-[48px];
+    @apply lg:h-6 h-5 lg:w-6 w-5 bg-primryDark left-[7px] lg:left-[48px];
   }
   .add-prescription button {
-    @apply text-[20px] py-5 px-10 bg-primary text-white font-semibold rounded-[10px];
+    @apply text-base lg:text-[20px] py-3 lg:py-5 px-8 lg:px-10 bg-primary text-white font-semibold rounded-[10px];
   }
 }
 
@@ -329,9 +330,12 @@
     @apply w-full py-2 px-3 text-[rgba(0,0,0,0.80)] bg-transparent border text-lg border-[rgba(0,0,0,0.30)] rounded-[10px] focus:outline-none sm:text-[24px];
   }
   .checkout-stepform label {
-    @apply block text-[22px] font-semibold mb-[10px] text-[rgba(0,0,0,0.80)];
+    @apply block text-base lg:text-[22px] font-semibold mb-[10px] text-[rgba(0,0,0,0.80)];
   }
   .checkout-stepform textarea {
     @apply h-[200px] resize-none;
+  }
+  .checkout-stepform .setp-two input:checked + label:after {
+    margin: -5px 4px 5px 1px;
   }
 }
