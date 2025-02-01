@@ -10,7 +10,6 @@ import { setassesmentData } from "@/Redux/features/assesmentSlice";
 import { useDispatch } from "react-redux";
 
 function AssessmentPage() {
-
   const navigate = useNavigate();
   const { id } = useParams();
   const [healthQuestion, sethealthQuestion] = useState([]);
@@ -19,7 +18,6 @@ function AssessmentPage() {
   const dispatch = useDispatch();
 
   console.log(id);
-
 
   useEffect(() => {
     axios({
@@ -43,17 +41,71 @@ function AssessmentPage() {
   } = useForm();
   const onSubmit = data => {
     console.log(data);
-    const filteredData = Object.fromEntries(
-      Object.entries(data).filter(
-        ([_, value]) => value !== null && value !== ""
-      )
-    );
-    console.log(filteredData);
-    const medicineData = { ...filteredData, id };
+    // const filteredData = Object.fromEntries(
+    //   Object.entries(data).filter(
+    //     ([_, value]) => value !== null && value !== ""
+    //   )
+    // );
+    // console.log(filteredData);
+    // const medicineData = { ...filteredData, id };
 
-    dispatch(setassesmentData(medicineData));
+    const fieldkeys = Object.keys(data);
 
-    // navigate("/medicine-details");
+    let storeQuestion = [
+      {
+        assetment_id: "2",
+        selected_option: null,
+        notes: null,
+      },
+    ];
+
+    const dataValue = fieldkeys.map(item => {
+      const assetementId = item.split("_")[2];
+
+      return {
+        assetment_id: item.split("_")[2],
+        selected_option: item.includes("radio_input") ? data[item] : null,
+        notes: item.includes("note_input") ? data[item] : null,
+      };
+    });
+
+    console.log("raw data", dataValue);
+
+    const combinedData = [];
+
+    dataValue.forEach(item => {
+      const existingItem = combinedData.find(
+        combinedItem => combinedItem.assetment_id === item.assetment_id
+      );
+
+      if (existingItem) {
+        // Merge the properties
+        if (item.selected_option !== null) {
+          existingItem.selected_option = item.selected_option;
+        }
+        if (item.notes !== null) {
+          existingItem.notes = item.notes;
+        }
+      } else {
+        // Add the item to the combinedData array
+        combinedData.push({ ...item });
+      }
+    });
+
+    console.log("refined", dataValue);
+
+    const finalData = combinedData.map((item, index) => {
+      return {
+        ...item,
+        result: healthQuestion[index].answer,
+      };
+    });
+
+    dispatch(setassesmentData(finalData));
+
+    navigate(`/medicine-details/${id}`);
+
+    console.log("final", finalData);
   };
 
   return (
@@ -62,7 +114,10 @@ function AssessmentPage() {
       <div data-aos="zoom-up" data-aos-duration="2000" className="container ">
         <FormHeader></FormHeader>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="py-8 sm:py-14 space-y-2.5">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="py-8 sm:py-14 space-y-2.5"
+        >
           {healthQuestion.map((item, index) => {
             return (
               <CommonQuestionBox
@@ -74,6 +129,7 @@ function AssessmentPage() {
                   data-aos-duration="2000"
                   className="flex flex-col space-y-5"
                 >
+                  {/* radio buttons */}
                   <div className="flex items-center flex-wrap gap-5">
                     {item.options.map(option => (
                       <div key={option?.id}>
@@ -82,7 +138,10 @@ function AssessmentPage() {
                           type="radio"
                           name={item.name} // Ensure consistency
                           id={`${item.id}-${option?.id}`} // Unique per option
-                          {...register(item.name, { required: true })} // Register using item.name
+                          {...register(`radio_input_${item.id}`, {
+                            required: true,
+                          })} // Register using item.name
+                          value={option.value}
                         />
                         <label
                           className="px-4 text-xs sm:text-base sm:px-6 cursor-pointer peer-checked:bg-primary peer-checked:text-white py-2 sm:py-1.5 text-primary rounded-full bg-[#DEF0FF]"
@@ -94,18 +153,26 @@ function AssessmentPage() {
                     ))}
                   </div>
 
+                  {/* notes */}
                   {item.note && (
                     <div className="flex flex-col gap-2">
                       <label className="text-subtitleText">{item?.note}</label>
                       <textarea
                         className="rounded-xl h-20 resize-none border border-borderLight p-3 sm:p-4 text-sm"
                         placeholder="Write here.."
-                        {...register(`${item.name}_note`, {
+                        {...register(`note_input_${item.id}`, {
                           required: !!item.note,
                         })} // Register only if note exists
                       ></textarea>
                     </div>
                   )}
+
+                  {/* hiddent input */}
+                  {/* <input
+                    type="text"
+                    {...register("result")}
+                    defaultValue={item.answer}
+                  /> */}
                 </div>
               </CommonQuestionBox>
             );
