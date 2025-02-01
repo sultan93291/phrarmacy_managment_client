@@ -30,13 +30,13 @@ const symptomsData = [
 
 function SymptomsSection() {
   return (
-    <section className="mb-10 sm:mb-20 2xl:py-[140px]">
+    <section className="mb-14 sm:my-20">
       <div className="container">
         {/* section-title  */}
         <div
           data-aos="zoom-in"
           data-aos-duration="1000"
-          className="flex flex-col sm:flex-row items-center justify-between gap-5"
+          className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-5"
         >
           <h2 className="text-2xl 2xl:text--xl font-bold text-primary leading-normal">25+ Symptoms Specialities</h2>
           <Link to={'/service'} className="text-xl 2xl:text-[24px] font-semibold text-[#01548B]">

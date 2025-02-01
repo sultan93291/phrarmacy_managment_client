@@ -25,11 +25,11 @@ function HeroSection() {
       });
   }, []);
   return (
-    <section className="px-5 xl:px-[47px] my-14 sm:my-20">
+    <section className="px-4 xl:px-[47px] mt-10 mb-14 sm:my-20">
       <div
         data-aos="zoom-up"
         data-aos-duration="1000"
-        className="bg-primary pt-10 sm:pt-0 rounded-2xl xl:rounded-[40px]"
+        className="bg-primary pt-5 sm:pt-0 rounded-2xl xl:rounded-[40px]"
       >
         <div className="container">
           <h1
