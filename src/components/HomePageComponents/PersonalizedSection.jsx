@@ -38,8 +38,8 @@ function PersonalizedSection() {
                   data-aos-duration="3000"
                   text="Learn more"
                   arrowIcon={ArrowIcon}
-                  width="45px"
-                  height="45px"
+                  width="35px"
+                  height="35px"
                   type="gradient"
                   size="small"
                 />

@@ -1,4 +1,4 @@
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Logo from "../assets/images/logo/logo.svg";
 import CartIcon from "../assets/images/icon/cart.svg";
 import { useForm } from "react-hook-form";
@@ -16,12 +16,12 @@ function Navbar() {
   const { role } = useAuth();
   const { register, handleSubmit } = useForm();
   const [isOpen, setOpen] = useState(false);
-  const onSubmit = data => {
+  const onSubmit = (data) => {
     console.log(data);
   };
   const { isAuthenticated } = useContext(AuthContext);
   const loggedInUser = useSelector(
-    state => state.loggedInuserSlice.loggedInUserData
+    (state) => state.loggedInuserSlice.loggedInUserData
   );
 
   const location = useLocation();
@@ -67,7 +67,7 @@ function Navbar() {
             </div>
             {/* menus  */}
             <ul className="xl:flex items-center gap-[30px] hidden ">
-              {navLinks?.map(navLink => {
+              {navLinks?.map((navLink) => {
                 if (navLink.title === "Login" && isAuthenticated) {
                   return null; // Don't render the "Login" link if the user is authenticated
                 }
@@ -116,14 +116,18 @@ function Navbar() {
                 role == "user"
                   ? "/dashboard/user/user-homepage"
                   : role == "doctor"
-                    ? "/dashboard/doctor/homepage"
-                    : role == "pharmacist"
-                      ? "/dashboard/pharmacist/homepage"
-                      : "/"
+                  ? "/dashboard/doctor/homepage"
+                  : role == "pharmacist"
+                  ? "/dashboard/pharmacist/homepage"
+                  : "/"
               }
               className="w-9 h-9 sm:w-[50px] sm:h-[50px] bg-white flex items-center justify-center rounded-full"
             >
-              <img className="w-5 h-5 sm:w-7 sm:h-7" src={CartIcon} alt={CartIcon} />
+              <img
+                className="w-5 h-5 sm:w-7 sm:h-7"
+                src={CartIcon}
+                alt={CartIcon}
+              />
             </Link>
           </div>
           {/* header btn  */}

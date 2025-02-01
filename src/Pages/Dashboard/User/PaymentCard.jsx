@@ -3,9 +3,10 @@ import cardTemplate from "@/assets/images/card_template.png";
 import { useSelector } from "react-redux";
 import DeleteCardModal from "@/components/Modals/DeleteCardModal";
 import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 
-const PaymentCard = ({ data }) => {
+const PaymentCard = ({ data,className }) => {
   console.log(data, "from payment page");
   const loggeInUserData = useSelector(
     state => state.loggedInuserSlice.loggedInUserData
@@ -16,7 +17,9 @@ const PaymentCard = ({ data }) => {
   return (
     <>
       <div
-        className="h-72 cursor-pointer bg-cover bg-center object-cover bg-no-repeat font-dmsans rounded-2xl p-5 flex flex-col items-center justify-center"
+
+        className={cn("h-72 cursor-pointer max-w-[480px]   bg-cover bg-center object-cover bg-no-repeat font-dmsans rounded-2xl p-5 flex flex-col items-center justify-center", className)}
+
         style={{ backgroundImage: `url(${cardTemplate})` }}
       >
         <div className="flex w-full justify-end">

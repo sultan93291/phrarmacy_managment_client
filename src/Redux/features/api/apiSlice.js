@@ -195,6 +195,15 @@ export const apiSlice = createApi({
         includeToken: true,
       }),
     }),
+
+    createPlaceOrderIntent: builder.mutation({
+      query: ({ data }) => ({
+        url: `/api/order-checkout`,
+        method: "PUT", // Use PUT or PATCH for updates
+        body: { data },
+        includeToken: true,
+      }),
+    }),
   }),
 
   // create meeting
@@ -222,4 +231,5 @@ export const {
   useCreateMeetingIntentMutation,
   useGetAllMeetingsIntentQuery,
   useUpdateMeetingIntentMutation,
+  useCreatePlaceOrderIntentMutation,
 } = apiSlice;

@@ -2,7 +2,7 @@ import StepForm from "@/components/checkoutComponents/StepForm";
 
 function CheckoutPage() {
   return (
-    <section className="py-[50px] sm:py-[100px]">
+    <section className="pt-8 lg:py-[50px] md:py-[100px]">
       <div className="container">
         <div>
           {/* step form  */}

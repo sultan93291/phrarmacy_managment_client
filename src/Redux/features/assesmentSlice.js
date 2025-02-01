@@ -60,6 +60,17 @@ export const assesmentSlice = createSlice({
         );
       }
     },
+
+    checkAssessment: (state, action) => {
+      const idToCheck = action.payload; // ID to check in localStorage
+      const assessments = localStorage.getItem("asssesMentData");
+
+      // Save to Redux state
+      state.asssesMentData = assessments;
+
+      // Check if the ID exists
+      state.isPresent = assessments.some(item => item.id === idToCheck);
+    },
   },
 });
 
