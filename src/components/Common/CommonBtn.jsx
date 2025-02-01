@@ -8,7 +8,7 @@ function CommonBtn({ text, arrowIcon, width, height, type, size }) {
         {text}
       </div>
       <div
-        className={`flex items-center w-9 h-9 sm:w-14 sm:h-14 justify-center rounded-full ${type === "gradient" ? "btn-gradient" : "bg-white"
+        className={`flex items-center w-9 h-9 sm:w-10 sm:h-10 justify-center rounded-full ${type === "gradient" ? "btn-gradient" : "bg-white"
           }`}
       // style={{ width: width, height: height }}
       >

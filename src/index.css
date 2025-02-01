@@ -325,4 +325,7 @@
   .checkout-stepform textarea {
     @apply h-[200px] resize-none;
   }
+  .footer--box.links li a {
+    @apply inline-block mt-4;
+  }
 }
