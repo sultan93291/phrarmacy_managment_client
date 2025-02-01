@@ -178,7 +178,7 @@ function StepForm() {
               {errors?.billingAddress && <p>{errors.billingAddress}</p>}
               {/* {/ find location  /} */}
               <div className="mt-10 max-w-fit mx-auto cursor-pointer">
-                <div className="flex items-center gap-2 text-base lg:text-[20px] font-medium text-white bg-primary rounded-[10px] py-2 lg:py-4 px-2 lg:px-6">
+                <div className="flex items-center gap-2 text-base sm:text-[20px] font-medium text-white bg-primary rounded-[10px] py-2 sm:py-4 px-2 sm:px-6">
                   <p className="sm:text-[24px]">
                     <CiLocationOn />
                   </p>
@@ -189,7 +189,7 @@ function StepForm() {
             {/* {/ contact, city & post code  /} */}
             <div className="grid md:grid-cols-3 gap-5 md:gap-10">
               {/* {/ contact  /} */}
-              <div className="mt-8 lg:mt-[77px]">
+              <div className="mt-8 md:mt-[77px]">
                 <label
                   className="text-xs sm:text-sm lg:text-[22px]"
                   htmlFor="contact"
@@ -356,13 +356,12 @@ function StepForm() {
             </div>
           </div>
         )}
-
         {/* {/ step 2   /} */}
         {currentStep === 2 && (
           <div className="setp-two mt-12 lg:mt-[110px]">
             {/* {/ step title  /} */}
             <div className="text-center">
-              <h3 className="text--xl mb-5 text-primryDark">
+              <h3 className="text--xl mb-2 lg:mb-5 text-primryDark">
                 Check your order
               </h3>
               <p className="text-lg lg:text-[24px] text-primary">
