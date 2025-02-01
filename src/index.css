@@ -315,4 +315,14 @@
   .step-indicators li span {
     @apply text-base text-indicatorsColor font-semibold mt-3 inline-block;
   }
+  .checkout-stepform input,
+  .checkout-stepform textarea {
+    @apply w-full py-2 px-3 text-[rgba(0,0,0,0.80)] bg-transparent border text-lg border-[rgba(0,0,0,0.30)] rounded-[10px] focus:outline-none sm:text-[24px];
+  }
+  .checkout-stepform label {
+    @apply block text-[22px] font-semibold mb-[10px] text-[rgba(0,0,0,0.80)];
+  }
+  .checkout-stepform textarea {
+    @apply h-[200px] resize-none;
+  }
 }

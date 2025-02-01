@@ -158,7 +158,7 @@ function MedicineDetails({ data }) {
             </div>
           </div>
 
-          <Link to={"/checkout"} className="block pt-20">
+          <Link to={"/checkout"} className="block pt-10 sm:pt-20">
             <button className="px-6 sm:px-8 py-2 sm:py-4 text-xl rounded-full bg-[#2EB7FF] text-white w-full font-bold">
               Go to Checkout
             </button>

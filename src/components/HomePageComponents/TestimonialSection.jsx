@@ -84,7 +84,7 @@ function TestimonialSection() {
   }, []);
 
   return (
-    <section className="px-5 xl:px-[47px]">
+    <section className="px-4 xl:px-[47px]">
       <div className="bg-headerBg rounded-xl sm:rounded-[40px] py-10 sm:py-[100px]">
         <div className="container">
           {/* section title  */}
@@ -115,7 +115,7 @@ function TestimonialSection() {
               }}
             >
 
-            
+
 
               {allReview.map(item => (
 

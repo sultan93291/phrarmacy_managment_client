@@ -129,8 +129,8 @@ function FaqSection() {
   return (
     <section className="my-10 sm:my-20 max-w-[1000px] mx-auto faq-section">
       <div className="container">
-        <div className="text-center mb-5">
-          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold sm:mb-10  text-primryDark">
+        <div className="text-center mb-8 sm:mb-5">
+          <h1 className="text-[27px] sm:text-4xl lg:text-5xl font-bold sm:mb-10  text-primryDark">
             Frequently Asked Questions
           </h1>
         </div>
@@ -138,7 +138,7 @@ function FaqSection() {
           {faqDatas?.map((item, index) => {
             return (
               <div key={index}>
-                <h4 className="text-2xl sm:text-[36px] font-bold text-primryDark sm:mb-[50px] mt-[60px]">
+                <h4 className="text-2xl sm:text-[36px] font-bold text-primryDark sm:mb-[50px] mt-[30px] sm:mt-[60px]">
                   {item?.category}
                 </h4>
                 <div>

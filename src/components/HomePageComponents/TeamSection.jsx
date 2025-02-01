@@ -57,7 +57,7 @@ function TeamSection() {
     <section className="my-14 sm:my-20">
       <div className="container">
         {/* section title  */}
-        <div className="mb-10">
+        <div className="mb-5 sm:mb-10">
           <h3
             data-aos="zoom-up"
             data-aos-duration="1000"
