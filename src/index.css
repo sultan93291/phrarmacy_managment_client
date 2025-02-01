@@ -89,7 +89,7 @@
     background: linear-gradient(0deg, #0ca6fc 0%, #6acaff 100%);
   }
   .text--xl {
-    @apply text-[48px] font-bold text-primary leading-normal;
+    @apply text-base md:text-lg lg:text-[48px] font-bold text-primary leading-normal;
   }
   .book-btn {
     @apply h-[42px] w-[42px] px-4 bg-menuLinkColor rounded-full overflow-hidden duration-200 ease-in-out hover:w-[138px];
@@ -222,11 +222,11 @@
   }
   .checkout-stepform .setp-two label:before {
     content: "";
-    @apply absolute top-[30px] left-10 h-[34px] w-[34px] bg-white border border-[rgba(0,0,0,0.6)] rounded-[4px];
+    @apply absolute top-[30px] left-2 lg:left-10 lg:h-[34px] h-6 lg:w-[34px] w-6 bg-white border border-[rgba(0,0,0,0.6)] rounded-[4px];
   }
   .checkout-stepform .setp-two input:checked + label:after {
     content: "";
-    @apply absolute top-[35px] left-[47px] w-[9px] h-[18px] border-primryDark;
+    @apply absolute top-[30px] lg:top-[35px] left-3 lg:left-[47px] w-[9px] h-[18px] border-primryDark;
     border-width: 0 3px 3px 0;
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);

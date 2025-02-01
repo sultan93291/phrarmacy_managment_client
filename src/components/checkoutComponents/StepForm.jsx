@@ -98,7 +98,7 @@ function StepForm() {
     <div>
       {/* {/ step indicator  /} */}
       <div className="relative z-[1] max-w-[790px] mx-auto">
-        <ul className="step-indicators flex items-center justify-between">
+        <ul className="step-indicators flex gap-2 lg:gap-0 items-center justify-between">
           <li className={currentStep >= 1 ? "active" : ""}>
             <p className="icon">1</p>
             <span>Delivery</span>
@@ -348,7 +348,7 @@ function StepForm() {
             {/* {/ button  /} */}
             <div>
               <div
-                className="py-2 sm:py-[22px] px-10 sm:px-20 bg-primryDark rounded-[10px] sm:text-[24px] font-bold text-white w-fit mx-auto mt-10 cursor-pointer"
+                className="py-2 lg:py-[22px] px-10 lg:px-20 bg-primryDark rounded-[10px] sm:text-[24px] font-bold text-white w-fit mx-auto mt-10 cursor-pointer"
                 onClick={handleNext}
               >
                 Continue to payment
@@ -359,7 +359,7 @@ function StepForm() {
 
         {/* {/ step 2   /} */}
         {currentStep === 2 && (
-          <div className="setp-two mt-[110px]">
+          <div className="setp-two mt-16 lg:mt-[110px]">
             {/* {/ step title  /} */}
             <div className="text-center">
               <h3 className="text--xl mb-5 text-primryDark">
@@ -370,7 +370,7 @@ function StepForm() {
               </p>
             </div>
             {/* {/ treatment preference  /} */}
-            <div className="py-12 px-[75px] bg-primaryLight rounded-[10px] mt-[100px]">
+            <div className="py-5 lg:py-12 px-5 lg:px-[75px] bg-primaryLight rounded-[10px] mt-16 lg:mt-[100px]">
               <h4 className="text-[24px] font-bold mb-[30px] text-primryDark">
                 Your treatment preference
               </h4>
@@ -395,7 +395,7 @@ function StepForm() {
               </div>
             </div>
             {/* {/ delivery address  /} */}
-            <div className="py-12 px-[75px] bg-primaryLight rounded-[10px] mt-[100px]">
+            <div className="lg:py-12 py-5 lg:px-[75px] px-5 bg-primaryLight rounded-[10px] mt-16 lg:mt-[100px]">
               <h3 className="text-[24px] font-bold mb-[14px] text-primryDark">
                 Delivery address:
               </h3>
@@ -403,7 +403,7 @@ function StepForm() {
               <div className="flex items-center justify-between">
                 <div className="max-w-[820px]">
                   {!isAddressEditMode ? (
-                    <p className="text-[24px] text-[rgba(0,0,0,0.60)]">
+                    <p className="text-base md:text-lg lg:text-[24px] text-[rgba(0,0,0,0.60)]">
                       {deliveryAddress}
                     </p>
                   ) : (
@@ -417,7 +417,7 @@ function StepForm() {
                 <div>
                   {
                     <div
-                      className="text-[24px] font-semibold text-primryDark underline cursor-pointer"
+                      className="text-base md:text-xl lg:text-[24px] font-semibold text-primryDark underline cursor-pointer"
                       onClick={handleDeliveryAddressEdit}
                     >
                       {!isAddressEditMode ? "Edit" : "Save"}
@@ -427,8 +427,8 @@ function StepForm() {
               </div>
             </div>
             {/* {/ suggested medicine  /} */}
-            <div className="suggested-medicine mt-[100px]">
-              <h4 className="text-[32px] font-bold text-primryDark">
+            <div className="suggested-medicine lg:mt-[100px] mt-16">
+              <h4 className="text-2xl lg:text-[32px] font-bold text-primryDark">
                 Add these to complete your treatment:
               </h4>
               <div>
@@ -444,10 +444,10 @@ function StepForm() {
                       />
                       <label
                         htmlFor={`suggested-${index}`}
-                        className="!flex items-start justify-between py-[30px] pl-[110px] pr-[105px] border-[2px] border-[rgba(0,0,0,0.20)] rounded-[10px] mt-10 cursor-pointer"
+                        className="!flex flex-col md:flex-row items-start justify-between lg:py-[30px] pl-[50px] lg:pl-[110px] lg:pr-[105px] pr-6 border-[2px] border-[rgba(0,0,0,0.20)] rounded-[10px] mt-10 cursor-pointer py-5"
                       >
                         <div className="max-w-[650px]">
-                          <h4 className="text-[24px] text-primryDark leading-[31px]">
+                          <h4 className="text-base lg:text-[24px] text-primryDark leading-[31px]">
                             {item?.name}
                           </h4>
                           <p className="text-[18px] font-bold text-primryDark mt-4">
@@ -456,7 +456,7 @@ function StepForm() {
                         </div>
                         <div>
                           <img
-                            className="max-w-[167px] h-[140px]"
+                            className="max-w-[167px] h-[50px] lg:h-[140px]"
                             src={item?.imgUrl}
                             alt={item?.name}
                           />
@@ -490,23 +490,16 @@ function StepForm() {
               </label>
             </div>
             {/* {/ payment options  /} */}
-            <div className="payment-options text-center w-[566px] mx-auto mt-[100px]">
+            <div className="payment-options text-center max-w-[566px] mx-auto mt-[100px]">
               <h4 className="text--xl text-primryDark mb-[60px]">
                 Payment Options
               </h4>
               <div>
                 <Link
                   to={"/"}
-                  className="flex w-full items-center justify-center p-[22px] gap-5 bg-primryDark rounded-[10px] text-[24px] font-bold text-white"
+                  className="flex w-[320px] lg:max-w-[566px] items-center justify-center p-[22px] gap-5 bg-primryDark rounded-[10px] text-[24px] font-bold text-white"
                 >
                   Pay with Card
-                </Link>
-                <Link
-                  to={"/"}
-                  className="flex w-full items-center justify-center p-[22px] gap-5 rounded-[10px] bg-[#32C770] text-[24px] font-bold text-white mt-5"
-                >
-                  Pay with
-                  <img className="w-[96px] h-[33px]" src={PaypalIcon} alt="" />
                 </Link>
               </div>
             </div>
