@@ -129,7 +129,7 @@ function StepForm() {
     <div>
       {/* {/ step indicator  /} */}
       <div className="relative z-[1] max-w-[790px] mx-auto">
-        <ul className="step-indicators flex  lg:gap-0 items-center justify-between">
+        <ul className="step-indicators flex lg:gap-0 items-center justify-between">
           <li className={currentStep >= 1 ? "active" : ""}>
             <p className="icon">1</p>
             <span className="stepName">Delivery</span>

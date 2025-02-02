@@ -24,7 +24,7 @@ function AssessmentPage() {
   const assesMentId = useSelector(state => state.assesmentSlice.assesMentId);
 
   const loggedInUser = useSelector(
-    state => state.loggedInuserSlice.loggedInUserData
+    (state) => state.loggedInuserSlice.loggedInUserData
   );
 
   const dispatch = useDispatch();
@@ -36,11 +36,11 @@ function AssessmentPage() {
       method: "GET",
       url: `${SiteURl}/api/treatment/${id}/consultation`,
     })
-      .then(res => {
+      .then((res) => {
         console.log(res.data.data.assessments);
         sethealthQuestion(res.data.data.assessments);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }, []);
@@ -51,7 +51,7 @@ function AssessmentPage() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = data => {
+  const onSubmit = (data) => {
     console.log(data);
     // const filteredData = Object.fromEntries(
     //   Object.entries(data).filter(
@@ -71,7 +71,7 @@ function AssessmentPage() {
       },
     ];
 
-    const dataValue = fieldkeys.map(item => {
+    const dataValue = fieldkeys.map((item) => {
       const assetementId = item.split("_")[2];
 
       return {
@@ -85,9 +85,9 @@ function AssessmentPage() {
 
     const combinedData = [];
 
-    dataValue.forEach(item => {
+    dataValue.forEach((item) => {
       const existingItem = combinedData.find(
-        combinedItem => combinedItem.assetment_id === item.assetment_id
+        (combinedItem) => combinedItem.assetment_id === item.assetment_id
       );
 
       if (existingItem) {
@@ -154,7 +154,7 @@ function AssessmentPage() {
                 >
                   {/* radio buttons */}
                   <div className="flex items-center flex-wrap gap-5">
-                    {item.options.map(option => (
+                    {item.options.map((option) => (
                       <div key={option?.id}>
                         <input
                           className="peer hidden"
@@ -201,19 +201,19 @@ function AssessmentPage() {
             );
           })}
 
-          <div className="flex items-center gap-4 pt-10">
+          <div className="flex flex-col sm:flex-row items-center gap-4 pt-5 sm:pt-10">
             <button
               data-aos="zoom-in"
               data-aos-duration="2000"
               type="submit"
-              className="px-12 py-3.5 rounded-full text-white bg-[#FF6D2E]"
+              className="px-8 sm:px-12 py-3.5 rounded-full text-white bg-[#FF6D2E]"
             >
               Proceed
             </button>
             <button
               data-aos="zoom-in"
               data-aos-duration="2000"
-              className="px-12 py-3.5 rounded-full text-primary  bg-[#EFF8FF]"
+              className="px-10 sm:px-14 py-3.5 rounded-full text-primary bg-[#EFF8FF] max-w-[157px]"
             >
               Cancel
             </button>

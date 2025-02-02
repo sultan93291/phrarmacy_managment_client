@@ -35,7 +35,7 @@ const UserDashboardProfile = () => {
   });
 
   const loggedInUser = useSelector(
-    state => state.loggedInuserSlice.loggedInUserData
+    (state) => state.loggedInuserSlice.loggedInUserData
   );
 
   console.log("from user dashboard profile", loggedInUser);
@@ -48,7 +48,7 @@ const UserDashboardProfile = () => {
   const [fileName, setFileName] = useState("No File Chosen");
   const [imagefile, setimagefile] = useState();
 
-  const handleFileChange = event => {
+  const handleFileChange = (event) => {
     const file = event.target.files[0];
 
     if (file) {
@@ -70,7 +70,7 @@ const UserDashboardProfile = () => {
   }, [loggedInUser.avatar]);
 
   const [dob, setDob] = useState(loggedInUser.date_of_birth); // Store the selected date of birth
-  const handleDateChange = newDate => {
+  const handleDateChange = (newDate) => {
     if (!newDate) return; // Prevent errors if newDate is null or undefined
 
     const formattedDate = format(new Date(newDate), "MM/dd/yyyy"); // Convert to "MM/DD/YYYY"
@@ -100,12 +100,12 @@ const UserDashboardProfile = () => {
     setSelectedGender(loggedInUser.gender);
   }, [loggedInUser]);
 
-  const handleFormData = e => {
+  const handleFormData = (e) => {
     const { name, value } = e.target; // Destructure name and value directly from e.target
     setpasswordUpdate({ ...passwordUpdate, [name]: value });
   };
 
-  const handlePasswordUpdate = async e => {
+  const handlePasswordUpdate = async (e) => {
     e.preventDefault();
 
     try {
@@ -145,18 +145,18 @@ const UserDashboardProfile = () => {
     loggedInUser.gender ? loggedInUser.gender : "male"
   );
 
-  const handleGenderChange = event => {
+  const handleGenderChange = (event) => {
     setSelectedGender(event.target.value);
   };
 
-  const handleFromData = e => {
+  const handleFromData = (e) => {
     const { name, value } = e.target; // Destructure name and value directly from e.target
     setUserData({ ...userData, [name]: value });
   };
 
   console.log(userData);
 
-  const handleUserInfo = async e => {
+  const handleUserInfo = async (e) => {
     const SiteURl = import.meta.env.VITE_SITE_URL;
     e.preventDefault();
     const formData = new FormData();
@@ -188,14 +188,14 @@ const UserDashboardProfile = () => {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then(response => {
+      .then((response) => {
         console.log("Success:", response.data);
         if (response.data.code === 200) {
           fetchData();
           toast.success("User information updated successfully");
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error updating user:", error);
         toast.error("Can't updater user info , right now");
       });
@@ -221,7 +221,7 @@ const UserDashboardProfile = () => {
                     id="name"
                     className="rounded-lg border border-black/10 px-4 py-3 text-sm placeholder:text-black/50 focus:outline-none md:text-base md:placeholder:text-sm 2xl:px-10 2xl:py-5"
                     value={userData.name}
-                    onChange={e => {
+                    onChange={(e) => {
                       handleFromData(e);
                     }}
                   />
@@ -238,7 +238,7 @@ const UserDashboardProfile = () => {
                     id="email"
                     className="rounded-lg border border-black/10 px-4 py-3 text-sm placeholder:text-black/50 focus:outline-none md:text-base 2xl:px-10 2xl:py-5"
                     value={userData.email}
-                    onChange={e => {
+                    onChange={(e) => {
                       handleFromData(e);
                     }}
                   />
@@ -257,7 +257,7 @@ const UserDashboardProfile = () => {
                     name="phone"
                     id="phone"
                     value={userData.phone}
-                    onChange={e => {
+                    onChange={(e) => {
                       handleFromData(e);
                     }}
                     className="rounded-lg border border-black/10 px-4 py-3 text-sm placeholder:text-black/50 focus:outline-none md:text-base 2xl:px-10 2xl:py-5"
@@ -328,7 +328,7 @@ const UserDashboardProfile = () => {
                   name="address"
                   id="address"
                   value={userData.address}
-                  onChange={e => {
+                  onChange={(e) => {
                     handleFromData(e);
                   }}
                 >
@@ -361,7 +361,7 @@ const UserDashboardProfile = () => {
                         type="file"
                         name="photo"
                         id="photo"
-                        onChange={e => {
+                        onChange={(e) => {
                           handleFileChange(e);
                         }}
                         className="imageInput hidden"
@@ -375,7 +375,7 @@ const UserDashboardProfile = () => {
 
                 <div className="pt-4 md:pt-8 mb-5">
                   <button
-                    onClick={e => {
+                    onClick={(e) => {
                       handleUserInfo(e);
                     }}
                     type="submit"
@@ -406,7 +406,7 @@ const UserDashboardProfile = () => {
                   </label>
                   <div className="relative w-full">
                     <input
-                      onChange={e => {
+                      onChange={(e) => {
                         handleFormData(e);
                       }}
                       type="password"
@@ -432,7 +432,7 @@ const UserDashboardProfile = () => {
                       className="w-full rounded-lg border border-black/10 px-4 py-3 text-sm placeholder:text-sm placeholder:text-black/50 focus:outline-none md:text-base md:placeholder:text-base 2xl:px-10 2xl:py-5"
                       placeholder="Type your password"
                       value={passwordUpdate.password}
-                      onChange={e => {
+                      onChange={(e) => {
                         handleFormData(e);
                       }}
                     />
@@ -451,7 +451,7 @@ const UserDashboardProfile = () => {
                       id="password_confirmation"
                       className="w-full rounded-lg border border-black/10 px-4 py-3 text-sm placeholder:text-sm placeholder:text-black/50 focus:outline-none md:text-base md:placeholder:text-base 2xl:px-10 2xl:py-5"
                       placeholder="Type your password"
-                      onChange={e => {
+                      onChange={(e) => {
                         handleFormData(e);
                       }}
                       value={passwordUpdate.password_confirmation}
@@ -461,7 +461,7 @@ const UserDashboardProfile = () => {
               </div>
               <div>
                 <button
-                  onClick={e => {
+                  onClick={(e) => {
                     handlePasswordUpdate(e);
                   }}
                   type="submit"
