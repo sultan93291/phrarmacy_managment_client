@@ -323,7 +323,11 @@
     @apply h-10 w-10 flex items-center justify-center rounded-full border-[2px] border-indicatorsColor text-lg font-semibold text-indicatorsColor bg-white;
   }
   .step-indicators li span {
+<<<<<<< HEAD
     @apply text-[14px] md:text-base text-indicatorsColor font-semibold mt-3 inline-block;
+=======
+    @apply text-sm text-indicatorsColor font-semibold mt-3 inline-block;
+>>>>>>> 398582082942b05d07aa2d0552aa350a40171996
   }
   .checkout-stepform input,
   .checkout-stepform textarea {

@@ -6,14 +6,24 @@ import InnerSection from "@/components/Common/InnerSection";
 import assesmentBg from "../assets/images/assesment-bg.png";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { setassesmentData } from "@/Redux/features/assesmentSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setAssesmentData } from "@/Redux/features/assesmentSlice";
+import { useContext } from "react";
+import { AuthContext } from "@/provider/AuthProvider/AuthContextProvider";
+import { setAssesmentRedirect } from "@/Redux/features/loggedInUserSlice";
+import toast from "react-hot-toast";
 
 function AssessmentPage() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [healthQuestion, sethealthQuestion] = useState([]);
   const SiteURl = import.meta.env.VITE_SITE_URL;
+
+  const { isAuthenticated } = useContext(AuthContext);
+
+  const loggedInUser = useSelector(
+    state => state.loggedInuserSlice.loggedInUserData
+  );
 
   const dispatch = useDispatch();
 
@@ -101,9 +111,20 @@ function AssessmentPage() {
       };
     });
 
-    dispatch(setassesmentData(finalData));
+    const AssesmentData = { id, finalData };
 
-    navigate(`/medicine-details/${id}`);
+    console.log(AssesmentData);
+
+    dispatch(setAssesmentData(AssesmentData));
+
+    if (!isAuthenticated) {
+      toast.success("Assesment saved successfully");
+      dispatch(setAssesmentRedirect(`${`/treatment/consultation/${id}`}`));
+      navigate("/auth/login");
+    } else {
+      navigate(`/medicine-details/${id}`);
+      toast.success("Assesment saved successfully");
+    }
 
     console.log("final", finalData);
   };

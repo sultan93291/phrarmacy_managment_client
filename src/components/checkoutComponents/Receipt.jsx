@@ -22,7 +22,11 @@ const Receipt = () => {
 
   console.log(cardData, isLoading, error, isError);
   return (
+<<<<<<< HEAD
     <div className="mx-auto pt-10 lg:pt-0 lg:p-6">
+=======
+    <div className=" mx-auto  p-0 lg:p-6 ">
+>>>>>>> 398582082942b05d07aa2d0552aa350a40171996
       <h2 className="text-center text-3xl lg:text-[64px] mb-12 font-semibold text-primryDark">
         My Health Needs London
       </h2>
@@ -38,6 +42,7 @@ const Receipt = () => {
         Summary
       </h3>
 
+<<<<<<< HEAD
       <div className="mt-4">
         <table className="w-full text-left text-lg lg:text-xl font-semibold font-nunito text-primryDark">
           <thead>
@@ -57,11 +62,30 @@ const Receipt = () => {
             ))}
           </tbody>
         </table>
+=======
+      <div className="mt-8 ">
+      <div className="w-full grid grid-cols-3 text-xs sm:text-sm md:text-base lg:text-xl font-semibold font-nunito text-primryDark">
+  {/* Header */}
+  <div className="py-2 font-medium text-xl">Item</div>
+  <div className="py-2 font-medium text-center text-xl">Qty</div>
+  <div className="py-2 font-medium text-right text-xl">Price</div>
+
+  {/* Body - Dynamically Rendered */}
+  {receiptData.items.map((item, index) => (
+    <React.Fragment key={index}>
+      <div className="py-2 border-t border-gray-300">{item.name}</div>
+      <div className="py-2 border-t border-gray-300 text-center">{item.qty}</div>
+      <div className="py-2 border-t border-gray-300 text-right">€{item.price.toFixed(2)}</div>
+    </React.Fragment>
+  ))}
+</div>
+
+>>>>>>> 398582082942b05d07aa2d0552aa350a40171996
       </div>
 
       <hr className="my-4 border-gray-300 border-dashed" />
 
-      <div className="flex justify-between text-xl lg:text-2xl font-semibold font-nunito text-primryDark">
+      <div className="flex justify-between text-lg lg:text-2xl font-semibold font-nunito text-primryDark">
         <span>Total amount:</span>
         <span>€{receiptData.totalAmount.toFixed(2)}</span>
       </div>
