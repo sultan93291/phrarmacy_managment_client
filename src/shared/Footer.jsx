@@ -14,7 +14,7 @@ function Footer() {
       <div data-aos="zoom-up"
         data-aos-duration="1000" className="py-10 sm:pt-[70px] sm:pb-[90px] xl:pb-[117px] bg-primryDark rounded-2xl md:rounded-[40px]">
         <div className="container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 w-full xl:flex items-start justify-between gap-10 sm:gap-16 xl:gap-[100px]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 w-full xl:flex items-start justify-between gap-5  xl:gap-[100px]">
             {/* footer box  */}
             <div data-aos="zoom-up"
               data-aos-duration="2000" className="footer-box">
@@ -68,7 +68,7 @@ function Footer() {
                   <Link to={"/"}>alihassanux@gmail.com</Link>
                 </li>
                 <li data-aos="zoom-up"
-                  data-aos-duration="2000" className="mt-4 sm:mt-7">
+                  data-aos-duration="2000" className="mt-1 sm:mt-7">
                   <MdOutlinePhone />
                   <Link to={"/"}>1234567890</Link>
                 </li>
@@ -79,7 +79,7 @@ function Footer() {
               data-aos-duration="2000" className="footer--box lg:mt-6 links">
               <h4 data-aos="zoom-up"
                 data-aos-duration="2000">Our Services</h4>
-              <ul className="-mt-7 lg:-mt-5">
+              <ul className="-mt-10 lg:-mt-5">
                 <li data-aos="zoom-up"
                   data-aos-duration="2000">
                   <Link to={"/"}>Medical Billing</Link>
@@ -115,7 +115,7 @@ function Footer() {
               data-aos-duration="2000" className="footer--box lg:mt-6 links">
               <h4 data-aos="zoom-up"
                 data-aos-duration="2000">Customer Support</h4>
-              <ul className="-mt-7 lg:-mt-5">
+              <ul className="-mt-10 lg:-mt-5">
                 <li data-aos="zoom-up"
                   data-aos-duration="2000">
                   <Link to={"/"}>FAQ’s</Link>
@@ -139,7 +139,7 @@ function Footer() {
               data-aos-duration="2000" className="footer--box lg:mt-6 links">
               <h4 data-aos="zoom-up"
                 data-aos-duration="2000">Useful Links</h4>
-              <ul className="-mt-7 lg:-mt-5">
+              <ul className="-mt-10 lg:-mt-5">
                 <li data-aos="zoom-up"
                   data-aos-duration="2000">
                   <Link to={"/"}>Careers</Link>
