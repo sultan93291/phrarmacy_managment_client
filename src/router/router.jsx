@@ -69,6 +69,10 @@ const router = createBrowserRouter(
           element: <MedicineDetailsPage />,
         },
         {
+          path: "/medicine-details/:id",
+          element: <MedicineDetailsPage />,
+        },
+        {
           path: "/checkout",
           element: (
             <ProtectedRoute>
