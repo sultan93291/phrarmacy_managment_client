@@ -18,7 +18,7 @@ const PaymentCard = ({ data,className }) => {
     <>
       <div
 
-        className={cn("h-72 cursor-pointer max-w-[480px]   bg-cover bg-center object-cover bg-no-repeat font-dmsans rounded-2xl p-5 flex flex-col items-center justify-center", className)}
+        className={cn("h-72 cursor-pointer max-w-[480px]  bg-center  bg-no-repeat font-dmsans rounded-2xl p-4 md:p-12 flex flex-col items-center justify-center", className)}
 
         style={{ backgroundImage: `url(${cardTemplate})` }}
       >
@@ -34,13 +34,13 @@ const PaymentCard = ({ data,className }) => {
           </p>
         </div>
 
-        <div className="flex mt-10 items-center justify-between w-full text-white">
-          <div className="text-lg fo">
+        <div className="flex mt-5 items-center justify-between w-full text-white">
+          <div className="text-sm fo">
             <p className="text-sm">Card Holder Name</p>
             <p className="font-semibold">{loggeInUserData?.name} </p>
           </div>
 
-          <div className="text-lg fo">
+          <div className="text-sm fo">
             <p className="text-sm">Expiry Date</p>
             <p className="font-semibold">
               {`${data?.exp_month}/

@@ -21,23 +21,26 @@ const UserReviewCard = ({ review }) => {
   const emptyStars = 5 - rating;
   const fullStars = 5 - emptyStars;
   return (
-    <div className="flex justify-center sm:justify-between items-center sm:items-start flex-col md:flex-row gap-5 sm:gap-10  font-nunito">
-      <div className="h-4/5 flex flex-col md:flex-row sm:gap-7 xl:gap-10  ">
+    <div className="flex justify-center sm:justify-between items-center sm:items-start flex-col md:gap-2 shadow-xl rounded-xl p-3 lg:p-6 font-nunito">
+    <div className="flex flex-col  items-center w-full gap-3">
+  {/* Image Section */}
+  <div className="w-full sm:w-52 sm:h-52 xl:w-60 xl:h-60 flex-shrink-0">
+    <img
+      className="w-full h-full object-cover rounded-lg"
+      src={review?.image ? review.image : medicine}
+      alt="Review Image"
+    />
+  </div>
 
-        <div className="sm:flex-shrink-0 sm:size-52 xl:size-60">
-          <img
-            className="w-full h-full object-cover rounded-lg"
-            src={review?.image ? review.image : medicine}
-            alt=""
-          />
-        </div>
-        <div className="space-y-3 sm:space-y-5 text-center sm:text-left md:w-2/3">
-          <h3 className="text-xl xl:text-3xl font-semibold">{`Order id : #${review?.order_uuid}`}</h3>
-          <p>{review?.review?.review}</p>
-        </div>
-      </div>
-      <div className="h-1/5 flex flex-col md:flex-row flex-shrink-0 items-center gap-3">
-        <div className="flex items-center gap-1">
+  {/* Text Content */}
+  <div className="w-full sm:flex-1 space-y-3  text-center sm:text-left">
+    <h3 className="text-xl  xl:text-2xl font-semibold">{`Order id : #${review?.order_uuid}`}</h3>
+    <p className="text-sm sm:text-base xl:text-lg">{review?.review?.review}</p>
+  </div>
+</div>
+
+      <div className="flex flex-col mt-3  gap-2">
+        <div className="flex items-center w-[100px] gap-1">
           {[...Array(fullStars)].map((_, idx) => (
             <StarSvg key={idx} />
           ))}
@@ -45,7 +48,7 @@ const UserReviewCard = ({ review }) => {
             <EmptyStarSvg key={idx} />
           ))}
         </div>
-        <p className="text-[#404A60] font-medium">
+        <p className="text-[#404A60] text-xs lg:text-sm font-medium">
           {formatDate(review?.review?.created_at)}
         </p>
       </div>
