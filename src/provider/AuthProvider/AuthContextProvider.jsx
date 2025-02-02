@@ -66,7 +66,6 @@ const AuthProvider = ({ children }) => {
     setRole("user");
     dispatch(setLoggedInUserData(null)); // Reset Redux state
     window.location.href = "/";
-
   };
 
   const allValues = {
