@@ -25,12 +25,12 @@ const UserReviews = () => {
   return (
     <div className="bg-white rounded-md px-5 py-8 sm:px-7 xl:px-16 lg:py-10">
       <DashboardTitle title="My Review" />
-      <div className=" mt-10 space-y-7">
-        {allReview?.map((review, idx) => {
-          console.log(review);
-          return <UserReviewCard review={review} key={idx} />
-        })}
-      </div>
+     <div className="mt-10 grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 gap-4">
+  {allReview?.map((review, idx) => (
+    <UserReviewCard review={review} key={idx} />
+  ))}
+</div>
+
     </div>
   );
 };
