@@ -8,6 +8,8 @@ import { useUpdateUserInfoIntentMutation } from "@/Redux/features/api/apiSlice";
 import toast from "react-hot-toast";
 import { format } from "date-fns";
 import axios from "axios";
+import { useContext } from "react";
+import { AuthContext } from "@/provider/AuthProvider/AuthContextProvider";
 
 const UserDashboardProfile = () => {
   const genderOptions = [
@@ -15,6 +17,8 @@ const UserDashboardProfile = () => {
     { id: "female", label: "Female" },
     { id: "others", label: "Others" },
   ];
+
+  const { fetchData } = useContext(AuthContext);
 
   const [updatePasswordIntent, { isLoading, isError, isSuccess }] =
     useUpdatePasswordIntentMutation();
@@ -114,6 +118,7 @@ const UserDashboardProfile = () => {
       // Success handling
       if (response.code === 200) {
         toast.success("Password updated successfully");
+        fetchData();
       } else {
         toast.error(
           response.message || "Failed to update password. Please try again."
@@ -186,6 +191,7 @@ const UserDashboardProfile = () => {
       .then((response) => {
         console.log("Success:", response.data);
         if (response.data.code === 200) {
+          fetchData();
           toast.success("User information updated successfully");
         }
       })

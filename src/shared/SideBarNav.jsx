@@ -31,7 +31,7 @@ const SideBarNav = ({ isOpen, navLinks, setOpen }) => {
 
         {/* links */}
         <ul className="flex flex-col w-full gap-4 mt-8">
-          {navLinks?.map((navLink) => {
+          {navLinks?.map(navLink => {
             if (navLink.title === "Login" && isAuthenticated) {
               return null; // Don't render the "Login" link if the user is authenticated
             }

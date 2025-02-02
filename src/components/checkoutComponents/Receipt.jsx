@@ -37,7 +37,6 @@ const Receipt = () => {
       <h3 className="text-center text-2xl lg:text-3xl font-bold font-nunito text-primryDark">
         Summary
       </h3>
-
       <div className="mt-8 ">
         <div className="w-full grid grid-cols-3 text-xs sm:text-sm md:text-base lg:text-xl font-semibold font-nunito text-primryDark">
           {/* Header */}

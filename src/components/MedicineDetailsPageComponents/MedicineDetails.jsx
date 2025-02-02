@@ -54,6 +54,7 @@ function MedicineDetails({ data }) {
   useEffect(() => {
     setPreview(data?.avatars[0]?.avatar);
   }, [data]);
+
   const myStyles = {
     itemShapes: RoundedStar,
     activeFillColor: "#FBBA58",
@@ -74,11 +75,15 @@ function MedicineDetails({ data }) {
   };
 
   const handleCheckout = () => {
-    if (assesMentResult.assesmentResult) {
-      navigate("/checkout");
+    if (counsultainid) {
+      if (assesMentResult.assesmentResult) {
+        navigate("/checkout");
+      } else {
+        dispatch(storeMedicineId({ id: id, assesMentId: counsultainid }));
+        navigate(`/treatment/consultation/${counsultainid}`);
+      }
     } else {
-      dispatch(storeMedicineId({ id: id, assesMentId: counsultainid }));
-      navigate(`/treatment/consultation/${counsultainid}`);
+      navigate("/checkout");
     }
   };
 
@@ -203,9 +208,11 @@ function MedicineDetails({ data }) {
             className="block pt-10 sm:pt-20"
           >
             <button className="px-6 sm:px-8 py-2 sm:py-4 text-xl rounded-full bg-[#2EB7FF] text-white w-full font-bold">
-              {assesMentResult.assesmentResult
-                ? "Go to Checkout"
-                : "Go to Cousultation"}
+              {counsultainid
+                ? assesMentResult.assesmentResult
+                  ? "Go to Checkout"
+                  : "Go to Consultation"
+                : "Go to Checkout"}
             </button>
           </Link>
         </div>

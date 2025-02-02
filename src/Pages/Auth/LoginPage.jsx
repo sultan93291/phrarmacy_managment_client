@@ -59,7 +59,7 @@ function LoginPage() {
             window.location.href = `/medicine-details/${medicineId}/consultation/${assesMentId}`;
           } else {
             fetchData();
-            navigate("/dashboard/user/user-homepage");
+            window.location.href = "/dashboard/user/user-homepage";
           }
         }, 3000);
       })
@@ -102,7 +102,7 @@ function LoginPage() {
                   window.location.href = `/medicine-details/${medicineId}/consultation/${assesMentId}`;
                 } else {
                   fetchData();
-                  navigate("/dashboard/user/user-homepage");
+                  window.location.href = "/dashboard/user/user-homepage";
                 }
               }, 3000);
             }
