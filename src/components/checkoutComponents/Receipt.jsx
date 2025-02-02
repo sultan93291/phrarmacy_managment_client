@@ -22,7 +22,7 @@ const Receipt = () => {
 
   console.log(cardData, isLoading, error, isError);
   return (
-    <div className=" mx-auto p-0 lg:p-6 ">
+    <div className=" mx-auto  p-0 lg:p-6 ">
       <h2 className="text-center text-3xl lg:text-[64px] mb-12 font-semibold text-primryDark">
         My Health Needs London
       </h2>
@@ -36,7 +36,7 @@ const Receipt = () => {
 
       <h3 className="text-center text-2xl lg:text-3xl font-bold font-nunito text-primryDark">Summary</h3>
 
-      <div className="mt-4">
+      <div className="mt-8 lg:mt-20">
         <table className="w-full text-left text-lg lg:text-xl font-semibold font-nunito text-primryDark">
           <thead>
             <tr className="  border-gray-300">

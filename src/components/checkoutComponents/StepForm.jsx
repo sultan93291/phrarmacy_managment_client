@@ -657,7 +657,7 @@ function StepForm() {
         )}
         {/* {/ step 4   /} */}
         {currentStep === 4 && (
-          <div className="setp-two mt-1 lg:mt-[110px]">
+          <div className="setp-two mt-16 lg:mt-[110px]">
             <div>
               <Receipt />
             </div>
