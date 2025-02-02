@@ -34,28 +34,26 @@ function OurMission() {
   const [DoctorData, setDoctorData] = useState([]);
   const SiteURl = import.meta.env.VITE_SITE_URL;
   console.log(`${SiteURl}/api/doctores`);
-  console.log('hello world');
-
+  console.log("hello world");
 
   useEffect(() => {
     axios({
       method: "get",
       url: `${SiteURl}/api/doctores`,
     })
-      .then(res => {
+      .then((res) => {
         console.log("mission data", res.data.data.cards);
-        setDoctorData(res?.data?.data)
+        setDoctorData(res?.data?.data);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }, []);
 
-  console.log('this is doctor data', DoctorData);
-
+  console.log("this is doctor data", DoctorData);
 
   return (
-    <section className="pb-[140px]">
+    <section className="pb-14 lg:pb-[140px]">
       <div className="container">
         <div className="max-w-[692px] text-center mx-auto mb-10">
           <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold lg:text--xl text-primary">

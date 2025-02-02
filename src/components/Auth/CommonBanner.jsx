@@ -1,5 +1,3 @@
-
-
 function CommonBanner() {
   return (
     <div>CommonBanner</div>

@@ -14,7 +14,7 @@ import orderImg from "../../assets/images/cards/orderImg.png";
 import Receipt from "./Receipt";
 import PaymentCard from "@/Pages/Dashboard/User/PaymentCard";
 import { useGetCardDataIntentQuery } from "@/Redux/features/api/apiSlice";
-  
+
 const SiteURl = import.meta.env.VITE_SITE_URL;
 
 const suggestedMedicine = [
@@ -117,7 +117,7 @@ function StepForm() {
         <ul className="step-indicators flex  lg:gap-0 items-center justify-between">
           <li className={currentStep >= 1 ? "active" : ""}>
             <p className="icon">1</p>
-            <span>Delivery</span>
+            <span className="stepName">Delivery</span>
           </li>
           <li className={currentStep >= 2 ? "active" : ""}>
             <p className="icon">2</p>
@@ -132,7 +132,10 @@ function StepForm() {
             <span>Receipt</span>
           </li>
         </ul>
-        <p className="progress-line absolute top-5 sm:top-10 left-1/2 translate-x-[-50%] w-[80%] sm:w-[95%] border-[2px] border-dashed bg-indicatorsColor z-[-1]"></p>
+        <p
+          className="progress-line absolute top-5 sm:top-10 left-1/2 translate-x-[-50%] w-[80%] sm:w-[95%] border-[2px] border-dashed bg-indicatorsColor z-[-1]
+        "
+        ></p>
       </div>
       {/* {/ form  /} */}
       <form className="checkout-stepform" onSubmit={handleSubmit(onSumbit)}>
@@ -330,13 +333,11 @@ function StepForm() {
 
             {/* {/ delivery information  /} */}
             <div>
-
               <div className="text-center max-w-[882px] mx-auto mt-14 lg:mt-[172px]">
                 <h3 className="md:text--xl text-2xl sm:text-4xl text-primary font-bold mb-5">
                   Delivery Information
                 </h3>
                 <p className="text-left sm:text-xl md:text-[24px] text-primary">
-
                   {deliveryData?.description}
                 </p>
                 <p className="text-left sm:text-xl md:text-[24px] text-primary mt-[30px]">
@@ -362,7 +363,6 @@ function StepForm() {
                     </h4>
 
                     <p className="text-sm md:text-lg">
-
                       {deliveryData?.option_sub_description}
                     </p>
                   </div>
@@ -505,7 +505,6 @@ function StepForm() {
                 className="hidden"
               />
               <label
-
                 htmlFor="deliveryAgreements"
                 className="relative cursor-pointer pl-8 lg:pl-[60px]"
               >
@@ -521,7 +520,7 @@ function StepForm() {
               <div className="flex items-center justify-center">
                 <Link
                   onClick={handleNext}
-                   className="flex w-[250px] lg:w-[566px] items-center justify-center px-4 py-3 lg:p-[22px] gap-5 bg-primryDark rounded-[10px] text-base lg:text-[24px] font-bold text-white"
+                  className="flex w-[250px] lg:w-[566px] items-center justify-center px-4 py-3 lg:p-[22px] gap-5 bg-primryDark rounded-[10px] text-base lg:text-[24px] font-bold text-white"
                 >
                   Pay with Card
                 </Link>
@@ -543,24 +542,23 @@ function StepForm() {
                 </div>
 
                 <div className="flex sm:flex-row flex-col justify-between gap-4">
-    {cardData?.data?.length > 0 &&
-      cardData.data.map((item, index) => {
-        return (
-          <div
-            key={index}
-            onClick={() => setSelectedCard(index)}
-           
-          >
-            <PaymentCard  className={`h-[200px] bg-left 
+                  {cardData?.data?.length > 0 &&
+                    cardData.data.map((item, index) => {
+                      return (
+                        <div key={index} onClick={() => setSelectedCard(index)}>
+                          <PaymentCard
+                            className={`h-[200px] bg-left 
               ${
                 selectedCard === index
                   ? "border-4 border-blue-500 shadow-2xl"
                   : "border-4 border-transparent"
-              }`} data={item} />
-          </div>
-        );
-      })}
-  </div>
+              }`}
+                            data={item}
+                          />
+                        </div>
+                      );
+                    })}
+                </div>
 
                 <div className="flex items-center gap-2 p-2 lg:p-4 border border-[#0063A9] rounded-lg">
                   <Checkbox />

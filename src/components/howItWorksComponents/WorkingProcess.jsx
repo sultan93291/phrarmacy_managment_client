@@ -27,32 +27,32 @@ const workingProcess = [
 
 function WorkingProcess() {
   const SiteURl = import.meta.env.VITE_SITE_URL;
-  const [WorkingCardData, setWorkingCardData] = useState([])
+  const [WorkingCardData, setWorkingCardData] = useState([]);
   useEffect(() => {
     axios({
       method: "post",
       url: `${SiteURl}/api/section/data?type=process`,
     })
-      .then(res => {
+      .then((res) => {
         console.log(res.data.data.cards);
         setWorkingCardData(res.data.data.cards);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }, []);
 
-
-
   return (
-    <section className="py-[100px]">
+    <section className="py-[50px] lg:py-[100px]">
       <div className="container">
         {/* section title  */}
-        <div className="mb-20 md:mb-[120px] text-center">
-          <h3 className="text-2xl sm:text-3xl font-bold text-[#0ca6fc] md:text--xl">Our Working Process</h3>
+        <div className="mb-10 md:mb-[120px] text-center">
+          <h3 className="text-2xl sm:text-3xl font-bold text-[#0ca6fc] md:text--xl">
+            Our Working Process
+          </h3>
         </div>
         <div className="grid sm:grid-cols-20 md:grid-cols-3 gap-10 sm:gap-16 lg:gap-[180px] mt-5 relative">
-          {WorkingCardData.map(item => (
+          {WorkingCardData.map((item) => (
             <ProcessCard key={item.id} item={item} />
           ))}
           <img
