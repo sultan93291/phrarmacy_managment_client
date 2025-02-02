@@ -133,7 +133,10 @@ function StepForm() {
             <span>Receipt</span>
           </li>
         </ul>
-        <p className="progress-line absolute top-5 sm:top-10 left-1/2 translate-x-[-50%] w-[80%] sm:w-[95%] border-[2px] border-dashed bg-indicatorsColor z-[-1]"></p>
+        <p
+          className="progress-line absolute top-5 sm:top-10 left-1/2 translate-x-[-50%] w-[80%] sm:w-[95%] border-[2px] border-dashed bg-indicatorsColor z-[-1]
+        "
+        ></p>
       </div>
       {/* {/ form  /} */}
       <form className="checkout-stepform" onSubmit={handleSubmit(onSumbit)}>
