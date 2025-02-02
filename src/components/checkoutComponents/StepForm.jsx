@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { CiLocationOn } from "react-icons/ci";
 import PhoneInput from "react-phone-input-2";
-import PaypalIcon from "../../assets/images/logo/paypal.svg";
 import "react-phone-input-2/lib/style.css";
 import { Link } from "react-router-dom";
 import { UploadButton } from "@bytescale/upload-widget-react";

@@ -33,13 +33,18 @@ const SideBarNav = ({ isOpen, setOpen, navLinks }) => {
 
         {/* links */}
         <ul className="flex flex-col w-full gap-4 mt-8">
-          {navLinks?.map((navLink) => (
+          {navLinks?.map((navLink) => {
+            if (navLink.title === "Login" && isAuthenticated) {
+              return null; // Don't render the "Login" link if the user is authenticated
+            }
+
+            return(
             <li key={navLink?.path} data-aos="zoom-up" data-aos-duration="2000">
               <NavLink onClick={() => setOpen(false)} to={navLink?.path} className="menu-item text-sm">
                 {navLink?.title}
               </NavLink>
             </li>
-          ))}
+          )})}
         </ul>
 
         {/* btn */}

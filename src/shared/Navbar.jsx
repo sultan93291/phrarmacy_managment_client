@@ -20,6 +20,7 @@ function Navbar() {
     console.log(data);
   };
   const { isAuthenticated } = useContext(AuthContext);
+  
   const loggedInUser = useSelector(
     (state) => state.loggedInuserSlice.loggedInUserData
   );
@@ -100,7 +101,7 @@ function Navbar() {
               type="text"
               name="search"
               placeholder="Search your remdies"
-              className="sm:py-[13px] py-2 px-3 sm:px-6 bg-white w-full text-sm rounded-[40px] text-black focus:outline-none font-semibold"
+              className="sm:py-[13px] placeholder:text-[11px] sm:placeholder:text-base  py-2 px-3 sm:px-6 bg-white w-full text-sm rounded-[40px] text-black focus:outline-none font-semibold"
             />
             <button
               type="submit"
