@@ -114,7 +114,7 @@ function StepForm() {
     <div>
       {/* {/ step indicator  /} */}
       <div className="relative z-[1] max-w-[790px] mx-auto">
-        <ul className="step-indicators flex gap-2 lg:gap-0 items-center justify-between">
+        <ul className="step-indicators flex  lg:gap-0 items-center justify-between">
           <li className={currentStep >= 1 ? "active" : ""}>
             <p className="icon">1</p>
             <span>Delivery</span>
@@ -585,7 +585,7 @@ function StepForm() {
                 </div>
               </div>
 
-              <div className="max-w-md order-1 lg:order-2 p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-lg">
+              <div className="max-w-md order-1 lg:order-2 p-6  bg-gray-50 border border-gray-200 rounded-lg shadow-lg">
                 {/* Order Summary Title */}
                 <h2 className=" text-base lg:text-2xl font-nunito font-semibold text-gray-800 border-b pb-2">
                   Order Summary
@@ -618,11 +618,11 @@ function StepForm() {
                 <div className="flex items-center gap-2 py-4 border-b">
                   <input
                     className="placeholder:text-xs lg:placeholder:text-base order-summery py-2 "
-                    style={{ padding: "8px" }}
+                    style={{ padding: "5px" }}
                     type="text"
                     placeholder="Gift or discount code"
                   />
-                  <button className="px-4 py-3 font-nunito text-sm text-white bg-gray-600 rounded-md hover:bg-gray-700 transition duration-300">
+                  <button className="px-4 py-2 lg:py-3 font-nunito text-sm text-white bg-gray-600 rounded-md hover:bg-gray-700 transition duration-300">
                     Apply
                   </button>
                 </div>
