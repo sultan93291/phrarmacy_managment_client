@@ -16,12 +16,12 @@ function Navbar() {
   const { role } = useAuth();
   const { register, handleSubmit } = useForm();
   const [isOpen, setOpen] = useState(false);
-  const onSubmit = (data) => {
+  const onSubmit = data => {
     console.log(data);
   };
   const { isAuthenticated } = useContext(AuthContext);
   const loggedInUser = useSelector(
-    (state) => state.loggedInuserSlice.loggedInUserData
+    state => state.loggedInuserSlice.loggedInUserData
   );
 
   const location = useLocation();
@@ -45,6 +45,8 @@ function Navbar() {
     },
   ];
 
+    const SiteURl = import.meta.env.VITE_SITE_URL;
+
   return (
     <>
       <header className="py-[13px] px-3 md:px-9 flex justify-between bg-headerBg sticky top-0 left-0 w-full z-[50] h-[75px] xl:h-auto">
@@ -67,18 +69,21 @@ function Navbar() {
             </div>
             {/* menus  */}
             <ul className="xl:flex items-center gap-[30px] hidden ">
-              {navLinks?.map((navLink) => {
+              {navLinks?.map(navLink => {
                 if (navLink.title === "Login" && isAuthenticated) {
                   return null; // Don't render the "Login" link if the user is authenticated
                 }
 
                 // Otherwise, render the navigation link
                 return (
-                  <li key={navLink.title}>
-                    <a className="menu-item" href={navLink.path}>
-                      {navLink.title}
-                    </a>
-                  </li>
+                  <Link
+                    key={navLink.title}
+                    className="menu-item"
+                    to={navLink.path}
+                  >
+                    {" "}
+                    {navLink.title}
+                  </Link>
                 );
               })}
             </ul>
@@ -110,26 +115,7 @@ function Navbar() {
             </button>
           </form>
           {/* cart  */}
-          <div data-aos="zoom-left" data-aos-duration="2000">
-            <Link
-              to={
-                role == "user"
-                  ? "/dashboard/user/user-homepage"
-                  : role == "doctor"
-                  ? "/dashboard/doctor/homepage"
-                  : role == "pharmacist"
-                  ? "/dashboard/pharmacist/homepage"
-                  : "/"
-              }
-              className="w-9 h-9 sm:w-[50px] sm:h-[50px] bg-white flex items-center justify-center rounded-full"
-            >
-              <img
-                className="w-5 h-5 sm:w-7 sm:h-7"
-                src={CartIcon}
-                alt={CartIcon}
-              />
-            </Link>
-          </div>
+          <div data-aos="zoom-left" data-aos-duration="2000"></div>
           {/* header btn  */}
           <div
             data-aos="zoom-left"
@@ -137,12 +123,27 @@ function Navbar() {
             className="hidden xl:block"
           >
             {isAuthenticated ? (
-              <HeaderBtn
-                text={loggedInUser?.name ? loggedInUser?.name : "user name"}
-              />
+              <Link
+                to={
+                  role == "user"
+                    ? "/dashboard/user/user-homepage"
+                    : role == "doctor"
+                    ? "/dashboard/doctor/homepage"
+                    : role == "pharmacist"
+                    ? "/dashboard/pharmacist/homepage"
+                    : "/"
+                }
+              >
+                <HeaderBtn
+                  text={loggedInUser?.name ? loggedInUser?.name : "user name"}
+                />
+              </Link>
             ) : (
               <Link to={"/auth/signup"}>
-                <HeaderBtn text="Sign Up" />
+                <HeaderBtn
+                  text="Sign Up"
+                  imgSrc={`${SiteURl}/${loggedInUser?.avatar}`}
+                />
               </Link>
             )}
           </div>
