@@ -5,7 +5,7 @@ import userIcon from "@/assets/images/icon/User-rounded.svg";
 import { AuthContext } from "@/provider/AuthProvider/AuthContextProvider";
 import { useContext } from "react";
 
-const SideBarNav = ({ isOpen, navLinks , setOpen }) => {
+const SideBarNav = ({ isOpen, navLinks, setOpen }) => {
   const { isAuthenticated } = useContext(AuthContext);
   return (
     <>
@@ -24,10 +24,7 @@ const SideBarNav = ({ isOpen, navLinks , setOpen }) => {
         }`}
       >
         <div>
-          <Link
-            to="/"
-            className="text-xl font-primaryRegular"
-          >
+          <Link to="/" className="text-xl font-primaryRegular">
             <img src={Logo} alt="" />
           </Link>
         </div>
@@ -58,7 +55,6 @@ const SideBarNav = ({ isOpen, navLinks , setOpen }) => {
         {/* btn */}
         {!isAuthenticated && (
           <div className="mt-4 w-fit">
-
             <Link to={"/auth/signup"}>
               <div className="px-4 py-2 btn-gradient rounded-full flex items-center gap-2">
                 <p className="text-sm font-semibold text-white">Sign Up</p>

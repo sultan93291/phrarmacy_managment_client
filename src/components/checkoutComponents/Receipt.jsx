@@ -38,22 +38,25 @@ const Receipt = () => {
         Summary
       </h3>
       <div className="mt-8 ">
-      <div className="w-full grid grid-cols-3 text-xs sm:text-sm md:text-base lg:text-xl font-semibold font-nunito text-primryDark">
-  {/* Header */}
-  <div className="py-2 font-medium text-xl">Item</div>
-  <div className="py-2 font-medium text-center text-xl">Qty</div>
-  <div className="py-2 font-medium text-right text-xl">Price</div>
+        <div className="w-full grid grid-cols-3 text-xs sm:text-sm md:text-base lg:text-xl font-semibold font-nunito text-primryDark">
+          {/* Header */}
+          <div className="py-2 font-medium text-xl">Item</div>
+          <div className="py-2 font-medium text-center text-xl">Qty</div>
+          <div className="py-2 font-medium text-right text-xl">Price</div>
 
-  {/* Body - Dynamically Rendered */}
-  {receiptData.items.map((item, index) => (
-    <React.Fragment key={index}>
-      <div className="py-2 border-t border-gray-300">{item.name}</div>
-      <div className="py-2 border-t border-gray-300 text-center">{item.qty}</div>
-      <div className="py-2 border-t border-gray-300 text-right">€{item.price.toFixed(2)}</div>
-    </React.Fragment>
-  ))}
-</div>
-
+          {/* Body - Dynamically Rendered */}
+          {receiptData.items.map((item, index) => (
+            <React.Fragment key={index}>
+              <div className="py-2 border-t border-gray-300">{item.name}</div>
+              <div className="py-2 border-t border-gray-300 text-center">
+                {item.qty}
+              </div>
+              <div className="py-2 border-t border-gray-300 text-right">
+                €{item.price.toFixed(2)}
+              </div>
+            </React.Fragment>
+          ))}
+        </div>
       </div>
 
       <hr className="my-4 border-gray-300 border-dashed" />

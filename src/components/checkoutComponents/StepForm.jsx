@@ -4,7 +4,6 @@ import { CiLocationOn } from "react-icons/ci";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { Link } from "react-router-dom";
-import { UploadButton } from "@bytescale/upload-widget-react";
 import prescriptionIcon from "../../assets/images/icon/prescription.svg";
 import pdfIcon from "../../assets/images/icon/pdf.png";
 import axios from "axios";
@@ -50,27 +49,43 @@ function StepForm() {
   const [isAddressEditMode, setIsAddressEditMode] = useState(false);
   const [uploadedFile, setUploadedFile] = useState([]);
 
-  const handleUploadComplete = (files) => {
-    const file = files[0];
-    if (file && file?.originalFile?.file?.type !== "application/pdf") {
-      alert("Please upload only PDF files.");
-      return;
+  const handleFileChange = e => {
+    const file = e.target.files[0]; // Get the first file
+    if (file) {
+      setUploadedFile({
+        fileName: file.name,
+        fileUrl: URL.createObjectURL(file), // This URL can be used for preview
+      });
     }
-    setUploadedFile(file);
-
-    console.log(uploadedFile);
   };
+
+  const [treatmentMedicine, settreatmentMedicine] = useState([]);
+  const SiteURl = import.meta.env.VITE_SITE_URL;
+
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: `${SiteURl}/api/medicines`,
+    })
+      .then(res => {
+        console.log("test kti", res.data.data);
+        settreatmentMedicine(res?.data?.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
 
   useEffect(() => {
     axios({
       method: "get",
       url: `${SiteURl}/api/get-delivery-info-data`,
     })
-      .then((res) => {
+      .then(res => {
         console.log(res.data.data);
         setdeliveryData(res.data.data);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   }, []);
@@ -86,12 +101,12 @@ function StepForm() {
     setIsAddressEditMode(!isAddressEditMode);
   };
 
-  const onSumbit = (data) => {
+  const onSumbit = data => {
     console.log(data);
   };
 
   const handleNext = () => {
-    setCurrentStep((prevStep) => (prevStep < 4 ? prevStep + 1 : prevStep));
+    setCurrentStep(prevStep => (prevStep < 4 ? prevStep + 1 : prevStep));
 
     window.scrollTo(0, 0);
   };
@@ -114,7 +129,7 @@ function StepForm() {
     <div>
       {/* {/ step indicator  /} */}
       <div className="relative z-[1] max-w-[790px] mx-auto">
-        <ul className="step-indicators flex  lg:gap-0 items-center justify-between">
+        <ul className="step-indicators flex lg:gap-0 items-center justify-between">
           <li className={currentStep >= 1 ? "active" : ""}>
             <p className="icon">1</p>
             <span className="stepName">Delivery</span>
@@ -226,7 +241,7 @@ function StepForm() {
                     <PhoneInput
                       country={"us"}
                       value={field.value}
-                      onChange={(phone) => field.onChange(phone)}
+                      onChange={phone => field.onChange(phone)}
                     />
                   )}
                   rules={{ required: "Phone number is required" }}
@@ -290,43 +305,46 @@ function StepForm() {
             </div>
             {/* {/ add prescription  /} */}
             <div className="mt-14 lg:mt-[100px] add-prescription">
-              <h4 className="text-2xl sm:text-[36px] text-primryDark font-bold mb-10">
+              <h4 className="text-2xl sm:text-[36px] text-primaryDark font-bold mb-10">
                 Add your prescription file
               </h4>
               <div className="flex flex-col items-center p-[50px] rounded-[10px] border border-dashed border-[#A7A7A7]">
-                {/* {/ file preview  /} */}
+                {/* File preview */}
                 <div>
-                  <div>
-                    <img
-                      className="max-w-[120px] h-[120px] mb-5"
-                      src={`${
-                        uploadedFile.originalFile ? pdfIcon : prescriptionIcon
-                      }`}
-                      alt=""
-                    />
-                    <p className="mb-5 text-[18px] font-semibold">
-                      {uploadedFile?.originalFile?.originalFileName}
-                    </p>
-                  </div>
+                  {uploadedFile ? (
+                    <div>
+                      <img
+                        className="max-w-[120px] h-[120px] mb-5"
+                        src={uploadedFile?.fileUrl} // Preview the file (can be a PDF thumbnail, etc.)
+                        alt="File preview"
+                      />
+                      <p className="mb-5 text-[18px] font-semibold">
+                        {uploadedFile?.fileName || "No file name"}{" "}
+                        {/* Ensure a valid string */}
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="text-gray-500">No file uploaded</p>
+                  )}
                 </div>
+
+                {/* Custom file input button */}
                 <div>
-                  <Controller
-                    control={control}
-                    name="prescriptionFile"
-                    render={({ field }) => (
-                      <UploadButton
-                        options={options}
-                        onComplete={(files) => {
-                          handleUploadComplete(files);
-                          field.onChange(files[0]);
-                        }}
-                      >
-                        {({ onClick }) => (
-                          <button onClick={onClick}>Upload a file...</button>
-                        )}
-                      </UploadButton>
-                    )}
+                  <input
+                    type="file"
+                    accept="application/pdf" // Restrict to PDF files
+                    onChange={handleFileChange} // Handle file selection
+                    id="prescriptionFile"
+                    className="hidden" // Hide the default input element
                   />
+                  <button
+                    onClick={
+                      () => document.getElementById("prescriptionFile").click() // Trigger file input click
+                    }
+                    className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    Upload a file...
+                  </button>
                 </div>
               </div>
             </div>
@@ -432,7 +450,7 @@ function StepForm() {
                   ) : (
                     <textarea
                       value={deliveryAddress}
-                      onChange={(e) => setDeliveryAddress(e.target.value)}
+                      onChange={e => setDeliveryAddress(e.target.value)}
                       className="text-[24px] text-[rgba(0,0,0,0.60)] !h-[200px] resize-none"
                     />
                   )}
@@ -455,7 +473,7 @@ function StepForm() {
                 Add these to complete your treatment:
               </h4>
               <div>
-                {suggestedMedicine.map((item, index) => (
+                {treatmentMedicine.map((item, index) => (
                   <div key={item?.id}>
                     <div>
                       <input
@@ -471,7 +489,7 @@ function StepForm() {
                       >
                         <div className="max-w-[650px]">
                           <h4 className="text-base lg:text-[24px] text-primryDark leading-[31px]">
-                            {item?.name}
+                            {item?.title}
                           </h4>
                           <p className="text-[18px] font-bold text-primryDark mt-4">
                             &euro;{item?.price}
@@ -480,7 +498,7 @@ function StepForm() {
                         <div>
                           <img
                             className="max-w-[167px] h-[60px] lg:h-[140px] mt-4 lg:mt-0"
-                            src={item?.imgUrl}
+                            src={`${SiteURl}/${item.avatar}`}
                             alt={item?.name}
                           />
                         </div>

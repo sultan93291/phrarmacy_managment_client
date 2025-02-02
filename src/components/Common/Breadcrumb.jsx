@@ -11,7 +11,14 @@ function Breadcrumb() {
     <div className="breadcrumbs text-lg sm:text-2xl text-white">
       {breadcrumbs.map(({ match, breadcrumb }, index) => (
         <span key={match.pathname}>
-          <Link to={match.pathname} className={`${currentPath === match.pathname ? 'active' : ''} breadcrumb--item`}>{breadcrumb}</Link>
+          <Link
+            to={match.pathname}
+            className={`${
+              currentPath === match.pathname ? "active" : ""
+            } breadcrumb--item`}
+          >
+            {breadcrumb}
+          </Link>
           {index < breadcrumbs.length - 1 && " > "}
         </span>
       ))}
