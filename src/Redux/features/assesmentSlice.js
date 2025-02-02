@@ -1,83 +1,79 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// Utility Functions for localStorage
+const loadFromLocalStorage = () => {
+  try {
+    const data = localStorage.getItem("assesmentData");
+    return data ? JSON.parse(data) : [];
+  } catch (error) {
+    console.error("Error loading from localStorage:", error);
+    return [];
+  }
+};
+
+const saveToLocalStorage = data => {
+  try {
+    localStorage.setItem("assesmentData", JSON.stringify(data));
+  } catch (error) {
+    console.error("Error saving to localStorage:", error);
+  }
+};
+
 const initialState = {
-  asssesMentData: [],
+  assesmentData: loadFromLocalStorage(), // Load data from localStorage on init
 };
 
 export const assesmentSlice = createSlice({
   name: "assesmentSlice",
   initialState,
   reducers: {
-    setassesmentData: (state, action) => {
-      const newData = action.payload; // New assessment data (must contain a unique 'id')
-      const existingIndex = state.asssesMentData.findIndex(
+    // Add or update assessment data
+    setAssesmentData: (state, action) => {
+      state.assesmentData = loadFromLocalStorage(); // Sync with localStorage before updating
+
+      const newData = action.payload; // Must contain a unique 'id'
+      const existingIndex = state.assesmentData.findIndex(
         item => item.id === newData.id
       );
 
       if (existingIndex !== -1) {
-        // Update existing assessment
-        state.asssesMentData[existingIndex] = newData;
+        // Update existing data
+        state.assesmentData[existingIndex] = newData;
       } else {
-        // Add new assessment
-        state.asssesMentData.push(newData);
+        // Add new data
+        state.assesmentData.push(newData);
       }
 
-      // Save updated array to localStorage
-      localStorage.setItem(
-        "asssesMentData",
-        JSON.stringify(state.asssesMentData)
-      );
+      saveToLocalStorage(state.assesmentData); // Save updated data
     },
 
-    getAssesmentData: state => {
-      const data = localStorage.getItem("asssesMentData");
-      state.asssesMentData = data ? JSON.parse(data) : [];
-    },
-
-    getAssesmentById: (state, action) => {
+    // Get assessment data by ID
+    getAssesmentData: (state, action) => {
+      state.assesmentData = loadFromLocalStorage(); // Ensure latest data
       const id = action.payload;
-      const data = JSON.parse(localStorage.getItem("asssesMentData")) || [];
-      return data.find(item => item.id === id) || null;
+      return state.assesmentData.find(item => item.id === id) || null;
     },
 
-    updateAssesmentData: (state, action) => {
-      const { id, updatedFields } = action.payload; // id of assessment & fields to update
-      const existingIndex = state.asssesMentData.findIndex(
-        item => item.id === id
-      );
-
-      if (existingIndex !== -1) {
-        // Update only the specified fields, keeping other fields intact
-        state.asssesMentData[existingIndex] = {
-          ...state.asssesMentData[existingIndex],
-          ...updatedFields,
-        };
-
-        // Save updated array to localStorage
-        localStorage.setItem(
-          "asssesMentData",
-          JSON.stringify(state.asssesMentData)
-        );
-      }
+    // Check if an ID exists
+    isIdPresent: (state, action) => {
+      state.assesmentData = loadFromLocalStorage(); // Sync with localStorage
+      const id = action.payload;
+      return state.assesmentData.some(item => item.id === id);
     },
 
-    checkAssessment: (state, action) => {
-      const idToCheck = action.payload; // ID to check in localStorage
-      const assessments = localStorage.getItem("asssesMentData");
-
-      // Save to Redux state
-      state.asssesMentData = assessments;
-
-      // Check if the ID exists
-      state.isPresent = assessments.some(item => item.id === idToCheck);
+    // Clear all assessment data (optional)
+    clearAssesmentData: state => {
+      state.assesmentData = [];
+      localStorage.removeItem("assesmentData");
     },
   },
 });
 
 export const {
-  setassesmentData,
+  setAssesmentData,
   getAssesmentData,
-  getAssesmentById,
-  updateAssesmentData,
+  isIdPresent,
+  clearAssesmentData,
 } = assesmentSlice.actions;
+
 export default assesmentSlice.reducer;

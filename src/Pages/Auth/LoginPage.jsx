@@ -46,7 +46,7 @@ function LoginPage() {
         localStorage.setItem("token", res?.data?.token);
         window.location.reload();
         setTimeout(() => {
-          navigate("/dashboard/user/user-homepage");
+          window.location.href = "/dashboard/user/user-homepage";
         }, 3000);
       })
       .catch(error => {
@@ -83,10 +83,8 @@ function LoginPage() {
               localStorage.setItem("token", res.data.token);
               toast.success("successfully logged in");
               setTimeout(() => {
-                window.location.reload();
-                navigate("/dashboard/user/user-homepage");
+                window.location.href = "/dashboard/user/user-homepage";
               }, 3000);
-
             }
           })
           .catch(error => {
@@ -95,7 +93,7 @@ function LoginPage() {
           });
       } else {
         console.error("No token received from Google login.");
-        toast.error("Token not found")
+        toast.error("Token not found");
       }
     },
     onError: error => {
@@ -264,7 +262,11 @@ function LoginPage() {
         </div>
       </div>
 
-      <div data-aos="zoom-up" data-aos-duration="2000" className="lg:w-7/12 hidden md:block p-20">
+      <div
+        data-aos="zoom-up"
+        data-aos-duration="2000"
+        className="lg:w-7/12 hidden md:block p-20"
+      >
         <img
           data-aos="zoom-in"
           data-aos-duration="2000"
