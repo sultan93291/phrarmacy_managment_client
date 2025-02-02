@@ -20,6 +20,8 @@ function AssessmentPage() {
   const SiteURl = import.meta.env.VITE_SITE_URL;
 
   const { isAuthenticated } = useContext(AuthContext);
+  const medicineId = useSelector(state => state.assesmentSlice.medicineId);
+  const assesMentId = useSelector(state => state.assesmentSlice.assesMentId);
 
   const loggedInUser = useSelector(
     state => state.loggedInuserSlice.loggedInUserData
@@ -122,8 +124,8 @@ function AssessmentPage() {
       dispatch(setAssesmentRedirect(`${`/treatment/consultation/${id}`}`));
       navigate("/auth/login");
     } else {
-      navigate(`/medicine-details/${id}`);
       toast.success("Assesment saved successfully");
+      window.location.href = `/medicine-details/${medicineId}/consultation/${assesMentId}`;
     }
 
     console.log("final", finalData);
