@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 
 const UserCalendar = ({ userBirthDate, onDateChange }) => {
   // Parse the incoming date string into a Date object
-  const parseDate = dateString => {
+  const parseDate = (dateString) => {
     if (!dateString) {
       console.error("Invalid or missing date string");
       return new Date();
@@ -28,9 +28,9 @@ const UserCalendar = ({ userBirthDate, onDateChange }) => {
     }
   };
 
-   const loggedInUser = useSelector(
-    state => state.loggedInuserSlice.loggedInUserData
-  ); 
+  const loggedInUser = useSelector(
+    (state) => state.loggedInuserSlice.loggedInUserData
+  );
   const [date, setDate] = useState(
     parseDate(userBirthDate ? userBirthDate : loggedInUser.date_of_birth)
   );
@@ -47,7 +47,7 @@ const UserCalendar = ({ userBirthDate, onDateChange }) => {
         <Button
           variant={"outline"}
           className={cn(
-            "w-full justify-start text-left font-normal py-8 text-base",
+            "w-full justify-start text-left font-normal py-5 md:py-6 xl:py-6 2xl:py-8 text-base",
             !date && "text-muted-foreground"
           )}
         >
