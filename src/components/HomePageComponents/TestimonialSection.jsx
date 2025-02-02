@@ -74,11 +74,11 @@ function TestimonialSection() {
       method: "get",
       url: `${SiteURl}/api/medicine/review?sort=&per_page=&page=`,
     })
-      .then(res => {
+      .then((res) => {
         console.log(res.data.data, " all review  data");
         setallReview(res.data.data);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }, []);
@@ -89,13 +89,16 @@ function TestimonialSection() {
         <div className="container">
           {/* section title  */}
 
-          <div data-aos="zoom-up"
-            data-aos-duration="1000" className="mb-[10px] text-center">
-            <h3 className="text-2xl sm:text-3xl md:text-4xl opacity-1 text-[#0ca6fc] font-bold lg:text--xl">Verified Customer Reviews</h3>
+          <div
+            data-aos="zoom-up"
+            data-aos-duration="1000"
+            className="mb-[10px] text-center"
+          >
+            <h3 className="text-2xl sm:text-3xl md:text-4xl opacity-1 text-[#0ca6fc] font-bold lg:text--xl">
+              Verified Customer Reviews
+            </h3>
           </div>
           <div>
-
-
             <Swiper
               spaceBetween={12}
               slidesPerView={1} // Default to 1 slide per view for small screens
@@ -114,22 +117,15 @@ function TestimonialSection() {
                 },
               }}
             >
-
-
-
-              {allReview.map(item => (
-
+              {allReview.map((item) => (
                 <SwiperSlide key={item.id}>
                   <div
                     data-aos="zoom-in"
                     data-aos-duration="2000"
-
-
-                    className="py-9 px-8 max-w-[378px] min-h-[250px] max-h-[378px] rounded-lg bg-white mt-5"
+                    className="py-[30px] px-8 max-w-[378px] min-h-[250px] max-h-[378px] rounded-lg bg-white mt-5"
                   >
                     <p className="text-xl font-bold text-menuLinkColor leading-9 mb-6 text-center">
                       "{item.review}"
-
                     </p>
                     <img
                       className="w-[115px] h-[20px] mx-auto"
@@ -139,19 +135,15 @@ function TestimonialSection() {
                     <div className="flex items-center justify-center gap-2 mt-6">
                       <img
                         className="w-12 h-12 rounded-full object-cover"
-
-
                         src={`${SiteURl}/${item?.user?.avatar}`}
                         alt={`${SiteURl}/${item?.user?.avatar}`}
                       />
                       <p className="text-xl font-medium">{item?.user?.name}</p>
-
                     </div>
                   </div>
                 </SwiperSlide>
               ))}
             </Swiper>
-
           </div>
         </div>
       </div>

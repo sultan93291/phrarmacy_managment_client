@@ -211,7 +211,7 @@ function AssessmentPage() {
             <button
               data-aos="zoom-in"
               data-aos-duration="2000"
-              className="px-10 sm:px-12 py-3.5 rounded-full text-primary bg-[#EFF8FF] max-w-[157px]"
+              className="px-10 sm:px-14 py-3.5 rounded-full text-primary bg-[#EFF8FF] max-w-[157px]"
             >
               Cancel
             </button>
