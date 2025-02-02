@@ -10,10 +10,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { isIdPresent, storeMedicineId } from "@/Redux/features/assesmentSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function MedicineDetails({ data }) {
   console.log("my details ", data);
+
+  const { id, counsultainid } = useParams();
 
   const [selectedValue, setSelectedValue] = useState("1"); // State to store selected value
 
@@ -21,6 +25,8 @@ function MedicineDetails({ data }) {
     setSelectedValue(value); // Update the selected value
     console.log("Selected Value:", value); // Log it for debugging
   };
+
+  const navigate = useNavigate();
 
   const images = [
     {
@@ -37,6 +43,13 @@ function MedicineDetails({ data }) {
     },
   ];
   const [preview, setPreview] = useState(data?.avatars?.[0]?.avatar || "");
+  const [isAsseesMentAvailable, setisAsseesMentAvailable] = useState();
+
+  const assesMentResult = useSelector(
+    state => state.assesmentSlice.isAssesMent
+  );
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setPreview(data?.avatars[0]?.avatar);
@@ -47,10 +60,26 @@ function MedicineDetails({ data }) {
     inactiveFillColor: "#fbf1a9",
   };
 
+  useEffect(() => {
+    dispatch(isIdPresent({ id: counsultainid }));
+    console.log(assesMentResult, "rrrrrfdsdfsdaf");
+  }, [counsultainid]);
+
+  console.log(assesMentResult, "asseesMentAvailable");
+
   const SiteURl = import.meta.env.VITE_SITE_URL;
 
   const handlePreview = img => {
     setPreview(img);
+  };
+
+  const handleCheckout = () => {
+    if (assesMentResult.assesmentResult) {
+      navigate("/checkout");
+    } else {
+      dispatch(storeMedicineId({ id: id, assesMentId: counsultainid }));
+      navigate(`/treatment/consultation/${counsultainid}`);
+    }
   };
 
   return (
@@ -167,9 +196,16 @@ function MedicineDetails({ data }) {
             </div>
           </div>
 
-          <Link to={"/checkout"} className="block pt-10 sm:pt-20">
+          <Link
+            onClick={() => {
+              handleCheckout();
+            }}
+            className="block pt-10 sm:pt-20"
+          >
             <button className="px-6 sm:px-8 py-2 sm:py-4 text-xl rounded-full bg-[#2EB7FF] text-white w-full font-bold">
-              Go to Checkout
+              {assesMentResult.assesmentResult
+                ? "Go to Checkout"
+                : "Go to Cousultation"}
             </button>
           </Link>
         </div>

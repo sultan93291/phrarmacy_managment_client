@@ -20,7 +20,13 @@ const saveToLocalStorage = data => {
 };
 
 const initialState = {
-  assesmentData: loadFromLocalStorage(), // Load data from localStorage on init
+  assesmentData: loadFromLocalStorage(), // Load data from localStorage on init,
+  isAssesMent: {
+    assesmentId: "",
+    assesmentResult: "",
+  },
+  medicineId: "",
+  assesMentId: "",
 };
 
 export const assesmentSlice = createSlice({
@@ -56,15 +62,28 @@ export const assesmentSlice = createSlice({
 
     // Check if an ID exists
     isIdPresent: (state, action) => {
-      state.assesmentData = loadFromLocalStorage(); // Sync with localStorage
-      const id = action.payload;
-      return state.assesmentData.some(item => item.id === id);
+      const assesmentData = loadFromLocalStorage(); // ✅ No draft mutation
+      const { id } = action.payload;
+      assesmentData.find(item => {
+        if (item.id === id) {
+          state.isAssesMent.assesmentId = item.id;
+          state.isAssesMent.assesmentResult = true;
+          return true;
+        } else {
+          state.isAssesMent.assesmentId = null;
+          state.isAssesMent.assesmentResult = false;
+        }
+      });
     },
-
     // Clear all assessment data (optional)
     clearAssesmentData: state => {
       state.assesmentData = [];
       localStorage.removeItem("assesmentData");
+    },
+    storeMedicineId: (state, action) => {
+      const { id, assesMentId } = action.payload;
+      state.medicineId = id;
+      state.assesMentId = assesMentId;
     },
   },
 });
@@ -74,6 +93,7 @@ export const {
   getAssesmentData,
   isIdPresent,
   clearAssesmentData,
+  storeMedicineId,
 } = assesmentSlice.actions;
 
 export default assesmentSlice.reducer;

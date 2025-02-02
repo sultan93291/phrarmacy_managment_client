@@ -65,8 +65,8 @@ const router = createBrowserRouter(
           element: <AssessmentPage></AssessmentPage>,
         },
         {
-          path: "/medicine-details/:id",
-          element: <MedicineDetailsPage></MedicineDetailsPage>,
+          path: "/medicine-details/:id/consultation/:counsultainid",
+          element: <MedicineDetailsPage />,
         },
         {
           path: "/checkout",

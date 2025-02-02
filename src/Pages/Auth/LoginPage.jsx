@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
+import { useContext } from "react";
+import { AuthContext } from "@/provider/AuthProvider/AuthContextProvider";
 
 function LoginPage() {
   const [toggle, setToggle] = useState(true);
@@ -20,6 +22,7 @@ function LoginPage() {
   const dispatch = useDispatch();
   console.log(loggedInUserData);
   const navigate = useNavigate();
+  const { fetchData } = useContext(AuthContext);
 
   const {
     register,
@@ -28,6 +31,12 @@ function LoginPage() {
   } = useForm();
 
   const SiteURl = import.meta.env.VITE_SITE_URL;
+
+  const medicineId = useSelector(state => state.assesmentSlice.medicineId);
+  const assesMentId = useSelector(state => state.assesmentSlice.assesMentId);
+
+  console.log(medicineId, " medicine id");
+  console.log("assesement id ,", assesMentId);
 
   const onSubmit = data => {
     setLoading(true);
@@ -44,9 +53,14 @@ function LoginPage() {
         // Dispatch action to store user data in Redux
         dispatch(setLoggedInUserData(res?.data));
         localStorage.setItem("token", res?.data?.token);
-        window.location.reload();
         setTimeout(() => {
-          window.location.href = "/dashboard/user/user-homepage";
+          if (medicineId) {
+            fetchData();
+            window.location.href = `/medicine-details/${medicineId}/consultation/${assesMentId}`;
+          } else {
+            fetchData();
+            navigate("/dashboard/user/user-homepage");
+          }
         }, 3000);
       })
       .catch(error => {
@@ -83,7 +97,13 @@ function LoginPage() {
               localStorage.setItem("token", res.data.token);
               toast.success("successfully logged in");
               setTimeout(() => {
-                window.location.href = "/dashboard/user/user-homepage";
+                if (medicineId) {
+                  fetchData();
+                  window.location.href = `/medicine-details/${medicineId}/consultation/${assesMentId}`;
+                } else {
+                  fetchData();
+                  navigate("/dashboard/user/user-homepage");
+                }
               }, 3000);
             }
           })
