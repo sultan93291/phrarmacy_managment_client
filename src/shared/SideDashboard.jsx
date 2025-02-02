@@ -43,7 +43,7 @@ const SideDashboard = ({ isOpen, setOpen, dashboardNavLinks }) => {
 
                     {/* dashboard navLinks */}
 
-                    <DashboardSidebarNavLinks setOpen={setOpen} dashboardNavLinks={dashboardNavLinks} />
+                    <DashboardSidebarNavLinks  setOpen={false} dashboardNavLinks={dashboardNavLinks} />
 
                     {/* logout */}
                     <div onClick={() => { handleLogout() }} className="mt-4 w-full flex gap-3 items-center px-6 py-3 rounded-2xl group duration-500 transition hover:bg-[#0CA6FC] cursor-pointer">
