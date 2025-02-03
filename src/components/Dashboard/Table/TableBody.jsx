@@ -13,7 +13,7 @@ const TableBody = ({ items, columns, status }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [modalId, setModalId] = useState(null);
-  
+
   const getDetailsRoute = () => {
     if (role == "doctor") return "/dashboard/doctor/order-details";
     if (role == "pharmacist") return "/dashboard/pharmacist/order-details";
@@ -35,10 +35,10 @@ const TableBody = ({ items, columns, status }) => {
 
   console.log(items, "this is the items");
 
-  const handleModalid=(item) => {
+  const handleModalid = (item) => {
     console.log(item);
     setModalId(item.orderId);
-    
+
   }
 
   return (
@@ -54,9 +54,8 @@ const TableBody = ({ items, columns, status }) => {
           {columns.map((column, colIdx) => (
             <td
               key={colIdx}
-              className={`whitespace-nowrap px-4 py-2 ${
-                colIdx === 0 ? "text-[#898989]" : "text-[#404A60]"
-              } md:px-5 md:py-4`}
+              className={`whitespace-nowrap px-4 py-2 ${colIdx === 0 ? "text-[#898989]" : "text-[#404A60]"
+                } md:px-5 md:py-4`}
             >
               {column === "status" ? (
                 <TableStatusButton title={item[column]} />

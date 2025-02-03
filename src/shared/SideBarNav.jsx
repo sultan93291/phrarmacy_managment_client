@@ -4,24 +4,30 @@ import Logo from "@/assets/images/logo/logo.svg";
 import userIcon from "@/assets/images/icon/User-rounded.svg";
 import { AuthContext } from "@/provider/AuthProvider/AuthContextProvider";
 import { useContext } from "react";
+import HeaderBtn from "@/components/HeaderComponents/HeaderBtn";
+import useAuth from "@/Hooks/useAuth";
+import { useSelector } from "react-redux";
 
 const SideBarNav = ({ isOpen, navLinks, setOpen }) => {
+  const { role } = useAuth();
   const { isAuthenticated } = useContext(AuthContext);
+  const loggedInUser = useSelector(
+    state => state.loggedInuserSlice.loggedInUserData
+  );
+  const SiteURl = import.meta.env.VITE_SITE_URL;
   return (
     <>
       {/* Blur Overlay */}
       <div
         onClick={() => setOpen(false)}
-        className={`fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity duration-300 z-50 xl:hidden ${
-          isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
+        className={`fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity duration-300 z-50 xl:hidden ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
       />
 
       {/* Sidebar */}
       <div
-        className={`fixed left-0 top-0 z-[60] h-full w-60 transform shadow-lg bg-white transition-transform duration-500 lg:w-64 px-5 py-8 xl:hidden ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed left-0 top-0 z-[60] h-full w-60 transform shadow-lg bg-white transition-transform duration-500 lg:w-64 px-5 py-8 xl:hidden ${isOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         <div>
           <Link to="/" className="text-xl font-primaryRegular">
@@ -52,19 +58,37 @@ const SideBarNav = ({ isOpen, navLinks, setOpen }) => {
           })}
         </ul>
 
-        {/* btn */}
-        {!isAuthenticated && (
-          <div className="mt-4 w-fit">
-            <Link to={"/auth/signup"}>
-              <div className="px-4 py-2 btn-gradient rounded-full flex items-center gap-2">
-                <p className="text-sm font-semibold text-white">Sign Up</p>
-                <div className="size-4 bg-white rounded-full flex items-center justify-center">
-                  <img src={userIcon} alt="userIcon" />
-                </div>
-              </div>
+        {/* header btn  */}
+        <div
+          className="mt-5 inline-block"
+          data-aos="zoom-left"
+          data-aos-duration="2000"
+        >
+          {isAuthenticated ? (
+            <Link
+              to={
+                role == "user"
+                  ? "/dashboard/user/user-homepage"
+                  : role == "doctor"
+                    ? "/dashboard/doctor/homepage"
+                    : role == "pharmacist"
+                      ? "/dashboard/pharmacist/homepage"
+                      : "/"
+              }
+            >
+              <HeaderBtn
+                text={loggedInUser?.name ? loggedInUser?.name : "user name"}
+              />
             </Link>
-          </div>
-        )}
+          ) : (
+            <Link to={"/auth/signup"}>
+              <HeaderBtn
+                text="Sign Up"
+                imgSrc={`${SiteURl}/${loggedInUser?.avatar}`}
+              />
+            </Link>
+          )}
+        </div>
       </div>
     </>
   );
