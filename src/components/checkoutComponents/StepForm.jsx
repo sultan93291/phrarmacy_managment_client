@@ -12,7 +12,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import orderImg from "../../assets/images/cards/orderImg.png";
 import Receipt from "./Receipt";
 import PaymentCard from "@/Pages/Dashboard/User/PaymentCard";
-import { useGetCardDataIntentQuery } from "@/Redux/features/api/apiSlice";
+import {
+  useApplyCouponIntentMutation,
+  useGetCardDataIntentQuery,
+} from "@/Redux/features/api/apiSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addRoyalMailServiceData } from "@/Redux/features/medicineDetails";
+import toast from "react-hot-toast";
 
 const SiteURl = import.meta.env.VITE_SITE_URL;
 
@@ -48,14 +54,70 @@ function StepForm() {
   );
   const [isAddressEditMode, setIsAddressEditMode] = useState(false);
   const [uploadedFile, setUploadedFile] = useState([]);
+  const [payableAmount, setpayableAmount] = useState();
+
+  const [
+    applyCouponIntent,
+    { data, error: couponError, isLoading: isCouponLoading },
+  ] = useApplyCouponIntentMutation();
+
+  const medicineDetils = useSelector(
+    state => state.checkOutMedicineReducer.checkOutMedicineDetials
+  );
+
+  const [discountAmount, setdiscountAmount] = useState();
+
+  const handleCoupon = async totalPrice => {
+    if (coupon && totalPrice) {
+      try {
+        // Apply coupon mutation
+        const response = await applyCouponIntent({
+          coupon_code: coupon,
+          total_amount: totalPrice,
+        }).unwrap();
+
+        console.log("✅ Coupon Response:", response);
+
+        // Check for a valid response code
+        if (response.code === 200) {
+          toast.success(`🎉 Coupon Applied Successfully! Discount: `);
+          setpayableAmount(response.data.discounted_amount);
+          setdiscountAmount(response.data.discount_applied);
+        } else {
+          toast.error(
+            `⚠️ Unexpected Response: ${response.message || "Unknown error"}`
+          );
+        }
+      } catch (error) {
+        console.error("❌ Error applying coupon:", error);
+
+        // Check if the error has a response or is a network error
+        if (error.data) {
+          toast.error(
+            `❌ Failed to Apply Coupon: ${
+              error.data.message || "Something went wrong!"
+            }`
+          );
+        } else {
+          toast.error(
+            `❌ Failed to Apply Coupon: ${error.message || "Network error"}`
+          );
+        }
+      } finally {
+        setCoupon(""); // Clear coupon input
+      }
+    }
+  };
+
+  const [coupon, setCoupon] = useState("");
+
+  const dispatch = useDispatch();
 
   const handleFileChange = e => {
-    const file = e.target.files[0]; // Get the first file
+    const file = e.target.files[0];
     if (file) {
-      setUploadedFile({
-        fileName: file.name,
-        fileUrl: URL.createObjectURL(file), // This URL can be used for preview
-      });
+      console.log("Uploaded file:", file);
+      setUploadedFile(file);
     }
   };
 
@@ -82,7 +144,7 @@ function StepForm() {
       url: `${SiteURl}/api/get-delivery-info-data`,
     })
       .then(res => {
-        console.log(res.data.data);
+        console.log(res.data.data, "log delivery data");
         setdeliveryData(res.data.data);
       })
       .catch(err => {
@@ -105,6 +167,22 @@ function StepForm() {
     console.log(data);
   };
 
+  const [isRoyalMailChecked, setIsRoyalMailChecked] = useState(false);
+  const [optionValues, setoptionValues] = useState();
+
+  const handleCheckboxChange = (e, optionValue) => {
+    setIsRoyalMailChecked(e.target.checked ? true : false);
+    console.log("Royal Mail Checkbox is:", e.target.checked ? true : false);
+    console.log("Option Value:", optionValue); // Accessing the option_value
+    setoptionValues(optionValue);
+    dispatch(
+      addRoyalMailServiceData({
+        isRoyalMail: e.target.checked ? true : false,
+        OptionValue: optionValue,
+      })
+    );
+  };
+
   const handleNext = () => {
     setCurrentStep(prevStep => (prevStep < 4 ? prevStep + 1 : prevStep));
 
@@ -116,6 +194,41 @@ function StepForm() {
     accept: ".pdf",
   };
 
+  const [allItemPricQuantity, setAllItemPricQuantity] = useState({
+    items: [],
+    subTotalQuantity: 0,
+    subTotalPrice: 0,
+  });
+
+  useEffect(() => {
+    const updatedItems = medicineDetils.map(item => {
+      const itemQuantity = item.quantity;
+      const itemSinglePeicePrice = item.total_price;
+      return {
+        itemQuantity,
+        itemSinglePeicePrice,
+      };
+    });
+
+    const subTotalQuantity = updatedItems.reduce(
+      (total, item) => total + item.itemQuantity,
+      0
+    );
+    const subTotalPrice = updatedItems.reduce(
+      (total, item) => total + item.itemQuantity * item.itemSinglePeicePrice,
+      0
+    );
+
+    // Update state with items, subtotal quantity, and subtotal price
+    setAllItemPricQuantity({
+      items: updatedItems,
+      subTotalQuantity,
+      subTotalPrice,
+    });
+  }, [medicineDetils]);
+
+  console.log(allItemPricQuantity, "all item price quanity");
+
   const {
     data: cardData,
     isLoading,
@@ -125,6 +238,7 @@ function StepForm() {
 
   console.log(cardData, isLoading, error, isError);
   const [selectedCard, setSelectedCard] = useState(null);
+
   return (
     <div>
       {/* {/ step indicator  /} */}
@@ -305,46 +419,39 @@ function StepForm() {
             </div>
             {/* {/ add prescription  /} */}
             <div className="mt-14 lg:mt-[100px] add-prescription">
-              <h4 className="text-2xl sm:text-[36px] text-primaryDark font-bold mb-10">
+              <h4 className="text-2xl sm:text-[36px] text-primryDark font-bold mb-10">
                 Add your prescription file
               </h4>
               <div className="flex flex-col items-center p-[50px] rounded-[10px] border border-dashed border-[#A7A7A7]">
-                {/* File preview */}
+                {/* {/ file preview  /} */}
                 <div>
-                  {uploadedFile ? (
-                    <div>
-                      <img
-                        className="max-w-[120px] h-[120px] mb-5"
-                        src={uploadedFile?.fileUrl} // Preview the file (can be a PDF thumbnail, etc.)
-                        alt="File preview"
-                      />
-                      <p className="mb-5 text-[18px] font-semibold">
-                        {uploadedFile?.fileName || "No file name"}{" "}
-                        {/* Ensure a valid string */}
-                      </p>
-                    </div>
-                  ) : (
-                    <p className="text-gray-500">No file uploaded</p>
-                  )}
+                  <div className="flex flex-col items-center justify-center">
+                    <img
+                      className="max-w-[120px] h-[120px] mb-5"
+                      src={`${
+                        uploadedFile.originalFile ? pdfIcon : prescriptionIcon
+                      }`}
+                      alt=""
+                    />
+                    <p className="mb-5 text-[18px] font-semibold">
+                      {uploadedFile?.name
+                        ? uploadedFile.name
+                        : "No File Selected"}
+                    </p>
+                  </div>
                 </div>
-
-                {/* Custom file input button */}
                 <div>
-                  <input
-                    type="file"
-                    accept="application/pdf" // Restrict to PDF files
-                    onChange={handleFileChange} // Handle file selection
-                    id="prescriptionFile"
-                    className="hidden" // Hide the default input element
-                  />
-                  <button
-                    onClick={
-                      () => document.getElementById("prescriptionFile").click() // Trigger file input click
-                    }
-                    className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                  >
-                    Upload a file...
-                  </button>
+                  <div className="flex flex-col cursor-pointer items-center justify-center w-[295px] h-[76px] border-[2px] border-solid border-[#0693FF] rounded-[10px] relative   ">
+                    <p className="text-[#0693FF] text-[24px] font-nunito font-semibold leading-[132%] tracking-[0.48px]   ">
+                      Add Prescription
+                    </p>
+                    <input
+                      type="file"
+                      accept="application/pdf"
+                      className="h-full w-full opacity-0 absolute top-0 left-0 "
+                      onChange={handleFileChange}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -352,7 +459,7 @@ function StepForm() {
             {/* {/ delivery information  /} */}
             <div>
               <div className="text-center max-w-[882px] mx-auto mt-14 lg:mt-[172px]">
-                <h3 className="md:text--xl text-2xl sm:text-4xl text-primary font-bold mb-5">
+                <h3 className="md:text-xl text-2xl sm:text-4xl text-primary font-bold mb-5">
                   Delivery Information
                 </h3>
                 <p className="text-left sm:text-xl md:text-[24px] text-primary">
@@ -363,23 +470,31 @@ function StepForm() {
                   {deliveryData?.note}
                 </p>
               </div>
-              {/* {/ Royal Mail Tracked /} */}
+
+              {/* Royal Mail Tracked */}
               <div className="mt-[50px] sm:mt-[100px] royalmail-radio-wrap">
                 <input
                   className="hidden"
                   id="royalMail"
                   type="checkbox"
                   name="royalMail"
+                  checked={isRoyalMailChecked}
+                  onChange={e =>
+                    handleCheckboxChange(e, deliveryData?.option_value)
+                  }
                 />
                 <label
                   htmlFor="royalMail"
-                  className="royalMail-radio relative lg:py-[36px] lg:pr-10 pl-[50px] lg:pl-[100px] bg-primaryLight border-[2px] border-primryDark rounded-[10px] cursor-pointer"
+                  className={`royalMail-radio relative lg:py-[36px] lg:pr-10 pl-[50px] lg:pl-[100px] bg-primaryLight border-[2px] ${
+                    isRoyalMailChecked
+                      ? "border-green-500"
+                      : "border-primryDark"
+                  } rounded-[10px] cursor-pointer`}
                 >
                   <div className="max-w-[800px] py-4 sm:py-10 lg:py-0">
                     <h4 className="text-base md:text-[24px] font-semibold text-primryDark mb-[10px]">
                       {deliveryData?.option_name}
                     </h4>
-
                     <p className="text-sm md:text-lg">
                       {deliveryData?.option_sub_description}
                     </p>
@@ -399,153 +514,169 @@ function StepForm() {
           </div>
         )}
         {/* {/ step 2   /} */}
-        {currentStep === 2 && (
-          <div className="setp-two mt-12 lg:mt-[110px]">
-            {/* {/ step title  /} */}
-            <div className="text-center">
-              <h3 className="text--xl mb-2 lg:mb-5 text-primryDark">
-                Check your order
-              </h3>
-              <p className="text-lg lg:text-[24px] text-primary">
-                Check your order details and Enter promo code if you have one.
-              </p>
-            </div>
-            {/* {/ treatment preference  /} */}
-            <div className="py-5 lg:py-12 px-5 lg:px-[75px] bg-primaryLight rounded-[10px] mt-10 lg:mt-[100px]">
-              <h4 className="text-[24px] font-bold mb-[30px] text-primryDark">
-                Your treatment preference
-              </h4>
-              <div>
-                <p className="text-[18px] font-bold text-primryDark mb-[10px]">
-                  Mounjaro® starting dose 2.5mg
-                </p>
-                <ul className="treatment-preference-medicine max-w-[640px]">
-                  <li className="lg:text-lg text-base">
-                    <p>1 pen (4 doses)</p>
-                    <p>€149.99</p>
-                  </li>
-                  <li>
-                    <p>Royal mail Tracked,</p>
-                    <p> €3.95 </p>
-                  </li>
-                  <li className="total-pay">
-                    <p>Total Pay:</p>
-                    <p>€153.99</p>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            {/* {/ delivery address  /} */}
-            <div className="lg:py-12 py-5 lg:px-[75px] px-5 bg-primaryLight rounded-[10px] mt-10 lg:mt-[100px]">
-              <h3 className="text-[24px] font-bold mb-[14px] text-primryDark">
-                Delivery address:
-              </h3>
-              {/* {/ address  /} */}
-              <div className="flex gap-2 items-center justify-between">
-                <div className="max-w-[820px]">
-                  {!isAddressEditMode ? (
-                    <p className="text-base md:text-lg lg:text-[24px] text-[rgba(0,0,0,0.60)]">
-                      {deliveryAddress}
+        {currentStep === 2 &&
+          medicineDetils.map((item, index) => {
+            return (
+              <div key={item.id} className="setp-two mt-12 lg:mt-[110px]">
+                {/* {/ step title  /} */}
+                <div className="text-center">
+                  <h3 className="text--xl mb-2 lg:mb-5 text-primryDark">
+                    Check your order
+                  </h3>
+                  <p className="text-lg lg:text-[24px] text-primary">
+                    Check your order details and Enter promo code if you have
+                    one.
+                  </p>
+                </div>
+                {/* {/ treatment preference  /} */}
+                <div className="py-5 lg:py-12 px-5 lg:px-[75px] bg-primaryLight rounded-[10px] mt-10 lg:mt-[100px]">
+                  <h4 className="text-[24px] font-bold mb-[30px] text-primryDark">
+                    Your treatment preference
+                  </h4>
+                  <div>
+                    <p className="text-[18px] font-bold text-primryDark mb-[10px]">
+                      {item?.title} starting dose {item.dosage}
                     </p>
-                  ) : (
-                    <textarea
-                      value={deliveryAddress}
-                      onChange={e => setDeliveryAddress(e.target.value)}
-                      className="text-[24px] text-[rgba(0,0,0,0.60)] !h-[200px] resize-none"
-                    />
-                  )}
-                </div>
-                <div>
-                  {
-                    <div
-                      className="text-base md:text-xl lg:text-[24px] font-semibold text-primryDark underline cursor-pointer"
-                      onClick={handleDeliveryAddressEdit}
-                    >
-                      {!isAddressEditMode ? "Edit" : "Save"}
-                    </div>
-                  }
-                </div>
-              </div>
-            </div>
-            {/* {/ suggested medicine  /} */}
-            <div className="suggested-medicine lg:mt-[100px] mt-10">
-              <h4 className="text-2xl lg:text-[32px] font-bold text-primryDark">
-                Add these to complete your treatment:
-              </h4>
-              <div>
-                {treatmentMedicine.map((item, index) => (
-                  <div key={item?.id}>
-                    <div>
-                      <input
-                        type="checkbox"
-                        name={`suggested-${index}`}
-                        id={`suggested-${index}`}
-                        className="hidden stemFromCheckbox"
-                        {...register(`suggested-${index}`)}
-                      />
-                      <label
-                        htmlFor={`suggested-${index}`}
-                        className="!flex flex-col md:flex-row items-start justify-between lg:py-[30px] pl-[50px] lg:pl-[110px] lg:pr-[105px] pr-6 border-[2px] border-[rgba(0,0,0,0.20)] rounded-[10px] mt-10 cursor-pointer py-5"
-                      >
-                        <div className="max-w-[650px]">
-                          <h4 className="text-base lg:text-[24px] text-primryDark leading-[31px]">
-                            {item?.title}
-                          </h4>
-                          <p className="text-[18px] font-bold text-primryDark mt-4">
-                            &euro;{item?.price}
+                    <ul className="treatment-preference-medicine max-w-[640px]">
+                      <li className="lg:text-lg text-base">
+                        <p> ({item?.quantity} doses)</p>
+                        <p> €{item.total_price} </p>
+                      </li>
+                      {isRoyalMailChecked && (
+                        <li>
+                          <p>Royal mail Tracked,</p>
+                          <p> €{optionValues} </p>
+                        </li>
+                      )}
+                      <li className="total-pay">
+                        <p>Total Pay:</p>
+                        {isRoyalMailChecked ? (
+                          <p>
+                            €
+                            {(
+                              parseFloat(item.total_price) +
+                              parseFloat(optionValues)
+                            ).toFixed(2)}
                           </p>
+                        ) : (
+                          <p> €{item.total_price} </p>
+                        )}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                {/* {/ delivery address  /} */}
+                <div className="lg:py-12 py-5 lg:px-[75px] px-5 bg-primaryLight rounded-[10px] mt-10 lg:mt-[100px]">
+                  <h3 className="text-[24px] font-bold mb-[14px] text-primryDark">
+                    Delivery address:
+                  </h3>
+                  {/* {/ address  /} */}
+                  <div className="flex gap-2 items-center justify-between">
+                    <div className="max-w-[820px]">
+                      {!isAddressEditMode ? (
+                        <p className="text-base md:text-lg lg:text-[24px] text-[rgba(0,0,0,0.60)]">
+                          {deliveryAddress}
+                        </p>
+                      ) : (
+                        <textarea
+                          value={deliveryAddress}
+                          onChange={e => setDeliveryAddress(e.target.value)}
+                          className="text-[24px] text-[rgba(0,0,0,0.60)] !h-[200px] resize-none"
+                        />
+                      )}
+                    </div>
+                    <div>
+                      {
+                        <div
+                          className="text-base md:text-xl lg:text-[24px] font-semibold text-primryDark underline cursor-pointer"
+                          onClick={handleDeliveryAddressEdit}
+                        >
+                          {!isAddressEditMode ? "Edit" : "Save"}
                         </div>
-                        <div>
-                          <img
-                            className="max-w-[167px] h-[60px] lg:h-[140px] mt-4 lg:mt-0"
-                            src={`${SiteURl}/${item.avatar}`}
-                            alt={item?.name}
-                          />
-                        </div>
-                      </label>
+                      }
                     </div>
                   </div>
-                ))}
-                {/* {/ button  /} */}
-                <div className="mt-8 lg:mt-[60px] flex items-center justify-center">
-                  <div className="lg:py-[20px] py-2 px-4 lg:px-[60px] bg-primryDark rounded-[10px] text-base lg:text-[24px] font-bold text-white w-fit cursor-pointer duration-200 ease-in-out hover:opacity-90">
-                    Add Extra Medicine
+                </div>
+                {/* {/ suggested medicine  /} */}
+                <div className="suggested-medicine lg:mt-[100px] mt-10">
+                  <h4 className="text-2xl lg:text-[32px] font-bold text-primryDark">
+                    Add these to complete your treatment:
+                  </h4>
+                  <div>
+                    {treatmentMedicine.map((item, index) => (
+                      <div key={item?.id}>
+                        <div>
+                          <input
+                            type="checkbox"
+                            name={`suggested-${index}`}
+                            id={`suggested-${index}`}
+                            className="hidden stemFromCheckbox"
+                            {...register(`suggested-${index}`)}
+                          />
+                          <label
+                            htmlFor={`suggested-${index}`}
+                            className="!flex flex-col md:flex-row items-start justify-between lg:py-[30px] pl-[50px] lg:pl-[110px] lg:pr-[105px] pr-6 border-[2px] border-[rgba(0,0,0,0.20)] rounded-[10px] mt-10 cursor-pointer py-5"
+                          >
+                            <div className="max-w-[650px]">
+                              <h4 className="text-base lg:text-[24px] text-primryDark leading-[31px]">
+                                {item?.title}
+                              </h4>
+                              <p className="text-[18px] font-bold text-primryDark mt-4">
+                                &euro;{item?.price}
+                              </p>
+                            </div>
+                            <div>
+                              <img
+                                className="max-w-[167px] h-[60px] lg:h-[140px] mt-4 lg:mt-0"
+                                src={`${SiteURl}/${item.avatar}`}
+                                alt={item?.name}
+                              />
+                            </div>
+                          </label>
+                        </div>
+                      </div>
+                    ))}
+                    {/* {/ button  /} */}
+                    <div className="mt-8 lg:mt-[60px] flex items-center justify-center">
+                      <div className="lg:py-[20px] py-2 px-4 lg:px-[60px] bg-primryDark rounded-[10px] text-base lg:text-[24px] font-bold text-white w-fit cursor-pointer duration-200 ease-in-out hover:opacity-90">
+                        Add Extra Medicine
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* {/ agreements  /} */}
+                <div className="mt-16 lg:mt-[100px] agreement">
+                  <input
+                    type="checkbox"
+                    name="deliveryAgreements"
+                    id="deliveryAgreements"
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor="deliveryAgreements"
+                    className="relative cursor-pointer pl-8 lg:pl-[60px]"
+                  >
+                    I Consist to MYHEALTHLONDON Connecting to my GP and to the
+                    sharing of information
+                  </label>
+                </div>
+                {/* {/ payment options  /} */}
+                <div className="payment-options text-center max-w-[566px] mx-auto mt-10 lg:mt-[100px]">
+                  <h4 className="text--xl text-primryDark mb-7 lg:mb-[60px]">
+                    Payment Options
+                  </h4>
+                  <div className="flex items-center justify-center">
+                    <Link
+                      onClick={handleNext}
+                      className="flex w-[250px] lg:w-[566px] items-center justify-center px-4 py-3 lg:p-[22px] gap-5 bg-primryDark rounded-[10px] text-base lg:text-[24px] font-bold text-white"
+                    >
+                      Pay with Card
+                    </Link>
                   </div>
                 </div>
               </div>
-            </div>
-            {/* {/ agreements  /} */}
-            <div className="mt-16 lg:mt-[100px] agreement">
-              <input
-                type="checkbox"
-                name="deliveryAgreements"
-                id="deliveryAgreements"
-                className="hidden"
-              />
-              <label
-                htmlFor="deliveryAgreements"
-                className="relative cursor-pointer pl-8 lg:pl-[60px]"
-              >
-                I Consist to MYHEALTHLONDON Connecting to my GP and to the
-                sharing of information
-              </label>
-            </div>
-            {/* {/ payment options  /} */}
-            <div className="payment-options text-center max-w-[566px] mx-auto mt-10 lg:mt-[100px]">
-              <h4 className="text--xl text-primryDark mb-7 lg:mb-[60px]">
-                Payment Options
-              </h4>
-              <div className="flex items-center justify-center">
-                <Link
-                  onClick={handleNext}
-                  className="flex w-[250px] lg:w-[566px] items-center justify-center px-4 py-3 lg:p-[22px] gap-5 bg-primryDark rounded-[10px] text-base lg:text-[24px] font-bold text-white"
-                >
-                  Pay with Card
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
+            );
+          })}
         {/* Ashiq  */}
         {/* {/ step 3   /} */}
         {currentStep === 3 && (
@@ -608,27 +739,33 @@ function StepForm() {
                 </h2>
 
                 {/* Product Info */}
-                <div className="flex items-center gap-4 py-4 border-b">
-                  <img
-                    src={orderImg}
-                    alt="Product"
-                    className="w-12 h-12 rounded-md"
-                  />
-                  <div className="flex-1">
-                    <p className="lg:text-lg text-sm font-semibold font-nunito text-blue-600">
-                      Mounjaro® starting dose 2.5mg
-                    </p>
-                    <p className="text-xs font-nunito text-gray-500">
-                      Mounjaro
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-semibold font-nunito text-gray-800">
-                      $49.80
-                    </p>
-                    <p className="text-xs font-nunito text-gray-500">Qty: 2</p>
-                  </div>
-                </div>
+                {medicineDetils.map((item, index) => {
+                  return (
+                    <div className="flex items-center gap-4 py-4 border-b">
+                      <img
+                        src={`${SiteURl}/${item.avatar}`}
+                        alt="Product"
+                        className="w-12 h-12 rounded-md"
+                      />
+                      <div className="flex-1">
+                        <p className="lg:text-lg text-sm font-semibold font-nunito text-blue-600">
+                          {item.title} starting {item.dosage}
+                        </p>
+                        <p className="text-xs font-nunito text-gray-500">
+                          {item.title}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm font-semibold font-nunito text-gray-800">
+                          ${item.total_price}
+                        </p>
+                        <p className="text-xs font-nunito text-gray-500">
+                          Qty: {item.quantity}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
 
                 {/* Discount Code Input */}
                 <div className="flex items-center gap-2 py-4 border-b">
@@ -637,8 +774,26 @@ function StepForm() {
                     style={{ padding: "5px" }}
                     type="text"
                     placeholder="Gift or discount code"
+                    onChange={e => setCoupon(e.target.value)}
+                    value={coupon}
+                    disabled={payableAmount ? true : false}
                   />
-                  <button className="px-4 py-2 lg:py-3 font-nunito text-sm text-white bg-gray-600 rounded-md hover:bg-gray-700 transition duration-300">
+                  <button
+                    disabled={payableAmount ? true : false}
+                    onClick={() => {
+                      const totalAmount = optionValues
+                        ? (
+                            allItemPricQuantity.subTotalPrice +
+                            parseFloat(allItemPricQuantity.subTotalQuantity) *
+                              optionValues +
+                            2.24
+                          ).toFixed(2)
+                        : (allItemPricQuantity.subTotalPrice + 2.24).toFixed(2);
+
+                      handleCoupon(totalAmount); // Passing totalAmount if needed
+                    }}
+                    className="px-4 py-2 lg:py-3 font-nunito text-sm text-white bg-gray-600 rounded-md hover:bg-gray-700 transition duration-300"
+                  >
                     Apply
                   </button>
                 </div>
@@ -647,11 +802,30 @@ function StepForm() {
                 <div className="space-y-2 py-4 border-b text-gray-700">
                   <div className="flex font-nunito justify-between">
                     <span>Subtotal</span>
-                    <span>$49.80</span>
+                    <span>${allItemPricQuantity.subTotalPrice}</span>
                   </div>
+                  {discountAmount && payableAmount && (
+                    <div className="flex flex-col gap-y-2">
+                      <div className="flex font-nunito justify-between">
+                        <span>Discount Amount</span>
+                        <span> ${discountAmount.toFixed(2)} </span>
+                      </div>
+                      <div className="flex font-nunito justify-between">
+                        <span>Payable Amount After Discount</span>
+                        <span>${payableAmount.toFixed(2)}</span>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="flex font-nunito justify-between">
                     <span>Royal Mail Tracked</span>
-                    <span>$7.24</span>
+                    {optionValues && (
+                      <span>
+                        $
+                        {parseFloat(allItemPricQuantity.subTotalQuantity) *
+                          optionValues}
+                      </span>
+                    )}
                   </div>
                 </div>
 
@@ -663,8 +837,18 @@ function StepForm() {
                       Including $2.24 in taxes
                     </p>
                   </div>
-                  <p className="text-xl lg:text-2xl  font-bold text-gray-900">
-                    $59.28
+                  <p className="text-xl lg:text-2xl font-bold text-gray-900">
+                    $
+                    {payableAmount
+                      ? payableAmount.toFixed(2)
+                      : optionValues
+                      ? (
+                          allItemPricQuantity.subTotalPrice +
+                          parseFloat(allItemPricQuantity.subTotalQuantity) *
+                            optionValues +
+                          2.24
+                        ).toFixed(2)
+                      : (allItemPricQuantity.subTotalPrice + 2.24).toFixed(2)}
                   </p>
                 </div>
               </div>

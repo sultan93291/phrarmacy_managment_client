@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PaymentCard from "@/Pages/Dashboard/User/PaymentCard";
 import { useGetCardDataIntentQuery } from "@/Redux/features/api/apiSlice";
+
 const Receipt = () => {
   const [selectedCard, setSelectedCard] = useState(null);
   const receiptData = {
@@ -13,6 +14,9 @@ const Receipt = () => {
     ],
     totalAmount: 30.0,
   };
+
+
+
   const {
     data: cardData,
     isLoading,

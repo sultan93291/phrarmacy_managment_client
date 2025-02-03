@@ -123,10 +123,14 @@ function AssessmentPage() {
       toast.success("Assesment saved successfully");
       dispatch(setAssesmentRedirect(`${`/treatment/consultation/${id}`}`));
       navigate("/auth/login");
-    } else {
+    } else if(medicineId && assesMentId && isAuthenticated) {
       toast.success("Assesment saved successfully");
       window.location.href = `/medicine-details/${medicineId}/consultation/${assesMentId}`;
+    } else {
+      toast.success('Assesment saved successfully ')
+      window.location.href = `/service/${id}`;
     }
+
 
     console.log("final", finalData);
   };
