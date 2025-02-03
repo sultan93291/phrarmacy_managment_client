@@ -15,7 +15,6 @@ import { isIdPresent, storeMedicineId } from "@/Redux/features/assesmentSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { addMedicineToCheckout } from "@/Redux/features/medicineDetails";
 
-
 function MedicineDetails({ data }) {
   console.log("my details ", data);
 
@@ -73,7 +72,7 @@ function MedicineDetails({ data }) {
 
   useEffect(() => {
     dispatch(isIdPresent({ id: counsultainid }));
-    console.log(assesMentResult, "rrrrrfdsdfsdaf");
+    console.log(assesMentResult);
   }, [counsultainid]);
 
   console.log(assesMentResult, "asseesMentAvailable");
@@ -92,23 +91,23 @@ function MedicineDetails({ data }) {
       total_price: subtotalPrice,
       title: data?.title,
       dosage: data?.dosage,
-      avatar: data.avatars[0].avatar,
+      avatar: data.avatars[0]?.avatar,
     };
 
-    console.log(MedicineDetails , 'this is the medicine details');
-    
-    if (counsultainid) {
-      if (assesMentResult.assesmentResult) {
-        dispatch(addMedicineToCheckout(MedicineDetails));
-        navigate("/checkout");
-      } else {
-        dispatch(storeMedicineId({ id: id, assesMentId: counsultainid }));
-        navigate(`/treatment/consultation/${counsultainid}`);
-      }
-    } else {
-      dispatch(addMedicineToCheckout(MedicineDetails));
-      navigate("/checkout");
-    }
+    console.log(MedicineDetails, "this is the medicine details");
+
+     if (counsultainid) {
+       if (assesMentResult.assesmentResult) {
+         dispatch(addMedicineToCheckout(MedicineDetails));
+         navigate("/checkout");
+       } else {
+         dispatch(storeMedicineId({ id: id, assesMentId: counsultainid }));
+         navigate(`/treatment/consultation/${counsultainid}`);
+       }
+     } else {
+       dispatch(addMedicineToCheckout(MedicineDetails));
+       navigate("/checkout");
+     }
   };
 
   return (
@@ -225,17 +224,17 @@ function MedicineDetails({ data }) {
             </div>
           </div>
 
-          <Link
-            onClick={() => {
-              handleCheckout(data);
-            }}
-            className="block pt-10 sm:pt-20"
-          >
-            <button className="px-6 sm:px-8 py-2 sm:py-4 text-xl rounded-full bg-[#2EB7FF] text-white w-full font-bold">
-              {counsultainid
-                ? assesMentResult.assesmentResult
-                  ? "Go to Checkout"
-                  : "Go to Consultation"
+          <Link className="block pt-10 sm:pt-20">
+            <button
+              onClick={() => {
+                handleCheckout(data);
+              }}
+              className="px-6 sm:px-8 py-2 sm:py-4 text-xl rounded-full bg-[#2EB7FF] text-white w-full font-bold"
+            >
+              {id && !counsultainid
+                ? "Go to Checkout"
+                : counsultainid && !assesMentResult.assesmentId
+                ? "Go to Consultation"
                 : "Go to Checkout"}
             </button>
           </Link>

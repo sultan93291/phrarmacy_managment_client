@@ -12,9 +12,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import orderImg from "../../assets/images/cards/orderImg.png";
 import Receipt from "./Receipt";
 import PaymentCard from "@/Pages/Dashboard/User/PaymentCard";
-import { useGetCardDataIntentQuery } from "@/Redux/features/api/apiSlice";
+import {
+  useApplyCouponIntentMutation,
+  useGetCardDataIntentQuery,
+} from "@/Redux/features/api/apiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { addRoyalMailServiceData } from "@/Redux/features/medicineDetails";
+import toast from "react-hot-toast";
 
 const SiteURl = import.meta.env.VITE_SITE_URL;
 
@@ -50,10 +54,62 @@ function StepForm() {
   );
   const [isAddressEditMode, setIsAddressEditMode] = useState(false);
   const [uploadedFile, setUploadedFile] = useState([]);
+  const [payableAmount, setpayableAmount] = useState();
+
+  const [
+    applyCouponIntent,
+    { data, error: couponError, isLoading: isCouponLoading },
+  ] = useApplyCouponIntentMutation();
 
   const medicineDetils = useSelector(
     state => state.checkOutMedicineReducer.checkOutMedicineDetials
   );
+
+  const [discountAmount, setdiscountAmount] = useState();
+
+  const handleCoupon = async totalPrice => {
+    if (coupon && totalPrice) {
+      try {
+        // Apply coupon mutation
+        const response = await applyCouponIntent({
+          coupon_code: coupon,
+          total_amount: totalPrice,
+        }).unwrap();
+
+        console.log("✅ Coupon Response:", response);
+
+        // Check for a valid response code
+        if (response.code === 200) {
+          toast.success(`🎉 Coupon Applied Successfully! Discount: `);
+          setpayableAmount(response.data.discounted_amount);
+          setdiscountAmount(response.data.discount_applied);
+        } else {
+          toast.error(
+            `⚠️ Unexpected Response: ${response.message || "Unknown error"}`
+          );
+        }
+      } catch (error) {
+        console.error("❌ Error applying coupon:", error);
+
+        // Check if the error has a response or is a network error
+        if (error.data) {
+          toast.error(
+            `❌ Failed to Apply Coupon: ${
+              error.data.message || "Something went wrong!"
+            }`
+          );
+        } else {
+          toast.error(
+            `❌ Failed to Apply Coupon: ${error.message || "Network error"}`
+          );
+        }
+      } finally {
+        setCoupon(""); // Clear coupon input
+      }
+    }
+  };
+
+  const [coupon, setCoupon] = useState("");
 
   const dispatch = useDispatch();
 
@@ -137,7 +193,12 @@ function StepForm() {
     apiKey: "public_W142itCDRC1b8YPvw8TnVJXyugYK",
     accept: ".pdf",
   };
-  const [allItemPricQuantity, setAllItemPricQuantity] = useState([]);
+
+  const [allItemPricQuantity, setAllItemPricQuantity] = useState({
+    items: [],
+    subTotalQuantity: 0,
+    subTotalPrice: 0,
+  });
 
   useEffect(() => {
     const updatedItems = medicineDetils.map(item => {
@@ -149,7 +210,21 @@ function StepForm() {
       };
     });
 
-    setAllItemPricQuantity(updatedItems); // Update state once all items are mapped
+    const subTotalQuantity = updatedItems.reduce(
+      (total, item) => total + item.itemQuantity,
+      0
+    );
+    const subTotalPrice = updatedItems.reduce(
+      (total, item) => total + item.itemQuantity * item.itemSinglePeicePrice,
+      0
+    );
+
+    // Update state with items, subtotal quantity, and subtotal price
+    setAllItemPricQuantity({
+      items: updatedItems,
+      subTotalQuantity,
+      subTotalPrice,
+    });
   }, [medicineDetils]);
 
   console.log(allItemPricQuantity, "all item price quanity");
@@ -163,6 +238,7 @@ function StepForm() {
 
   console.log(cardData, isLoading, error, isError);
   const [selectedCard, setSelectedCard] = useState(null);
+
   return (
     <div>
       {/* {/ step indicator  /} */}
@@ -698,8 +774,26 @@ function StepForm() {
                     style={{ padding: "5px" }}
                     type="text"
                     placeholder="Gift or discount code"
+                    onChange={e => setCoupon(e.target.value)}
+                    value={coupon}
+                    disabled={payableAmount ? true : false}
                   />
-                  <button className="px-4 py-2 lg:py-3 font-nunito text-sm text-white bg-gray-600 rounded-md hover:bg-gray-700 transition duration-300">
+                  <button
+                    disabled={payableAmount ? true : false}
+                    onClick={() => {
+                      const totalAmount = optionValues
+                        ? (
+                            allItemPricQuantity.subTotalPrice +
+                            parseFloat(allItemPricQuantity.subTotalQuantity) *
+                              optionValues +
+                            2.24
+                          ).toFixed(2)
+                        : (allItemPricQuantity.subTotalPrice + 2.24).toFixed(2);
+
+                      handleCoupon(totalAmount); // Passing totalAmount if needed
+                    }}
+                    className="px-4 py-2 lg:py-3 font-nunito text-sm text-white bg-gray-600 rounded-md hover:bg-gray-700 transition duration-300"
+                  >
                     Apply
                   </button>
                 </div>
@@ -708,11 +802,30 @@ function StepForm() {
                 <div className="space-y-2 py-4 border-b text-gray-700">
                   <div className="flex font-nunito justify-between">
                     <span>Subtotal</span>
-                    <span>$49.80</span>
+                    <span>${allItemPricQuantity.subTotalPrice}</span>
                   </div>
+                  {discountAmount && payableAmount && (
+                    <div className="flex flex-col gap-y-2">
+                      <div className="flex font-nunito justify-between">
+                        <span>Discount Amount</span>
+                        <span> ${discountAmount.toFixed(2)} </span>
+                      </div>
+                      <div className="flex font-nunito justify-between">
+                        <span>Payable Amount After Discount</span>
+                        <span>${payableAmount.toFixed(2)}</span>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="flex font-nunito justify-between">
                     <span>Royal Mail Tracked</span>
-                    <span>$7.24</span>
+                    {optionValues && (
+                      <span>
+                        $
+                        {parseFloat(allItemPricQuantity.subTotalQuantity) *
+                          optionValues}
+                      </span>
+                    )}
                   </div>
                 </div>
 
@@ -724,8 +837,18 @@ function StepForm() {
                       Including $2.24 in taxes
                     </p>
                   </div>
-                  <p className="text-xl lg:text-2xl  font-bold text-gray-900">
-                    $59.28
+                  <p className="text-xl lg:text-2xl font-bold text-gray-900">
+                    $
+                    {payableAmount
+                      ? payableAmount.toFixed(2)
+                      : optionValues
+                      ? (
+                          allItemPricQuantity.subTotalPrice +
+                          parseFloat(allItemPricQuantity.subTotalQuantity) *
+                            optionValues +
+                          2.24
+                        ).toFixed(2)
+                      : (allItemPricQuantity.subTotalPrice + 2.24).toFixed(2)}
                   </p>
                 </div>
               </div>
