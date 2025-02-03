@@ -37,7 +37,7 @@ const UserOrderDetails = () => {
       </div>
 
       {/* Order Details */}
-      <div className="px-5 lg:px-12 py-10 lg:py-16 bg-white rounded-lg mt-5">
+      <div className="px-3 sm:px-5 xl:px-12 py-10 lg:py-16 bg-white rounded-lg mt-5">
         {/* Title and Buttons */}
         <div className="w-full flex-col md:flex-row gap-5 flex items-center justify-between">
           <h2 className="text-[#052D4C] text-2xl sm:text-3xl font-semibold">
@@ -90,35 +90,33 @@ const UserOrderDetails = () => {
 
           {/* Order Items */}
           <div className="mt-12 overflow-x-auto">
-            <div className="w-full flex items-center pb-4 border-b border-[#E7EBF4]">
-              <div className="w-1/2 text-start">
-                <h2 className="font-bold text-lg">Description</h2>
-              </div>
-              <div className="w-1/2 font-bold text-lg flex items-center justify-between">
-                <h2>Quantity</h2>
-                <h2 className="mr-8">Price</h2>
-                <h2>Amount</h2>
-              </div>
-            </div>
+  {/* Table Header */}
+  <div className="grid grid-cols-4 sm:grid-cols-4 gap-3 sm:gap-6 pb-4 border-b border-[#E7EBF4] text-xs sm:text-lg font-bold text-[#052D4C]">
+    <h2 className="text-left">Description</h2>
+    <h2 className="text-center">Qty</h2>
+    <h2 className="text-center">Price</h2>
+    <h2 className="text-center ">Amount</h2> 
+  </div>
 
-            {/* Table Body */}
-            {allMedicne?.map(med => (
-              <div
-                key={med.name}
-                className="w-full flex items-center py-2 border-b border-[#E7EBF4]"
-              >
-                <div className="w-1/2 text-start space-y-2">
-                  <h2 className="font-bold text-base">{med?.medicine}</h2>
-                  <p className="text-sm">{med?.quantity} Medicine included</p>
-                </div>
-                <div className="w-1/2 font-bold text-center text-base flex items-center justify-between pl-5">
-                  <h2>{med?.quantity}</h2>
-                  <h2>$ {med?.unit_price}</h2>
-                  <h2>$ {med?.total_price}</h2>
-                </div>
-              </div>
-            ))}
-          </div>
+  {/* Table Body */}
+  {allMedicne?.map((med) => (
+    <div
+      key={med.name}
+      className="grid grid-cols-4 sm:grid-cols-4 gap-3 sm:gap-6 py-2 border-b border-[#E7EBF4] text-xs sm:text-base items-center"
+    >
+      <div className="text-left">
+        <h2 className="font-bold">{med?.medicine}</h2>
+        <p className="text-[10px] sm:text-sm text-gray-500">
+          {med?.quantity} Medicine included
+        </p>
+      </div>
+      <h2 className="text-center">{med?.quantity}</h2>
+      <h2 className="text-center">$ {med?.unit_price}</h2>
+      <h2 className="text-center ">$ {med?.total_price}</h2>
+    </div>
+  ))}
+</div>
+
         </div>
 
         {/* Doctor Notes */}
