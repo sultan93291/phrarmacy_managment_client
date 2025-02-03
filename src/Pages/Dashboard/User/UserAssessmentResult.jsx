@@ -299,11 +299,11 @@ const UserAssessmentResult = () => {
     useGetAssesMentResultIntentQuery();
 
   useEffect(() => {
-    console.log(data);
-    setAllAssesmentData(data?.data?.assessments);
+    console.log(data?.data, "pure data from");
+    setAllAssesmentData(data?.data);
   }, [data]);
 
-  console.log(data?.data?.assessments, "asses ment data");
+  console.log(AllAssesmentData, "asses ment data");
 
   return (
     <section>
@@ -313,40 +313,37 @@ const UserAssessmentResult = () => {
       {/* All Results */}
       <div className="mt-10">
         {AllAssesmentData?.map(data => {
-          console.log(data, "single dat");
-
           return (
             <Accordion
-            key={data?.id}
-            type="single"
-            collapsible
-            className="w-full"
-          >
-            {/* item */}
-            <AccordionItem
-              data-aos="zoom-in"
-              data-aos-duration="1000"
-              value={`item-1`}
-              className="border border-[#084772] rounded-lg sm:rounded-[10px] overflow-hidden mt-[14px] accordion-item"
+              key={data?.Order_uuid}
+              type="single"
+              collapsible
+              className="w-full"
             >
-              {/* title */}
+              {/* item */}
+              <AccordionItem
+                data-aos="zoom-in"
+                data-aos-duration="1000"
+                value={`item-${data?.Order_uuid}`}
+                className="border border-[#084772] rounded-lg sm:rounded-[10px] overflow-hidden mt-[14px] accordion-item"
+              >
+                {/* title */}
 
-             <AccordionTrigger className="sm:text-lg xl:text-2xl text-[#052D4C] font-semibold py-4 xl:py-5 px-5 xl:px-10">
+                <AccordionTrigger className="sm:text-lg xl:text-2xl text-[#052D4C] font-semibold py-4 xl:py-5 px-5 xl:px-10">
                   <div className="flex items-start text-left gap-3 sm:gap-5 xl:gap-12">
-                    <p className="text-lg">#{data.id}</p>
-                    <h5 className="xl:text-xl">{data.question}</h5>
+                    <p className="text-lg">#{data?.Order_uuid}</p>
+                    <h5 className="xl:text-xl">{data?.Treatment}</h5>
                   </div>
                 </AccordionTrigger>
 
-              {/* details */}
+                {/* details */}
 
-              <AccordionContent className="pt-5 pb-8 px-5 sm:px-7 lg:px-[55px] bg-white" >
-                <AssessmentResult questions={data} />
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-          )
-
+                <AccordionContent className="pt-5 pb-8 px-5 sm:px-7 lg:px-[55px] bg-white">
+                  <AssessmentResult questions={data} />
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          );
         })}
       </div>
     </section>
