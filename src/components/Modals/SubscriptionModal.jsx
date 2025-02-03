@@ -72,7 +72,7 @@ const SubscriptionModal = ({ setOpen, id }) => {
   };
 
   return (
-    <DialogContent className="sm:max-w-[650px] max-w-[320px] px-10 py-6 text-center font-nunito">
+    <DialogContent className="sm:max-w-[650px] max-w-[310px] px-10 py-6 text-center font-nunito">
       <div className="max-h-[80vh] overflow-y-auto scrollbar-hide">
         <DialogHeader>
           <DialogTitle className="text-xl text-[#052D4C] font-bold font-poppins "></DialogTitle>
