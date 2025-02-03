@@ -11,7 +11,7 @@ function HeaderBtn({ text }) {
   console.log("logged in user", loggedInUser);
 
   return (
-    <div className="xl:py-[7px] justify-center py-[5px] px-3 btn-gradient rounded flex items-center gap-3 xl:gap-[18px]">
+    <div className="xl:py-[7px] justify-center py-[5px] px-3 btn-gradient rounded-[50px] flex items-center gap-3 xl:gap-[18px]">
       <p className="xl:text-[18px] font-semibold text-white">{text}</p>
       <div className="h-7 w-7 xl:h-9 xl:w-9 relative bg-white rounded-full ring-2 flex items-center justify-center">
         <img
