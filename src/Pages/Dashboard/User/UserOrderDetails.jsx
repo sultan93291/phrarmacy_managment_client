@@ -39,7 +39,7 @@ const UserOrderDetails = () => {
       {/* Order Details */}
       <div className="px-3 sm:px-5 xl:px-12 py-10 lg:py-16 bg-white rounded-lg mt-5">
         {/* Title and Buttons */}
-        <div className="w-full flex-col md:flex-row gap-5 flex items-center justify-between">
+        <div className="w-full flex-col sm:flex-row gap-5 flex items-center justify-between">
           <h2 className="text-[#052D4C] text-2xl sm:text-3xl font-semibold">
             Order History
           </h2>

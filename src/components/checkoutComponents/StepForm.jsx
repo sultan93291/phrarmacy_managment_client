@@ -110,6 +110,11 @@ function StepForm() {
 
     window.scrollTo(0, 0);
   };
+  const handlePrev = () => {
+    setCurrentStep(prevStep => (prevStep > 1 ? prevStep - 1 : prevStep));
+
+    window.scrollTo(0, 0);
+  };
 
   const options = {
     apiKey: "public_W142itCDRC1b8YPvw8TnVJXyugYK",
@@ -130,20 +135,20 @@ function StepForm() {
       {/* {/ step indicator  /} */}
       <div className="relative z-[1] max-w-[790px] mx-auto">
         <ul className="step-indicators flex lg:gap-0 items-center justify-between">
-          <li className={currentStep >= 1 ? "active" : ""}>
-            <p className="icon">1</p>
+          <li onClick={()=>setCurrentStep(1)} className={currentStep >= 1 ? "active" : ""}>
+            <p className="icon cursor-pointer">1</p>
             <span className="stepName">Delivery</span>
           </li>
-          <li className={currentStep >= 2 ? "active" : ""}>
-            <p className="icon">2</p>
+          <li onClick={()=>setCurrentStep(2)}  className={currentStep >= 2 ? "active" : ""}>
+            <p className="icon cursor-pointer">2</p>
             <span>Review and pay</span>
           </li>
-          <li className={currentStep >= 3 ? "active" : ""}>
-            <p className="icon">3</p>
+          <li onClick={()=>setCurrentStep(3)}  className={currentStep >= 3 ? "active" : ""}>
+            <p className="icon cursor-pointer">3</p>
             <span>Receipt</span>
           </li>
-          <li className={currentStep >= 4 ? "active" : ""}>
-            <p className="icon">4</p>
+          <li onClick={()=>setCurrentStep(4)}  className={currentStep >= 4 ? "active" : ""}>
+            <p className="icon cursor-pointer">4</p>
             <span>Receipt</span>
           </li>
         </ul>
@@ -538,6 +543,7 @@ function StepForm() {
               <div className="flex items-center justify-center">
                 <Link
                   onClick={handleNext}
+                
                   className="flex w-[250px] lg:w-[566px] items-center justify-center px-4 py-3 lg:p-[22px] gap-5 bg-primryDark rounded-[10px] text-base lg:text-[24px] font-bold text-white"
                 >
                   Pay with Card
