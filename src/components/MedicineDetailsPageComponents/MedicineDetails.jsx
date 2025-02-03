@@ -13,6 +13,7 @@ import {
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { isIdPresent, storeMedicineId } from "@/Redux/features/assesmentSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { addMedicineToCheckout } from "@/Redux/features/medicineDetails";
 
 function MedicineDetails({ data }) {
   console.log("my details ", data);
@@ -20,10 +21,16 @@ function MedicineDetails({ data }) {
   const { id, counsultainid } = useParams();
 
   const [selectedValue, setSelectedValue] = useState("1"); // State to store selected value
+  const [subtotalPrice, setsubTotalPrice] = useState();
+  const [quantitys, setquantity] = useState();
 
   const handleValueChange = value => {
     setSelectedValue(value); // Update the selected value
-    console.log("Selected Value:", value); // Log it for debugging
+
+    const quantity = parseInt(data?.quantity * value);
+    const subTotalPrice = data?.price * value;
+    setsubTotalPrice(subTotalPrice);
+    setquantity(quantity);
   };
 
   const navigate = useNavigate();
@@ -53,6 +60,8 @@ function MedicineDetails({ data }) {
 
   useEffect(() => {
     setPreview(data?.avatars[0]?.avatar);
+    setquantity(data?.quantity);
+    setsubTotalPrice(data?.price);
   }, [data]);
 
   const myStyles = {
@@ -63,7 +72,7 @@ function MedicineDetails({ data }) {
 
   useEffect(() => {
     dispatch(isIdPresent({ id: counsultainid }));
-    console.log(assesMentResult, "rrrrrfdsdfsdaf");
+    console.log(assesMentResult);
   }, [counsultainid]);
 
   console.log(assesMentResult, "asseesMentAvailable");
@@ -74,17 +83,31 @@ function MedicineDetails({ data }) {
     setPreview(img);
   };
 
-  const handleCheckout = () => {
-    if (counsultainid) {
-      if (assesMentResult.assesmentResult) {
-        navigate("/checkout");
-      } else {
-        dispatch(storeMedicineId({ id: id, assesMentId: counsultainid }));
-        navigate(`/treatment/consultation/${counsultainid}`);
-      }
-    } else {
-      navigate("/checkout");
-    }
+  const handleCheckout = data => {
+    const MedicineDetails = {
+      medicine_id: data?.id,
+      quantity: selectedValue,
+      unit_price: data?.price,
+      total_price: subtotalPrice,
+      title: data?.title,
+      dosage: data?.dosage,
+      avatar: data.avatars[0]?.avatar,
+    };
+
+    console.log(MedicineDetails, "this is the medicine details");
+
+     if (counsultainid) {
+       if (assesMentResult.assesmentResult) {
+         dispatch(addMedicineToCheckout(MedicineDetails));
+         navigate("/checkout");
+       } else {
+         dispatch(storeMedicineId({ id: id, assesMentId: counsultainid }));
+         navigate(`/treatment/consultation/${counsultainid}`);
+       }
+     } else {
+       dispatch(addMedicineToCheckout(MedicineDetails));
+       navigate("/checkout");
+     }
   };
 
   return (
@@ -201,17 +224,17 @@ function MedicineDetails({ data }) {
             </div>
           </div>
 
-          <Link
-            onClick={() => {
-              handleCheckout();
-            }}
-            className="block pt-10 sm:pt-20"
-          >
-            <button className="px-6 sm:px-8 py-2 sm:py-4 text-xl rounded-full bg-[#2EB7FF] text-white w-full font-bold">
-              {counsultainid
-                ? assesMentResult.assesmentResult
-                  ? "Go to Checkout"
-                  : "Go to Consultation"
+          <Link className="block pt-10 sm:pt-20">
+            <button
+              onClick={() => {
+                handleCheckout(data);
+              }}
+              className="px-6 sm:px-8 py-2 sm:py-4 text-xl rounded-full bg-[#2EB7FF] text-white w-full font-bold"
+            >
+              {id && !counsultainid
+                ? "Go to Checkout"
+                : counsultainid && !assesMentResult.assesmentId
+                ? "Go to Consultation"
                 : "Go to Checkout"}
             </button>
           </Link>
