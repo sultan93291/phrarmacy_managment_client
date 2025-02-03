@@ -745,31 +745,9 @@ function StepForm() {
 
                 {/* Product Info */}
                 {medicineDetils.map((item, index) => {
-                  return (
-                    <div className="flex items-center gap-4 py-4 border-b">
-                      <img
-                        src={`${SiteURl}/${item.avatar}`}
-                        alt="Product"
-                        className="w-12 h-12 rounded-md"
-                      />
-                      <div className="flex-1">
-                        <p className="lg:text-lg text-sm font-semibold font-nunito text-blue-600">
-                          {item.title} starting {item.dosage}
-                        </p>
-                        <p className="text-xs font-nunito text-gray-500">
-                          {item.title}
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-sm font-semibold font-nunito text-gray-800">
-                          ${item.total_price}
-                        </p>
-                        <p className="text-xs font-nunito text-gray-500">
-                          Qty: {item.quantity}
-                        </p>
-                      </div>
-                    </div>
-                  );
+                  return(
+                    
+                  )
                 })}
 
                 {/* Discount Code Input */}
