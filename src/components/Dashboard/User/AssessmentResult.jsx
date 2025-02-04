@@ -5,7 +5,6 @@ const AssessmentResult = ({ questions }) => {
   return (
     <div className="w-full flex flex-col sm:flex-row text-[#052D4C] max-h-[80vh] overflow-y-auto user-assessment-result">
       {/* Left Section - Questions */}
-
       <div className="w-4/5 h-full space-y-8">
         {questions?.Assessment_results.map((item, index) => (
           <div key={index} className="mb-5">
