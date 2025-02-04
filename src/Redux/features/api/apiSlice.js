@@ -133,7 +133,7 @@ export const apiSlice = createApi({
 
     getAssesMentResultIntent: builder.query({
       query: () => ({
-        url: "/api/treatment/1/consultation",
+        url: "/api/assessments-result",
         method: "GET",
         includeToken: true,
       }),
@@ -204,6 +204,15 @@ export const apiSlice = createApi({
         includeToken: true,
       }),
     }),
+
+    applyCouponIntent: builder.mutation({
+      query: ({ coupon_code, total_amount }) => ({
+        url: `/api/apply-coupon`,
+        method: "POST",
+        data: { coupon_code: coupon_code, total_amount: total_amount },
+        includeToken: true,
+      }),
+    }),
   }),
 
   // create meeting
@@ -232,4 +241,5 @@ export const {
   useGetAllMeetingsIntentQuery,
   useUpdateMeetingIntentMutation,
   useCreatePlaceOrderIntentMutation,
+  useApplyCouponIntentMutation,
 } = apiSlice;

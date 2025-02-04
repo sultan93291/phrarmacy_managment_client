@@ -101,7 +101,7 @@ const PharmacistOrderDetailsPage = () => {
       <div className="mt-5 flex flex-col lg:flex-row gap-5 xl:gap-10 font-nunito w-full">
         {/* left content */}
         <div className="w-full lg:w-3/5 order-2 lg:order-1">
-        <div className="bg-white rounded-lg px-6 xl:px-12 py-10 xl:py-16">
+        <div className="bg-white rounded-lg px-3 sm:px-5 xl:px-12 py-10 xl:py-16">
   {/* Title */}
   <h2 className="text-xl lg:text-3xl font-bold text-[#052D4C]">Order Details</h2>
 
@@ -126,10 +126,10 @@ const PharmacistOrderDetailsPage = () => {
   <div className="mt-12 w-full">
     {/* Table Title (Hidden on Mobile, Visible on `sm:` and Above) */}
     <div className="hidden sm:grid grid-cols-4 gap-4 pb-4 border-b border-[#E7EBF4] text-lg font-bold">
-      <h2 className="text-start ">Description</h2>
-      <h2 className="text-center ">Quantity</h2>
-      <h2 className="text-center ">Price</h2>
-      <h2 className="text-right ">Amount</h2>
+      <h2 className="text-start">Description</h2>
+      <h2 className="text-center">Quantity</h2>
+      <h2 className="text-center">Price</h2>
+      <h2 className="text-right">Amount</h2>
     </div>
 
     {/* Table Body */}
@@ -163,18 +163,18 @@ const PharmacistOrderDetailsPage = () => {
 
 
           {/* Past Orders */}
-          <div className="rounded-lg py-16 px-4 sm:px-6">
+          <div className="rounded-lg py-16  sm:px-6">
   <h2 className="text-2xl sm:text-3xl font-bold text-[#052D4C]">Past Orders</h2>
 
   {/* Orders */}
   <Accordion type="single" collapsible className="mt-10 space-y-3">
     {MedicindeInfo?.past_orders?.map((item) => (
-      <AccordionItem key={item?.details?.order_id} value={item?.details?.order_id} className="border-b-0 bg-white px-5 rounded-lg">
+      <AccordionItem key={item?.details?.order_id} value={item?.details?.order_id} className="border-b-0 bg-white px-3 sm:px-5 xl:px-12 rounded-lg">
         <AccordionTrigger>
           {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-10 text-[#052D4C]">
-            <h2 className="text-base sm:text-lg font-semibold">Order ID :</h2>
-            <p className="font-medium text-sm sm:text-base">#{item?.details?.order_id}</p>
+          <div className="flex font-extrabold  sm:items-center gap-3  text-[#052D4C]">
+            <h2 className="text-base sm:text-lg ">Order ID :</h2>
+            <p className="text-sm sm:text-base">#{item?.details?.order_id}</p>
           </div>
         </AccordionTrigger>
         
@@ -231,9 +231,9 @@ const PharmacistOrderDetailsPage = () => {
                   </div>
 
                   {/* Desktop View */}
-                  <h2 className="hidden sm:block text-center">{med?.quantity}</h2>
-                  <h2 className="hidden sm:block text-center">$ {med?.unit_price}</h2>
-                  <h2 className="hidden sm:block text-right">$ {med?.total_price}</h2>
+                  <h2 className="hidden sm:block font-bold text-center">{med?.quantity}</h2>
+                  <h2 className="hidden sm:block font-bold text-center">$ {med?.unit_price}</h2>
+                  <h2 className="hidden sm:block font-bold text-right">$ {med?.total_price}</h2>
                 </div>
               ))}
             </div>
@@ -247,7 +247,7 @@ const PharmacistOrderDetailsPage = () => {
         </div>
 
         {/* right content */}
-        <div className="px-6 order-1 lg:order-2 sm:px-12 py-12 sm:py-16 w-full sm:w-2/5 bg-white rounded-lg h-fit">
+        <div className="px-6 order-1 lg:order-2 sm:px-12 py-4 lg:py-12  w-full lg:w-2/5 bg-white rounded-lg h-fit">
   {/* Title */}
   <h3 className="text-lg sm:text-xl font-bold text-[#052D4C] text-center">Manage the order</h3>
 

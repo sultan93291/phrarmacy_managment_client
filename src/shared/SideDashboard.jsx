@@ -1,17 +1,11 @@
 /* eslint-disable react/prop-types */
-import { Link, NavLink } from 'react-router-dom';
-import Logo from '@/assets/images/logo/logo.svg';
-import userIcon from '@/assets/images/icon/User-rounded.svg';
+import { Link } from 'react-router-dom';
 import { RxCross2 } from "react-icons/rx";
 import dashboardLogo from "../assets/images/logo/dashboard_upper_logo.png"
-
-import {
-    DashboardLogoutSvg,
-    LogoSvg,
-} from '@/components/SvgContainer/SvgContainer';
+import { DashboardLogoutSvg } from '@/components/SvgContainer/SvgContainer';
 import { useContext } from "react";
 import { AuthContext } from "@/provider/AuthProvider/AuthContextProvider";
-import DashboardSidebarNavLinks from '@/components/Dashboard/Sidebar/DashboardSidebarNavLinks/DashboardSidebarNavLinks';
+import SideDashboardLinks from './SideDashboardLinks';
 
 const SideDashboard = ({ isOpen, setOpen, dashboardNavLinks }) => {
     const { handleLogout } = useContext(AuthContext);
@@ -43,7 +37,7 @@ const SideDashboard = ({ isOpen, setOpen, dashboardNavLinks }) => {
 
                     {/* dashboard navLinks */}
 
-                    <DashboardSidebarNavLinks  setOpen={false} dashboardNavLinks={dashboardNavLinks} />
+                    <SideDashboardLinks setOpen={setOpen} dashboardNavLinks={dashboardNavLinks} />
 
                     {/* logout */}
                     <div onClick={() => { handleLogout() }} className="mt-4 w-full flex gap-3 items-center px-6 py-3 rounded-2xl group duration-500 transition hover:bg-[#0CA6FC] cursor-pointer">
