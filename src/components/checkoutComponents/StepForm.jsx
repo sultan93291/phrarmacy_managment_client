@@ -442,7 +442,7 @@ function StepForm() {
               <h4 className="text-2xl sm:text-[36px] text-primryDark font-bold mb-10">
                 Add your prescription file
               </h4>
-              <div className="flex flex-col items-center p-[50px] rounded-[10px] border border-dashed border-[#A7A7A7]">
+              <div className="flex flex-col items-center p-8 md:p-[50px] rounded-[10px] border border-dashed border-[#A7A7A7]">
                 {/* {/ file preview  /} */}
                 <div>
                   <div className="flex flex-col items-center justify-center">
@@ -461,14 +461,14 @@ function StepForm() {
                   </div>
                 </div>
                 <div>
-                  <div className="flex flex-col cursor-pointer items-center justify-center w-[295px] h-[76px] border-[2px] border-solid border-[#0693FF] rounded-[10px] relative   ">
-                    <p className="text-[#0693FF] text-[24px] font-nunito font-semibold leading-[132%] tracking-[0.48px]   ">
+                  <div className="flex flex-col cursor-pointer items-center justify-center w-[190px] h-[40px] lg:w-[295px] lg:h-[76px] border-[2px] border-solid border-[#0693FF] rounded-[10px] relative   ">
+                    <p className="text-[#0693FF] lg:text-[24px] font-nunito font-semibold leading-[132%] tracking-[0.48px]   ">
                       Add Prescription
                     </p>
                     <input
                       type="file"
                       accept="application/pdf"
-                      className="h-full w-full opacity-0 absolute top-0 left-0 cursor-pointer "
+                      className="h-full w-full opacity-0 absolute top-0 left-0 "
                       onChange={handleFileChange}
                     />
                   </div>
@@ -524,12 +524,12 @@ function StepForm() {
             </div>
             {/* {/ button  /} */}
             <div>
-              <div
-                className="py-2 lg:py-[22px] px-10 lg:px-20 bg-primryDark rounded-[10px] sm:text-[24px] font-bold text-white w-fit mx-auto mt-10 cursor-pointer"
+              <button type="submit"
+                className="py-2 lg:py-[22px] px-10 text-center lg:px-20 bg-primryDark rounded-[10px] sm:text-[24px] font-bold text-white w-fit mx-auto mt-10 cursor-pointer"
                 onClick={handleNext}
               >
                 Continue to payment
-              </div>
+              </button>
             </div>
           </div>
         )}

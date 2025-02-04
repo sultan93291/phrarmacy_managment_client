@@ -105,9 +105,10 @@ export const apiSlice = createApi({
     // Delete Card
     deleteCardIntent: builder.mutation({
       query: cardId => ({
-        url: `/api/delete/subscription/${cardId}`,
+        url: `/api/remove/stripe/customer/payment-method/${cardId}`,
         method: "DELETE",
         includeToken: true,
+        invalidatesTags: ["Card"],
       }),
     }),
 
