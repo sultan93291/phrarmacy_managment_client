@@ -14,7 +14,7 @@ function PersonalizedSection() {
         <div className="container">
           <div className="grid lg:grid-cols-2 items-center gap-10 lg:gap-20 xl:gap-[162px]">
             <div data-aos="zoom-up"
-              data-aos-duration="2000" className="">
+              data-aos-duration="2000" className="ps-3">
               <h3
                 data-aos="zoom-up"
                 data-aos-duration="2000"

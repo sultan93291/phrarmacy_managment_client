@@ -45,13 +45,12 @@ function AllTreatmentSection() {
             <Searchbar />
           </div>
         </div>
-        <div>
+        <div className="mt-10">
           {treatmentsCategories.map((category, idx) => (
             <div
               data-aos="zoom-in"
               data-aos-duration="2000"
               key={idx}
-              className="mt-10"
             >
               <TreatmentBox item={category} />
             </div>

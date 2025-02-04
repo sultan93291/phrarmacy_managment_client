@@ -39,7 +39,7 @@ function PopularTreatment() {
                     {
                         popularTreatmentData.map((item) => (
                             <div data-aos="zoom-in"
-                                data-aos-duration="2000" key={item.id} className='mt-5'>
+                                data-aos-duration="2000" key={item.id} className=''>
                                 <TreatmentCard item={item} />
                             </div>
                         ))
