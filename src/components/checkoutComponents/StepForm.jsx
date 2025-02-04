@@ -8,12 +8,12 @@ import prescriptionIcon from "../../assets/images/icon/prescription.svg";
 import pdfIcon from "../../assets/images/icon/pdf.png";
 import axios from "axios";
 //ashiq
-import { Checkbox } from "@/components/ui/checkbox";
 import orderImg from "../../assets/images/cards/orderImg.png";
 import Receipt from "./Receipt";
 import PaymentCard from "@/Pages/Dashboard/User/PaymentCard";
 import {
   useApplyCouponIntentMutation,
+  useCreatePlaceOrderIntentMutation,
   useGetCardDataIntentQuery,
 } from "@/Redux/features/api/apiSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,6 +23,7 @@ import {
 } from "@/Redux/features/medicineDetails";
 import toast from "react-hot-toast";
 import { current } from "@reduxjs/toolkit";
+import { Checkbox } from "@radix-ui/react-checkbox";
 
 const SiteURl = import.meta.env.VITE_SITE_URL;
 
@@ -64,6 +65,16 @@ function StepForm() {
     applyCouponIntent,
     { data, error: couponError, isLoading: isCouponLoading },
   ] = useApplyCouponIntentMutation();
+
+  const [
+    createPlaceOrderIntent,
+    {
+      isLoading: isOrderLaoding,
+      isError: isOrderError,
+      data: orderData,
+      error: OrderError,
+    },
+  ] = useCreatePlaceOrderIntentMutation();
 
   const medicineDetils = useSelector(
     state => state.checkOutMedicineReducer.checkOutMedicineDetials
@@ -168,6 +179,13 @@ function StepForm() {
     setIsAddressEditMode(!isAddressEditMode);
   };
 
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckedChange = e => {
+    e.target.checked; // ✅ Directly updates the boolean value
+    console.log(e.target.checked); // ✅ Logs true/false when toggled
+    setIsChecked(e.target.checked);
+  };
   const onSumbit = data => {
     console.log(data);
   };
@@ -182,6 +200,14 @@ function StepForm() {
     gpName: "",
     gpAdress: "",
   });
+
+  const [SelectedCardId, setSelectedCardID] = useState();
+  const handleSelectCard = item => {
+    console.log(item?.id, "this is the payment method id");
+    setSelectedCardID(item?.id);
+  };
+
+  const [fixedcoupon, setfixedcoupon] = useState();
 
   console.log(billingDetails);
 
@@ -225,14 +251,15 @@ function StepForm() {
 
   const handleNext = () => {
     if (
-      currentStep === 1 &&
-      billingDetails.name &&
-      billingDetails.address &&
-      billingDetails.city &&
-      billingDetails.email &&
-      billingDetails.postCode &&
-      billingDetails.gpAdress &&
-      billingDetails.gpName
+      currentStep === 1 ||
+      (currentStep === 2 &&
+        billingDetails.name &&
+        billingDetails.address &&
+        billingDetails.city &&
+        billingDetails.email &&
+        billingDetails.postCode &&
+        billingDetails.gpAdress &&
+        billingDetails.gpName)
     ) {
       setCurrentStep(prevStep => (prevStep < 4 ? prevStep + 1 : prevStep));
       window.scrollTo(0, 0);
@@ -301,6 +328,112 @@ function StepForm() {
     medicineDeatilsArr.forEach(medicine => {
       dispatch(addMedicineToCheckout(medicine));
     });
+  };
+
+  const checkOutMedicineDetials = useSelector(
+    state => state.checkOutMedicineReducer.checkOutMedicineDetials
+  );
+
+  const assesMentDetails = useSelector(
+    state => state.assesmentSlice.assesmentData
+  );
+
+  const handleOrderPlace = async () => {
+    console.log(checkOutMedicineDetials, "this is the medicine details");
+    console.log(assesMentDetails, "assesMentDetails");
+    console.log(optionValues, "this is the option values");
+    console.log(uploadedFile, "upload file ");
+    console.log(SelectedCardId, "selected card id ");
+    console.log(
+      "royal mail track value",
+      parseFloat(allItemPricQuantity.subTotalQuantity) *
+        parseFloat(optionValues).toFixed(2)
+    );
+    console.log("this is the supscrepton", isChecked);
+
+    const formattedMedicineDetails = checkOutMedicineDetials.map(medicine => ({
+      medicine_id: medicine.medicine_id,
+      quantity: parseInt(medicine.quantity), // Ensure quantity is a number
+      unit_price: parseFloat(medicine.unit_price), // Ensure unit_price is a number
+      total_price: parseFloat(medicine.total_price), // Ensure total_price is a number
+    }));
+
+    const formattedAssessmentDetails = assesMentDetails[0]?.finalData?.map(
+      assessment => ({
+        assessment_id: parseInt(assessment?.assetment_id), // Parse string to integer for assessment_id
+        selected_option: assessment.selected_option || null, // Use null if selected_option is undefined or null
+        result: assessment.result || null, // Use null if result is undefined or null
+        notes: assessment.notes || null, // Use null if notes is undefined or null
+      })
+    );
+
+    const orderData = {
+      treatment_id: parseInt(assesMentDetails[0]?.id),
+      royal_maill_tracked_price:
+        parseFloat(allItemPricQuantity.subTotalQuantity) *
+        parseFloat(optionValues).toFixed(2),
+      subscription: isChecked,
+      prescription: uploadedFile,
+      code: fixedcoupon,
+      sub_total: allItemPricQuantity.subTotalPrice,
+      discount: discountAmount,
+      total: payableAmount,
+      payment_method_id: SelectedCardId,
+      medicines: formattedMedicineDetails,
+      assessments: formattedAssessmentDetails,
+      name: billingDetails.name,
+      email: billingDetails.email,
+      address: billingDetails.address,
+      contact: billingDetails.phone,
+      city: billingDetails.city,
+      postcode: billingDetails.postCode,
+      gp_number: billingDetails.gpName,
+      gp_address: billingDetails.gpAdress,
+      // other necessary order details
+    };
+
+    console.log(orderData, "this is the order data");
+
+    try {
+      // Prepare order data (e.g., payment details, shipping address, etc.)
+      const token = localStorage.getItem("token");
+      // Make the request to create an order with the data
+      const response = await axios({
+        method: "POST",
+        url: `${SiteURl}/api/order-checkout`,
+        data: orderData,
+
+        headers: {
+          Authorization: `Bearer ${token}`, // Send the token as a Bearer token
+        },
+      });
+      console.log("Server response:", response); // The exact response from the server
+
+      // Handle success response
+      if (response.code === 200) {
+        toast.success("Order placed successfully!");
+      } else {
+        // Handle non-200 success response (e.g., any custom error handling logic from server)
+        toast.error(`Error: ${response.message || "Something went wrong"}`);
+      }
+    } catch (error) {
+      // Error handling for mutation request (e.g., network issues, invalid response)
+      if (error.response) {
+        // If error has a response (from the server)
+        console.error("Error response from server:", error.response);
+        toast.error(
+          `Error: ${error.response.data.message || "An unknown error occurred"}`
+        );
+      } else if (error.message) {
+        // If there's a general message (network error, etc.)
+        console.error("Error message:", error.message);
+        toast.error(`Error: ${error.message}`);
+      } else {
+        // Handle unexpected errors
+        console.error("Unexpected error:", error);
+        toast.error("Something went wrong");
+      }
+    }
   };
 
   return (
@@ -844,7 +977,12 @@ function StepForm() {
                   {cardData?.data?.length > 0 &&
                     cardData.data.map((item, index) => {
                       return (
-                        <div key={index} onClick={() => setSelectedCard(index)}>
+                        <div
+                          key={index}
+                          onClick={() => {
+                            handleSelectCard(item), setSelectedCard(index);
+                          }}
+                        >
                           <PaymentCard
                             className={`h-[200px] bg-left 
               ${
@@ -860,17 +998,36 @@ function StepForm() {
                 </div>
 
                 <div className="flex items-center gap-2 p-2 lg:p-4 border border-[#0063A9] rounded-lg">
-                  <Checkbox />
-                  <p className=" text-sm lg:text-lg font-nunito ">
+                  <div className="flex p-2 lg:p-4 items-center justify-center ">
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={handleCheckedChange}
+                      className="  rounded-sm border  border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    />
+                  </div>
+                  <p className="text-sm lg:text-lg font-nunito whitespace-nowrap">
                     Your subscription will automatically renew after 30 days.
                   </p>
                 </div>
                 <div>
                   <button
-                    onClick={handleNext}
+                    onClick={() => {
+                      handleOrderPlace();
+                    }}
                     className="flex w-full text-sm lg:text-base items-center justify-center p-3 lg:p-[20px] gap-5 bg-primryDark rounded-[10px]  text-white"
                   >
-                    Pay EURO59.28
+                    Pay EURO{" "}
+                    {payableAmount
+                      ? payableAmount.toFixed(2)
+                      : optionValues
+                      ? (
+                          allItemPricQuantity.subTotalPrice +
+                          parseFloat(allItemPricQuantity.subTotalQuantity) *
+                            optionValues +
+                          2.24
+                        ).toFixed(2)
+                      : (allItemPricQuantity.subTotalPrice + 2.24).toFixed(2)}
                   </button>
                 </div>
                 <div className="lg:w-[620px] mx-auto">
@@ -925,7 +1082,9 @@ function StepForm() {
                     style={{ padding: "5px" }}
                     type="text"
                     placeholder="Gift or discount code"
-                    onChange={e => setCoupon(e.target.value)}
+                    onChange={e => {
+                      setCoupon(e.target.value), setfixedcoupon(e.target.value);
+                    }}
                     value={coupon}
                     disabled={payableAmount ? true : false}
                   />
