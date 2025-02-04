@@ -172,12 +172,12 @@ const DoctorDashboardHomepage = () => {
       {/* order table */}
       <div className="mt-8 xl:mt-12 bg-white rounded-md px-3 md:px-10 xl:px-16 py-8 xl:py-10">
         <div className="w-full flex flex-col md:flex-row gap-5 mb-8 md:mb-0 items-center justify-between">
-          <h2 className="font-semibold text-[28px] sm:text-3xl text-categoryBtnColor">
+          <h2 className="font-semibold text-2xl sm:text-3xl text-categoryBtnColor">
             All order
           </h2>
           <div>
             <Select>
-              <SelectTrigger className="sm:w-40 border font-semibold text-base h-10 sm:h-12 rounded-full px-5 sm:px-8 font-nunito">
+              <SelectTrigger className="sm:w-40 border font-semibold text-base h-10 sm:h-12 rounded-full px-3 sm:px-8 font-nunito">
                 <SelectValue placeholder="All Order" />
               </SelectTrigger>
               <SelectContent>
