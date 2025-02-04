@@ -710,13 +710,13 @@ function StepForm() {
                   </p>
                 </div>
 
-                <div className="flex sm:flex-row flex-col justify-between gap-4">
+                <div className="flex  sm:flex-row w-full flex-col justify-between gap-4">
                   {cardData?.data?.length > 0 &&
                     cardData.data.map((item, index) => {
                       return (
-                        <div key={index} onClick={() => setSelectedCard(index)}>
+                        <div className=" w-full" key={index} onClick={() => setSelectedCard(index)}>
                           <PaymentCard
-                            className={`h-[200px] bg-left 
+                            className={`h-[200px] bg-left  w-full
               ${
                 selectedCard === index
                   ? "border-4 border-blue-500 shadow-2xl"
