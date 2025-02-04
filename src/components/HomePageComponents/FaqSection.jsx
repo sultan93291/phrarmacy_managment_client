@@ -86,7 +86,7 @@ function FaqSection() {
                 <AccordionTrigger className="text-left text-lg xl:text-xl md:text-2xl lg:text-[32px] text-menuLinkColor font-semibold md:py-5 px-2 md:px-[50px] bg-headerBg">
                   {item.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-base md:text-xl lg:text-[24px] pt-5 pb-8 px-5 md:px-[55px] bg-white sm:leading-[40px]">
+                <AccordionContent className="text-base md:text-xl pt-5 pb-8 px-5 md:px-[55px] bg-white sm:leading-[40px]">
                   {item.answer}
                 </AccordionContent>
               </AccordionItem>
