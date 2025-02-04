@@ -68,7 +68,7 @@ function FaqSection() {
           <h3
             data-aos="zoom-up"
             data-aos-duration="2000"
-            className="lg:text--xl text-2xl sm:text-3xl md:text-4xl opacity-1 text-[#0ca6fc] font-bold text-center"
+            className="lg:text--xl text-[28px] sm:text-3xl md:text-4xl opacity-1 text-[#0ca6fc] font-bold text-center"
           >
             Frequently Asked Questions
           </h3>

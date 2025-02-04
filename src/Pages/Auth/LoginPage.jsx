@@ -201,7 +201,7 @@ function LoginPage() {
 
           {/* button */}
           <div data-aos="zoom-up" data-aos-duration="2000" className="pt-6">
-            <button className="bg-primary text-white font-semibold w-full py-4 rounded-lg">
+            <button className="bg-primary text-lg text-white font-semibold w-full py-4 rounded-lg">
               {loading ? (
                 <ClipLoader color="#fff" loading={loading} size={25} />
               ) : (
