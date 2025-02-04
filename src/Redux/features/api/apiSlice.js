@@ -200,8 +200,8 @@ export const apiSlice = createApi({
     createPlaceOrderIntent: builder.mutation({
       query: ({ data }) => ({
         url: `/api/order-checkout`,
-        method: "PUT", // Use PUT or PATCH for updates
-        body: { data },
+        method: "POST", // Use PUT or PATCH for updates
+        data: { data },
         includeToken: true,
       }),
     }),

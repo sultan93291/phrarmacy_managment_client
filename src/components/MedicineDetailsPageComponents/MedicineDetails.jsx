@@ -14,6 +14,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { isIdPresent, storeMedicineId } from "@/Redux/features/assesmentSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { addMedicineToCheckout } from "@/Redux/features/medicineDetails";
+import { useCreatePlaceOrderIntentMutation } from "@/Redux/features/api/apiSlice";
 
 function MedicineDetails({ data }) {
   console.log("my details ", data);
@@ -51,6 +52,8 @@ function MedicineDetails({ data }) {
   ];
   const [preview, setPreview] = useState(data?.avatars?.[0]?.avatar || "");
   const [isAsseesMentAvailable, setisAsseesMentAvailable] = useState();
+    const [createPlaceOrderIntent, { isLoading, isSuccess, isError, error }] =
+      useCreatePlaceOrderIntentMutation();
 
   const assesMentResult = useSelector(
     state => state.assesmentSlice.isAssesMent

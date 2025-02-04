@@ -25,7 +25,7 @@ function HeroSection() {
       });
   }, []);
   return (
-    <section className="px-4 xl:px-[47px] mt-10 mb-14 sm:my-20">
+    <section className="px-4 xl:px-[47px] mt-10 mb-14 lg:my-20">
       <div
         data-aos="zoom-up"
         data-aos-duration="1000"

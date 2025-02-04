@@ -35,11 +35,11 @@ function PopularTreatment() {
                     <Link data-aos="zoom-up"
                         data-aos-duration="2000" to={'/'} className="text-xl 2xl:text-[24px] font-semibold text-[#01548B]">See All</Link>
                 </div>
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 sm:gap-5'>
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5'>
                     {
                         popularTreatmentData.map((item) => (
                             <div data-aos="zoom-in"
-                                data-aos-duration="2000" key={item.id} className='mt-5'>
+                                data-aos-duration="2000" key={item.id} className=''>
                                 <TreatmentCard item={item} />
                             </div>
                         ))
