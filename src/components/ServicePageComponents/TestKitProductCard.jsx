@@ -3,10 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import CommonButtonV2 from "../Common/CommonButtonV2";
 
 function TestKitProductCard({ item }) {
-  console.log("single kit item", item.id);
-
-
-
+  console.log("single kit item", item);
+  const SiteURl = import.meta.env.VITE_SITE_URL;
 
   return (
     <div className="product-wrapper">
@@ -14,7 +12,7 @@ function TestKitProductCard({ item }) {
         <div className="product-img h-[380px] overflow-hidden rounded-[10px]">
           <img
             className="w-full h-full object-cover duration-200 ease-in-out"
-            src={"https://i.ibb.co.com/NLZJ9Pf/Product-Image.png"}
+            src={`${SiteURl}/${item?.avatar}`}
             alt={item.title}
           />
         </div>

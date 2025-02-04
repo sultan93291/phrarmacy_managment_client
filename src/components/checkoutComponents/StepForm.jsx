@@ -468,7 +468,7 @@ function StepForm() {
                     <input
                       type="file"
                       accept="application/pdf"
-                      className="h-full w-full opacity-0 absolute top-0 left-0 "
+                      className="h-full w-full opacity-0 absolute top-0 left-0 cursor-pointer "
                       onChange={handleFileChange}
                     />
                   </div>
