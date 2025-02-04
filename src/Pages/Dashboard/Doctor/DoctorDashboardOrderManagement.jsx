@@ -116,7 +116,7 @@ const DoctorDashboardOrderManagement = () => {
           className="p-4 rounded-xl border border-black/10 w-full flex items-center justify-between max-w-xl bg-white"
         >
           <input
-            className="focus:outline-none px-2 text-base md:px-5 sm:py-1 bg-transparent w-full"
+            className="focus:outline-none px-2 text-sm sm:text-base md:px-5 sm:py-1 bg-transparent w-full"
             type="text"
             placeholder="Order ID Search"
             name="searchOrder"

@@ -72,7 +72,7 @@ function TeamSection() {
               data-aos="zoom-up"
               data-aos-duration="2000"
               key={index}
-              className="mt-5"
+              className=""
             >
               <TeamCard key={index} item={item} />
             </div>

@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import Logo from "../assets/images/logo/logo.svg";
 import CartIcon from "../assets/images/icon/cart.svg";
 import { useForm } from "react-hook-form";
@@ -20,7 +20,7 @@ function Navbar() {
     console.log(data);
   };
   const { isAuthenticated } = useContext(AuthContext);
-  
+
   const loggedInUser = useSelector(
     state => state.loggedInuserSlice.loggedInUserData
   );
@@ -46,7 +46,7 @@ function Navbar() {
     },
   ];
 
-    const SiteURl = import.meta.env.VITE_SITE_URL;
+  const SiteURl = import.meta.env.VITE_SITE_URL;
 
   return (
     <>
@@ -77,14 +77,14 @@ function Navbar() {
 
                 // Otherwise, render the navigation link
                 return (
-                  <Link
+                  <NavLink
                     key={navLink.title}
                     className="menu-item"
                     to={navLink.path}
                   >
                     {" "}
                     {navLink.title}
-                  </Link>
+                  </NavLink>
                 );
               })}
             </ul>
@@ -129,10 +129,10 @@ function Navbar() {
                   role == "user"
                     ? "/dashboard/user/user-homepage"
                     : role == "doctor"
-                    ? "/dashboard/doctor/homepage"
-                    : role == "pharmacist"
-                    ? "/dashboard/pharmacist/homepage"
-                    : "/"
+                      ? "/dashboard/doctor/homepage"
+                      : role == "pharmacist"
+                        ? "/dashboard/pharmacist/homepage"
+                        : "/"
                 }
               >
                 <HeaderBtn

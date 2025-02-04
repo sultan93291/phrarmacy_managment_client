@@ -33,7 +33,7 @@ function AllTreatmentSection() {
           <h2
             data-aos="zoom-up"
             data-aos-duration="2000"
-            className="text-2xl sm:text-3xl md:text-[36px] font-bold leading-normal text-primary"
+            className="text-[26px] sm:text-3xl md:text-[36px] font-bold leading-normal text-primary"
           >
             Our All Treatments
           </h2>
@@ -45,13 +45,12 @@ function AllTreatmentSection() {
             <Searchbar />
           </div>
         </div>
-        <div>
+        <div className="mt-10">
           {treatmentsCategories.map((category, idx) => (
             <div
               data-aos="zoom-in"
               data-aos-duration="2000"
               key={idx}
-              className="mt-10"
             >
               <TreatmentBox item={category} />
             </div>
