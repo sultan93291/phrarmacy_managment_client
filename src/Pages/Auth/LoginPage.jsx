@@ -61,7 +61,7 @@ function LoginPage() {
             fetchData();
             window.location.href = "/dashboard/user/user-homepage";
           }
-        }, 3000);
+        }, 1500);
       })
       .catch(error => {
         console.log(error);

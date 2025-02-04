@@ -17,8 +17,12 @@ import {
   useGetCardDataIntentQuery,
 } from "@/Redux/features/api/apiSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { addRoyalMailServiceData } from "@/Redux/features/medicineDetails";
+import {
+  addMedicineToCheckout,
+  addRoyalMailServiceData,
+} from "@/Redux/features/medicineDetails";
 import toast from "react-hot-toast";
+import { current } from "@reduxjs/toolkit";
 
 const SiteURl = import.meta.env.VITE_SITE_URL;
 
@@ -123,6 +127,7 @@ function StepForm() {
 
   const [treatmentMedicine, settreatmentMedicine] = useState([]);
   const SiteURl = import.meta.env.VITE_SITE_URL;
+  const [medicineDeatilsArr, setmedicineDeatilsArr] = useState([]);
 
   useEffect(() => {
     axios({
@@ -130,7 +135,7 @@ function StepForm() {
       url: `${SiteURl}/api/medicines`,
     })
       .then(res => {
-        console.log("test kti", res.data.data);
+        console.log("test kti", res.data);
         settreatmentMedicine(res?.data?.data);
       })
       .catch(err => {
@@ -167,6 +172,23 @@ function StepForm() {
     console.log(data);
   };
 
+  const [billingDetails, setbillingrDetails] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    postCode: "",
+    gpName: "",
+    gpAdress: "",
+  });
+
+  console.log(billingDetails);
+
+  const handleBillingDetailsChange = e => {
+    setbillingrDetails({ ...billingDetails, [e.target.name]: e.target.value });
+  };
+
   const [isRoyalMailChecked, setIsRoyalMailChecked] = useState(false);
   const [optionValues, setoptionValues] = useState();
 
@@ -183,11 +205,43 @@ function StepForm() {
     );
   };
 
-  const handleNext = () => {
-    setCurrentStep(prevStep => (prevStep < 4 ? prevStep + 1 : prevStep));
+  const handleAddMedicine = item => {
+    if (item !== null) {
+      console.log(item, "this is the new item");
 
-    window.scrollTo(0, 0);
+      const MedicineDetails = {
+        medicine_id: item?.id,
+        quantity: 1,
+        unit_price: parseFloat(item.price).toFixed(2),
+        total_price: parseFloat(item.price).toFixed(2),
+        title: item?.title,
+        dosage: 10,
+        avatar: item?.avatar,
+      };
+      // Adding new details to the array
+      setmedicineDeatilsArr(prevDetails => [...prevDetails, MedicineDetails]);
+    }
   };
+
+  const handleNext = () => {
+    if (
+      currentStep === 1 &&
+      billingDetails.name &&
+      billingDetails.address &&
+      billingDetails.city &&
+      billingDetails.email &&
+      billingDetails.postCode &&
+      billingDetails.gpAdress &&
+      billingDetails.gpName
+    ) {
+      setCurrentStep(prevStep => (prevStep < 4 ? prevStep + 1 : prevStep));
+      window.scrollTo(0, 0);
+    } else {
+      // Optionally, handle the case where the fields are not all filled
+      console.log("Please fill in all the required fields.");
+    }
+  };
+
   const handlePrev = () => {
     setCurrentStep(prevStep => (prevStep > 1 ? prevStep - 1 : prevStep));
 
@@ -207,31 +261,27 @@ function StepForm() {
 
   useEffect(() => {
     const updatedItems = medicineDetils.map(item => {
-      const itemQuantity = item.quantity;
-      const itemSinglePeicePrice = item.total_price;
       return {
-        itemQuantity,
-        itemSinglePeicePrice,
+        itemQuantity: item.quantity,
+        itemSinglePeicePrice: parseFloat(item.total_price), // Ensure it's a number
       };
     });
 
-    const subTotalQuantity = updatedItems.reduce(
-      (total, item) => total + parseFloat(item.itemQuantity),
-      0
-    );
+    // Subtotal Quantity (if needed)
+    const subTotalQuantity = updatedItems
+      .map(item => parseInt(item.itemQuantity, 10)) // Convert itemQuantity to number (in case it's a string)
+      .reduce((sum, quantity) => sum + quantity, 0);
 
-    const subTotalPrice = updatedItems.reduce(
-      (total, item) =>
-        total +
-        parseFloat(item.itemQuantity) * parseFloat(item.itemSinglePeicePrice),
-      0
-    );
+    // ✅ Corrected Subtotal Price Calculation
+    const subTotalPrice = updatedItems
+      .map(item => item.itemSinglePeicePrice) // Get all single item prices
+      .reduce((sum, price) => sum + price, 0);
 
-    // Update state with items, subtotal quantity, and subtotal price
+    console.log("Subtotal Quantity:", subTotalQuantity);
+    console.log("Subtotal Price:", subTotalPrice);
     setAllItemPricQuantity({
-      items: updatedItems,
-      subTotalQuantity,
-      subTotalPrice,
+      subTotalQuantity: subTotalQuantity,
+      subTotalPrice: subTotalPrice,
     });
   }, [medicineDetils]);
 
@@ -247,34 +297,76 @@ function StepForm() {
   console.log(cardData, isLoading, error, isError);
   const [selectedCard, setSelectedCard] = useState(null);
 
+  const handleAddExtraMedicine = () => {
+    medicineDeatilsArr.forEach(medicine => {
+      dispatch(addMedicineToCheckout(medicine));
+    });
+  };
+
   return (
     <div>
       {/* {/ step indicator  /} */}
       <div className="relative z-[1] max-w-[790px] mx-auto">
         <ul className="step-indicators flex lg:gap-0 items-center justify-between">
           <li
-            onClick={() => setCurrentStep(1)}
+            onClick={() => {
+              billingDetails.name &&
+                billingDetails.address &&
+                billingDetails.city &&
+                billingDetails.email &&
+                billingDetails.postCode &&
+                billingDetails.gpAdress &&
+                billingDetails.gpName &&
+                setCurrentStep(1);
+            }}
             className={currentStep >= 1 ? "active" : ""}
           >
             <p className="icon cursor-pointer">1</p>
             <span className="stepName">Delivery</span>
           </li>
           <li
-            onClick={() => setCurrentStep(2)}
+            onClick={() => {
+              billingDetails.name &&
+                billingDetails.address &&
+                billingDetails.city &&
+                billingDetails.email &&
+                billingDetails.postCode &&
+                billingDetails.gpAdress &&
+                billingDetails.gpName &&
+                setCurrentStep(2);
+            }}
             className={currentStep >= 2 ? "active" : ""}
           >
             <p className="icon cursor-pointer">2</p>
             <span>Review and pay</span>
           </li>
           <li
-            onClick={() => setCurrentStep(3)}
+            onClick={() => {
+              billingDetails.name &&
+                billingDetails.address &&
+                billingDetails.city &&
+                billingDetails.email &&
+                billingDetails.postCode &&
+                billingDetails.gpAdress &&
+                billingDetails.gpName &&
+                setCurrentStep(3);
+            }}
             className={currentStep >= 3 ? "active" : ""}
           >
             <p className="icon cursor-pointer">3</p>
             <span>Receipt</span>
           </li>
           <li
-            onClick={() => setCurrentStep(4)}
+            onClick={() => {
+              billingDetails.name &&
+                billingDetails.address &&
+                billingDetails.city &&
+                billingDetails.email &&
+                billingDetails.postCode &&
+                billingDetails.gpAdress &&
+                billingDetails.gpName &&
+                setCurrentStep(4);
+            }}
             className={currentStep >= 4 ? "active" : ""}
           >
             <p className="icon cursor-pointer">4</p>
@@ -316,10 +408,12 @@ function StepForm() {
                     type="text"
                     name="name"
                     placeholder="write your name"
-                    {...register("name", { required: "Name is required" })}
+                    onChange={e => {
+                      handleBillingDetailsChange(e);
+                    }}
+                    value={billingDetails.name}
                   />
                 </div>
-                {errors?.name && <p>{errors.name}</p>}
               </div>
               {/* {/ email  /} */}
               <div className="md:mt-[60px]">
@@ -329,10 +423,12 @@ function StepForm() {
                     type="email"
                     name="email"
                     placeholder="write your email"
-                    {...register("email", { required: "Email is required" })}
+                    onChange={e => {
+                      handleBillingDetailsChange(e);
+                    }}
+                    value={billingDetails.email}
                   />
                 </div>
-                {errors?.email && <p>{errors.email}</p>}
               </div>
             </div>
             {/* {/ billing address  /} */}
@@ -340,14 +436,14 @@ function StepForm() {
               <div>
                 <label htmlFor="email">Billing address</label>
                 <textarea
-                  name="billingAddress"
-                  {...register("billingAddress", {
-                    required: "Billing Address is required",
-                  })}
+                  name="address"
+                  onChange={e => {
+                    handleBillingDetailsChange(e);
+                  }}
+                  value={billingDetails.address}
                   placeholder="Address"
                 ></textarea>
               </div>
-              {errors?.billingAddress && <p>{errors.billingAddress}</p>}
               {/* {/ find location  /} */}
               <div className="mt-10 max-w-fit mx-auto cursor-pointer">
                 <div className="flex items-center gap-2 text-base sm:text-[20px] font-medium text-white bg-primary rounded-[10px] py-2 sm:py-4 px-2 sm:px-6">
@@ -375,7 +471,12 @@ function StepForm() {
                     <PhoneInput
                       country={"us"}
                       value={field.value}
-                      onChange={phone => field.onChange(phone)}
+                      onChange={phone => {
+                        field.onChange(phone); // Ensure React Hook Form updates the value
+                        handleBillingDetailsChange({
+                          target: { name: "phone", value: phone }, // Simulate the change event like regular input
+                        });
+                      }}
                     />
                   )}
                   rules={{ required: "Phone number is required" }}
@@ -389,7 +490,10 @@ function StepForm() {
                     type="text"
                     name="city"
                     placeholder="Your City"
-                    {...register("city", { required: "City is required" })}
+                    onChange={e => {
+                      handleBillingDetailsChange(e);
+                    }}
+                    value={billingDetails.city}
                   />
                 </div>
                 {errors?.city && <p>{errors.city}</p>}
@@ -400,14 +504,14 @@ function StepForm() {
                   <label htmlFor="email">Postcode</label>
                   <input
                     type="number"
-                    name="postcode"
+                    name="postCode"
                     placeholder="Postcode"
-                    {...register("postcode", {
-                      required: "Postcode is required",
-                    })}
+                    onChange={e => {
+                      handleBillingDetailsChange(e);
+                    }}
+                    value={billingDetails.postCode}
                   />
                 </div>
-                {errors?.postcode && <p>{errors.postcode}</p>}
               </div>
             </div>
 
@@ -422,8 +526,12 @@ function StepForm() {
                   className="border rounded-lg px-4 py-2"
                   placeholder="Write gp name"
                   type="text"
-                  name=""
+                  name="gpName"
                   id=""
+                  onChange={e => {
+                    handleBillingDetailsChange(e);
+                  }}
+                  value={billingDetails.gpName}
                 />
               </div>
               <div className="max-w-7/12  flex flex-col ">
@@ -432,8 +540,11 @@ function StepForm() {
                   className="border rounded-lg px-4 py-2"
                   placeholder="Write gp adress"
                   type="text"
-                  name=""
-                  id=""
+                  name="gpAdress"
+                  onChange={e => {
+                    handleBillingDetailsChange(e);
+                  }}
+                  value={billingDetails.gpAdress}
                 />
               </div>
             </div>
@@ -534,22 +645,25 @@ function StepForm() {
           </div>
         )}
         {/* {/ step 2   /} */}
-        {currentStep === 2 &&
-          medicineDetils.map((item, index) => {
-            return (
-              <div key={item.id} className="setp-two mt-12 lg:mt-[110px]">
-                {/* {/ step title  /} */}
-                <div className="text-center">
-                  <h3 className="text--xl mb-2 lg:mb-5 text-primryDark">
-                    Check your order
-                  </h3>
-                  <p className="text-lg lg:text-[24px] text-primary">
-                    Check your order details and Enter promo code if you have
-                    one.
-                  </p>
-                </div>
-                {/* {/ treatment preference  /} */}
-                <div className="py-5 lg:py-12 px-5 lg:px-[75px] bg-primaryLight rounded-[10px] mt-10 lg:mt-[100px]">
+        {currentStep === 2 && (
+          <div className="setp-two mt-12 lg:mt-[110px]">
+            {/* {/ step title  /} */}
+            <div className="text-center">
+              <h3 className="text--xl mb-2 lg:mb-5 text-primryDark">
+                Check your order
+              </h3>
+              <p className="text-lg lg:text-[24px] text-primary">
+                Check your order details and Enter promo code if you have one.
+              </p>
+            </div>
+            {/* {/ treatment preference  /} */}
+
+            {medicineDetils.map((item, index) => {
+              return (
+                <div
+                  key={item.id}
+                  className="py-5 lg:py-12 px-5 lg:px-[75px] bg-primaryLight rounded-[10px] mt-10 lg:mt-[100px]"
+                >
                   <h4 className="text-[24px] font-bold mb-[30px] text-primryDark">
                     Your treatment preference
                   </h4>
@@ -585,118 +699,134 @@ function StepForm() {
                     </ul>
                   </div>
                 </div>
-                {/* {/ delivery address  /} */}
-                <div className="lg:py-12 py-5 lg:px-[75px] px-5 bg-primaryLight rounded-[10px] mt-10 lg:mt-[100px]">
-                  <h3 className="text-[24px] font-bold mb-[14px] text-primryDark">
-                    Delivery address:
-                  </h3>
-                  {/* {/ address  /} */}
-                  <div className="flex gap-2 items-center justify-between">
-                    <div className="max-w-[820px]">
-                      {!isAddressEditMode ? (
-                        <p className="text-base md:text-lg lg:text-[24px] text-[rgba(0,0,0,0.60)]">
-                          {deliveryAddress}
-                        </p>
-                      ) : (
-                        <textarea
-                          value={deliveryAddress}
-                          onChange={e => setDeliveryAddress(e.target.value)}
-                          className="text-[24px] text-[rgba(0,0,0,0.60)] !h-[200px] resize-none"
-                        />
-                      )}
-                    </div>
-                    <div>
-                      {
-                        <div
-                          className="text-base md:text-xl lg:text-[24px] font-semibold text-primryDark underline cursor-pointer"
-                          onClick={handleDeliveryAddressEdit}
-                        >
-                          {!isAddressEditMode ? "Edit" : "Save"}
-                        </div>
+              );
+            })}
+
+            {/* {/ delivery address  /} */}
+            <div className="lg:py-12 py-5 lg:px-[75px] px-5 bg-primaryLight rounded-[10px] mt-10 lg:mt-[100px]">
+              <h3 className="text-[24px] font-bold mb-[14px] text-primryDark">
+                Delivery address:
+              </h3>
+              {/* {/ address  /} */}
+              <div className="flex gap-2 items-center justify-between">
+                <div className="max-w-[820px]">
+                  {!isAddressEditMode ? (
+                    <p className="text-base md:text-lg lg:text-[24px] text-[rgba(0,0,0,0.60)]">
+                      {billingDetails?.address}
+                    </p>
+                  ) : (
+                    <textarea
+                      value={billingDetails.address}
+                      onChange={e =>
+                        setbillingrDetails(prevState => ({
+                          ...prevState, // Copy the existing state
+                          address: e.target.value, // Update only the address field
+                        }))
                       }
-                    </div>
-                  </div>
+                      className="text-[24px] text-[rgba(0,0,0,0.60)] !h-[200px] resize-none"
+                    />
+                  )}
                 </div>
-                {/* {/ suggested medicine  /} */}
-                <div className="suggested-medicine lg:mt-[100px] mt-10">
-                  <h4 className="text-2xl lg:text-[32px] font-bold text-primryDark">
-                    Add these to complete your treatment:
-                  </h4>
-                  <div>
-                    {treatmentMedicine.map((item, index) => (
-                      <div key={item?.id}>
-                        <div>
-                          <input
-                            type="checkbox"
-                            name={`suggested-${index}`}
-                            id={`suggested-${index}`}
-                            className="hidden stemFromCheckbox"
-                            {...register(`suggested-${index}`)}
-                          />
-                          <label
-                            htmlFor={`suggested-${index}`}
-                            className="!flex flex-col md:flex-row items-start justify-between lg:py-[30px] pl-[50px] lg:pl-[110px] lg:pr-[105px] pr-6 border-[2px] border-[rgba(0,0,0,0.20)] rounded-[10px] mt-10 cursor-pointer py-5"
-                          >
-                            <div className="max-w-[650px]">
-                              <h4 className="text-base lg:text-[24px] text-primryDark leading-[31px]">
-                                {item?.title}
-                              </h4>
-                              <p className="text-[18px] font-bold text-primryDark mt-4">
-                                &euro;{item?.price}
-                              </p>
-                            </div>
-                            <div>
-                              <img
-                                className="max-w-[167px] h-[60px] lg:h-[140px] mt-4 lg:mt-0"
-                                src={`${SiteURl}/${item.avatar}`}
-                                alt={item?.name}
-                              />
-                            </div>
-                          </label>
-                        </div>
-                      </div>
-                    ))}
-                    {/* {/ button  /} */}
-                    <div className="mt-8 lg:mt-[60px] flex items-center justify-center">
-                      <div className="lg:py-[20px] py-2 px-4 lg:px-[60px] bg-primryDark rounded-[10px] text-base lg:text-[24px] font-bold text-white w-fit cursor-pointer duration-200 ease-in-out hover:opacity-90">
-                        Add Extra Medicine
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* {/ agreements  /} */}
-                <div className="mt-16 lg:mt-[100px] agreement">
-                  <input
-                    type="checkbox"
-                    name="deliveryAgreements"
-                    id="deliveryAgreements"
-                    className="hidden"
-                  />
-                  <label
-                    htmlFor="deliveryAgreements"
-                    className="relative cursor-pointer pl-8 lg:pl-[60px]"
-                  >
-                    I Consist to MYHEALTHLONDON Connecting to my GP and to the
-                    sharing of information
-                  </label>
-                </div>
-                {/* {/ payment options  /} */}
-                <div className="payment-options text-center max-w-[566px] mx-auto mt-10 lg:mt-[100px]">
-                  <h4 className="text--xl text-primryDark mb-7 lg:mb-[60px]">
-                    Payment Options
-                  </h4>
-                  <div className="flex items-center justify-center">
-                    <Link
-                      onClick={handleNext}
-                      className="flex w-[250px] lg:w-[566px] items-center justify-center px-4 py-3 lg:p-[22px] gap-5 bg-primryDark rounded-[10px] text-base lg:text-[24px] font-bold text-white"
+                <div>
+                  {
+                    <div
+                      className="text-base md:text-xl lg:text-[24px] font-semibold text-primryDark underline cursor-pointer"
+                      onClick={handleDeliveryAddressEdit}
                     >
-                      Pay with Card
-                    </Link>
+                      {!isAddressEditMode ? "Edit" : "Save"}
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+            {/* {/ suggested medicine  /} */}
+            <div className="suggested-medicine lg:mt-[100px] mt-10">
+              <h4 className="text-2xl lg:text-[32px] font-bold text-primryDark">
+                Add these to complete your treatment:
+              </h4>
+              <div>
+                {treatmentMedicine.map((item, index) => (
+                  <div key={item?.id}>
+                    <div>
+                      <input
+                        type="checkbox"
+                        name={`suggested-${index}`}
+                        id={`suggested-${index}`}
+                        className="hidden stemFromCheckbox"
+                        {...register(`suggested-${index}`)}
+                        onClick={() => {
+                          handleAddMedicine(item);
+                        }}
+                      />
+                      <label
+                        htmlFor={`suggested-${index}`}
+                        className="!flex flex-col md:flex-row items-start justify-between lg:py-[30px] pl-[50px] lg:pl-[110px] lg:pr-[105px] pr-6 border-[2px] border-[rgba(0,0,0,0.20)] rounded-[10px] mt-10 cursor-pointer py-5"
+                      >
+                        <div className="max-w-[650px]">
+                          <h4 className="text-base lg:text-[24px] text-primryDark leading-[31px]">
+                            {item?.title} {item?.description}
+                          </h4>
+                          <p className="text-[18px] font-bold text-primryDark mt-4">
+                            &euro;{item?.price}
+                          </p>
+                        </div>
+                        <div>
+                          <img
+                            className="max-w-[167px] h-[60px] lg:h-[140px] mt-4 lg:mt-0"
+                            src={`${SiteURl}/${item.avatar}`}
+                            alt={item?.name}
+                          />
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                ))}
+                {/* {/ button  /} */}
+                <div
+                  onClick={() => {
+                    handleAddExtraMedicine();
+                  }}
+                  className="mt-8 lg:mt-[60px] flex items-center justify-center"
+                >
+                  <div className="lg:py-[20px] py-2 px-4 lg:px-[60px] bg-primryDark rounded-[10px] text-base lg:text-[24px] font-bold text-white w-fit cursor-pointer duration-200 ease-in-out hover:opacity-90">
+                    Add Extra Medicine
                   </div>
                 </div>
               </div>
-            );
-          })}
+            </div>
+            {/* {/ agreements  /} */}
+            <div className="mt-16 lg:mt-[100px] agreement">
+              <input
+                type="checkbox"
+                name="deliveryAgreements"
+                id="deliveryAgreements"
+                className="hidden"
+              />
+              <label
+                htmlFor="deliveryAgreements"
+                className="relative cursor-pointer pl-8 lg:pl-[60px]"
+              >
+                I Consist to MYHEALTHLONDON Connecting to my GP and to the
+                sharing of information
+              </label>
+            </div>
+            {/* {/ payment options  /} */}
+            <div className="payment-options text-center max-w-[566px] mx-auto mt-10 lg:mt-[100px]">
+              <h4 className="text--xl text-primryDark mb-7 lg:mb-[60px]">
+                Payment Options
+              </h4>
+              <div className="flex items-center justify-center">
+                <Link
+                  onClick={handleNext}
+                  className="flex w-[250px] lg:w-[566px] items-center justify-center px-4 py-3 lg:p-[22px] gap-5 bg-primryDark rounded-[10px] text-base lg:text-[24px] font-bold text-white"
+                >
+                  Pay with Card
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Ashiq  */}
         {/* {/ step 3   /} */}
         {currentStep === 3 && (
@@ -843,8 +973,10 @@ function StepForm() {
                     {optionValues && (
                       <span>
                         $
-                        {parseFloat(allItemPricQuantity.subTotalQuantity) *
-                          optionValues}
+                        {(
+                          parseFloat(allItemPricQuantity.subTotalQuantity) *
+                          optionValues
+                        ).toFixed(2)}
                       </span>
                     )}
                   </div>
