@@ -133,7 +133,7 @@ export const apiSlice = createApi({
 
     getAssesMentResultIntent: builder.query({
       query: () => ({
-        url: "/api/treatment/1/consultation",
+        url: "/api/assessments-result",
         method: "GET",
         includeToken: true,
       }),

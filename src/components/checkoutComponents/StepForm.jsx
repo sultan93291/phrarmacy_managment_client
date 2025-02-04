@@ -216,11 +216,14 @@ function StepForm() {
     });
 
     const subTotalQuantity = updatedItems.reduce(
-      (total, item) => total + item.itemQuantity,
+      (total, item) => total + parseFloat(item.itemQuantity),
       0
     );
+
     const subTotalPrice = updatedItems.reduce(
-      (total, item) => total + item.itemQuantity * item.itemSinglePeicePrice,
+      (total, item) =>
+        total +
+        parseFloat(item.itemQuantity) * parseFloat(item.itemSinglePeicePrice),
       0
     );
 
@@ -249,19 +252,31 @@ function StepForm() {
       {/* {/ step indicator  /} */}
       <div className="relative z-[1] max-w-[790px] mx-auto">
         <ul className="step-indicators flex lg:gap-0 items-center justify-between">
-          <li onClick={()=>setCurrentStep(1)} className={currentStep >= 1 ? "active" : ""}>
+          <li
+            onClick={() => setCurrentStep(1)}
+            className={currentStep >= 1 ? "active" : ""}
+          >
             <p className="icon cursor-pointer">1</p>
             <span className="stepName">Delivery</span>
           </li>
-          <li onClick={()=>setCurrentStep(2)}  className={currentStep >= 2 ? "active" : ""}>
+          <li
+            onClick={() => setCurrentStep(2)}
+            className={currentStep >= 2 ? "active" : ""}
+          >
             <p className="icon cursor-pointer">2</p>
             <span>Review and pay</span>
           </li>
-          <li onClick={()=>setCurrentStep(3)}  className={currentStep >= 3 ? "active" : ""}>
+          <li
+            onClick={() => setCurrentStep(3)}
+            className={currentStep >= 3 ? "active" : ""}
+          >
             <p className="icon cursor-pointer">3</p>
             <span>Receipt</span>
           </li>
-          <li onClick={()=>setCurrentStep(4)}  className={currentStep >= 4 ? "active" : ""}>
+          <li
+            onClick={() => setCurrentStep(4)}
+            className={currentStep >= 4 ? "active" : ""}
+          >
             <p className="icon cursor-pointer">4</p>
             <span>Receipt</span>
           </li>
@@ -745,27 +760,33 @@ function StepForm() {
 
                 {/* Product Info */}
                 {medicineDetils.map((item, index) => (
-  <div key={item.id || index} className="flex items-center gap-4 py-4 border-b">
-    <img
-      src={`${SiteURl}/${item.avatar}`}
-      alt="Product"
-      className="w-12 h-12 rounded-md"
-    />
-    <div className="flex-1">
-      <p className="lg:text-lg text-sm font-semibold font-nunito text-blue-600">
-        {item.title} starting {item.dosage}
-      </p>
-      <p className="text-xs font-nunito text-gray-500">{item.title}</p>
-    </div>
-    <div className="text-right">
-      <p className="text-sm font-semibold font-nunito text-gray-800">
-        ${item.total_price}
-      </p>
-      <p className="text-xs font-nunito text-gray-500">Qty: {item.quantity}</p>
-    </div>
-  </div>
-))}
-
+                  <div
+                    key={item.id || index}
+                    className="flex items-center gap-4 py-4 border-b"
+                  >
+                    <img
+                      src={`${SiteURl}/${item.avatar}`}
+                      alt="Product"
+                      className="w-12 h-12 rounded-md"
+                    />
+                    <div className="flex-1">
+                      <p className="lg:text-lg text-sm font-semibold font-nunito text-blue-600">
+                        {item.title} starting {item.dosage}
+                      </p>
+                      <p className="text-xs font-nunito text-gray-500">
+                        {item.title}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-semibold font-nunito text-gray-800">
+                        ${item.total_price}
+                      </p>
+                      <p className="text-xs font-nunito text-gray-500">
+                        Qty: {item.quantity}
+                      </p>
+                    </div>
+                  </div>
+                ))}
 
                 {/* Discount Code Input */}
                 <div className="flex items-center gap-2 py-4 border-b">
