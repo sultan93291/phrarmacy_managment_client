@@ -367,13 +367,14 @@ function StepForm() {
       })
     );
 
+    // prescription: uploadedFile,
+
     const orderData = {
       treatment_id: parseInt(assesMentDetails[0]?.id),
-      royal_maill_tracked_price:
+      royal_mail_tracked_price:
         parseFloat(allItemPricQuantity.subTotalQuantity) *
         parseFloat(optionValues).toFixed(2),
       subscription: isChecked,
-      prescription: uploadedFile,
       code: fixedcoupon,
       sub_total: allItemPricQuantity.subTotalPrice,
       discount: discountAmount,
@@ -407,6 +408,8 @@ function StepForm() {
           Authorization: `Bearer ${token}`, // Send the token as a Bearer token
         },
       });
+
+
       console.log("Server response:", response); // The exact response from the server
 
       // Handle success response
