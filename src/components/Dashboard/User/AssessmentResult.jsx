@@ -5,103 +5,60 @@ const AssessmentResult = ({ questions }) => {
   return (
     <div className="w-full flex flex-col sm:flex-row text-[#052D4C] max-h-[80vh] overflow-y-auto user-assessment-result">
       {/* Left Section - Questions */}
-      {questions?.Assessment_results.map((item, index) => {
-        return (
-          <div key={index} className="sm:w-3/5 h-full flex flex-col space-y-8">
-            <div className="mb-5">
-              {/* Question Title */}
-              <h4 className="text-lg xl:text-xl font-semibold">
-                {index + 1}. {item?.assessment}
-              </h4>
 
-              {/* Answer Options */}
-              <div className="mt-5 text-base">
-                <div className="flex flex-wrap items-center gap-5">
-                  {item?.option1 && (
-                    <div key="option1">
-                      <input
-                        readOnly
-                        className="peer hidden"
-                        type="radio"
-                        id={`option-${index}-1`}
-                        value={item?.option1}
-                        checked={item?.selected_option === item?.option1}
-                      />
-                      <label
-                        className={`px-2 text-xs sm:text-base sm:px-4 cursor-pointer py-2 text-primary rounded-full bg-[#DEF0FF] ${
-                          item?.selected_option === item?.option1
-                            ? "bg-primary text-white"
-                            : ""
-                        }`}
-                        htmlFor={`option-${index}-1`}
-                      >
-                        {item?.option1}
-                      </label>
-                    </div>
-                  )}
-                  {item?.option2 && (
-                    <div key="option2">
-                      <input
-                        readOnly
-                        className="peer hidden"
-                        type="radio"
-                        id={`option-${index}-2`}
-                        value={item?.option2}
-                        checked={item?.selected_option === item?.option2}
-                      />
-                      <label
-                        className={`px-2 text-xs sm:text-base sm:px-4 cursor-pointer py-2 text-primary rounded-full bg-[#DEF0FF] ${
-                          item?.selected_option === item?.option2
-                            ? "bg-primary text-white"
-                            : ""
-                        }`}
-                        htmlFor={`option-${index}-2`}
-                      >
-                        {item?.option2}
-                      </label>
-                    </div>
-                  )}
-                  {item?.option3 && (
-                    <div key="option3">
-                      <input
-                        readOnly
-                        className="peer hidden"
-                        type="radio"
-                        id={`option-${index}-3`}
-                        value={item?.option3}
-                        checked={item?.selected_option === item?.option3}
-                      />
-                      <label
-                        className={`px-2 text-xs sm:text-base sm:px-4 cursor-pointer py-2 text-primary rounded-full bg-[#DEF0FF] ${
-                          item?.selected_option === item?.option3
-                            ? "bg-primary text-white"
-                            : ""
-                        }`}
-                        htmlFor={`option-${index}-3`}
-                      >
-                        {item?.option3}
-                      </label>
-                    </div>
-                  )}
+      <div className="w-4/5 h-full space-y-8">
+        {questions?.Assessment_results.map((item, index) => (
+          <div key={index} className="mb-5">
+            {/* Question Title */}
+            <h4 className="text-xl font-semibold">
+              {index + 1}. {item?.assessment}
+            </h4>
+
+            {/* Answer Options */}
+            <div className="mt-5 text-base">
+              <div className="flex flex-wrap items-center gap-4">
+                {[item?.option1, item?.option2, item?.option3].map(
+                  (option, idx) =>
+                    option && (
+                      <div key={idx}>
+                        <input
+                          readOnly
+                          className="peer hidden"
+                          type="radio"
+                          id={`option-${index}-${idx}`}
+                          value={option}
+                          checked={item?.selected_option === option}
+                        />
+                        <label
+                          className={`px-4 cursor-pointer py-2 text-primary rounded-full bg-[#DEF0FF] ${
+                            item?.selected_option === option
+                              ? "bg-primary text-white"
+                              : ""
+                          }`}
+                          htmlFor={`option-${index}-${idx}`}
+                        >
+                          {option}
+                        </label>
+                      </div>
+                    )
+                )}
+              </div>
+            </div>
+
+            {/* Additional Information */}
+            {item?.note && (
+              <div className="mt-8">
+                <h5 className="text-xl font-semibold">
+                  Additional Information
+                </h5>
+                <div className="mt-3 border rounded-xl border-black/20 p-4 text-base w-3/4">
+                  {item?.note_answer || item?.note}
                 </div>
               </div>
-
-              {/* Additional Information */}
-              {item?.note && (
-                <div className="mt-8">
-                  <h5 className="text-xl font-semibold">
-                    Additional Information
-                  </h5>
-                  <div className="mt-3 border rounded-xl border-black/20 p-4 text-base sm:w-3/4">
-                    {item?.note_answer || item?.note}
-                  </div>
-                </div>
-              )}
-            </div>
+            )}
           </div>
-        );
-      })}
-
+        ))}
+      </div>
       {/* result */}
 
       {/* Right Section - Results Summary */}
