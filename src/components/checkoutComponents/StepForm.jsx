@@ -1009,7 +1009,7 @@ function StepForm() {
                       className="  rounded-sm border  border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                     />
                   </div>
-                  <p className="text-sm lg:text-lg font-nunito whitespace-nowrap">
+                  <p className="text-sm lg:text-lg font-nunito ">
                     Your subscription will automatically renew after 30 days.
                   </p>
                 </div>
