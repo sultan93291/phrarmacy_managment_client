@@ -38,7 +38,7 @@ function SymptomsSection() {
           data-aos-duration="1000"
           className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-5"
         >
-          <h2 className="text-2xl 2xl:text--xl font-bold text-primary leading-normal">25+ Symptoms Specialities</h2>
+          <h2 className="text-2xl 2xl:text--xl text-center sm:text-left font-bold text-primary leading-normal">25+ Symptoms Specialities</h2>
           <Link to={'/service'} className="text-xl 2xl:text-[24px] font-semibold text-[#01548B]">
             See All Specialties
           </Link>

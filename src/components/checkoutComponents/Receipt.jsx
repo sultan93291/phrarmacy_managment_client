@@ -75,11 +75,11 @@ const Receipt = () => {
           Payment Method
         </p>
 
-        <div className="flex sm:flex-row flex-col justify-between gap-4">
+        <div className="flex w-full sm:flex-row flex-col justify-between gap-4">
           {cardData?.data?.length > 0 &&
             cardData.data.map((item, index) => {
               return (
-                <div key={index} onClick={() => setSelectedCard(index)}>
+                <div className="w-full" key={index} onClick={() => setSelectedCard(index)}>
                   <PaymentCard
                     className={`h-[200px] bg-left 
               ${

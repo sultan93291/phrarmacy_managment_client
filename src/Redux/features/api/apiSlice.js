@@ -105,9 +105,10 @@ export const apiSlice = createApi({
     // Delete Card
     deleteCardIntent: builder.mutation({
       query: cardId => ({
-        url: `/api/delete/subscription/${cardId}`,
+        url: `/api/remove/stripe/customer/payment-method/${cardId}`,
         method: "DELETE",
         includeToken: true,
+        invalidatesTags: ["Card"],
       }),
     }),
 
@@ -199,8 +200,8 @@ export const apiSlice = createApi({
     createPlaceOrderIntent: builder.mutation({
       query: ({ data }) => ({
         url: `/api/order-checkout`,
-        method: "PUT", // Use PUT or PATCH for updates
-        body: { data },
+        method: "POST", // Use PUT or PATCH for updates
+        data: { data },
         includeToken: true,
       }),
     }),

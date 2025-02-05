@@ -338,7 +338,7 @@ const UserAssessmentResult = () => {
 
                 {/* details */}
 
-                <AccordionContent className="pt-5 pb-8 px-5 sm:px-7 lg:px-[55px] bg-white">
+                <AccordionContent className="pt-3 sm:pt-5 pb-8 px-4 sm:px-7 lg:px-[55px] bg-white">
                   <AssessmentResult questions={data} />
                 </AccordionContent>
               </AccordionItem>

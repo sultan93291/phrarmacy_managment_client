@@ -17,7 +17,7 @@ function Footer() {
         className="py-10 sm:pt-[70px] sm:pb-[90px] xl:pb-[117px] bg-primryDark rounded-2xl md:rounded-[40px]"
       >
         <div className="container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 w-full xl:flex items-start justify-between gap-5 xl:gap-[100px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 w-full xl:flex items-start justify-between gap-8 xl:gap-[100px]">
             {/* footer box  */}
             <div
               data-aos="zoom-up"
@@ -44,7 +44,7 @@ function Footer() {
               <ul
                 data-aos="zoom-up"
                 data-aos-duration="2000"
-                className="flex items-center gap-8 text-[24px] mt-6"
+                className="flex items-center gap-5 text-[24px] mt-6"
               >
                 <li data-aos="zoom-up" data-aos-duration="2000">
                   <Link to={"/"}>
@@ -71,7 +71,7 @@ function Footer() {
               <ul
                 data-aos="zoom-up"
                 data-aos-duration="2000"
-                className="footer-contacts mt-[30px] sm:mt-[50px]"
+                className="footer-contacts mt-10"
               >
                 <li data-aos="zoom-up" data-aos-duration="2000">
                   <TiLocationOutline />
@@ -80,7 +80,7 @@ function Footer() {
                 <li
                   data-aos="zoom-up"
                   data-aos-duration="2000"
-                  className="mt-4 sm:mt-7"
+                  className="mt-5"
                 >
                   <MdOutlineEmail />
                   <Link to={"/"}>alihassanux@gmail.com</Link>
@@ -88,7 +88,7 @@ function Footer() {
                 <li
                   data-aos="zoom-up"
                   data-aos-duration="2000"
-                  className="mt-1 sm:mt-7"
+                  className="mt-5"
                 >
                   <MdOutlinePhone />
                   <Link to={"/"}>1234567890</Link>
@@ -104,7 +104,7 @@ function Footer() {
               <h4 data-aos="zoom-up" data-aos-duration="2000">
                 Our Services
               </h4>
-              <ul className="-mt-10 lg:-mt-5">
+              <ul className="-mt-7 lg:-mt-5">
                 <li data-aos="zoom-up" data-aos-duration="2000">
                   <Link to={"/"}>Medical Billing</Link>
                 </li>
@@ -137,7 +137,7 @@ function Footer() {
               <h4 data-aos="zoom-up" data-aos-duration="2000">
                 Customer Support
               </h4>
-              <ul className="-mt-10 lg:-mt-5">
+              <ul className="-mt-7 lg:-mt-5">
                 <li data-aos="zoom-up" data-aos-duration="2000">
                   <Link to={"/"}>FAQ’s</Link>
                 </li>
@@ -161,7 +161,7 @@ function Footer() {
               <h4 data-aos="zoom-up" data-aos-duration="2000">
                 Useful Links
               </h4>
-              <ul className="-mt-10 lg:-mt-5">
+              <ul className="-mt-7 lg:-mt-5">
                 <li data-aos="zoom-up" data-aos-duration="2000">
                   <Link to={"/"}>Careers</Link>
                 </li>

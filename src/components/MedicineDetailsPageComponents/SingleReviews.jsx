@@ -1,7 +1,6 @@
 import { Rating, Star } from "@smastrom/react-rating";
 
-function SingleReviews({data}) {
-
+function SingleReviews({ data }) {
   const myStyles = {
     itemShapes: Star,
     activeFillColor: "#FFC700",
@@ -10,6 +9,9 @@ function SingleReviews({data}) {
     activeStrokeColor: "#FFC700",
     inactiveStrokeColor: "#222E48",
   };
+
+  console.log(data, "this is the single revie data");
+  const SiteURl = import.meta.env.VITE_SITE_URL;
 
   return (
     <div
@@ -35,17 +37,18 @@ function SingleReviews({data}) {
         <div className="w-12 h-12 rounded-full overflow-hidden">
           <img
             className="w-full h-full object-cover "
-            src={
-              data.avatar
-                ? data.avatar
-                : "https://i.ibb.co.com/sq2jwtC/ae4134169130626f5a6ff03cd06719fb.png"
-            }
+            src={`${SiteURl}/${data?.user?.avatar}`}
             alt=""
           />
         </div>
         <div className="flex flex-col gap-1">
           <h3 className="text-[#222E48] font-semibold "> {data.user.name} </h3>
-          <h4 className="text-[#222E48] text-sm">Software Developer</h4>
+          <h4 className="text-[#222E48] text-sm">
+            {" "}
+            {data.user.sub_title
+              ? data.user.sub_title
+              : "Software Developer"}{" "}
+          </h4>
         </div>
       </div>
     </div>

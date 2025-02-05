@@ -20,6 +20,9 @@ import { useDispatch } from "react-redux";
 import { useGoogleLogin } from "@react-oauth/google";
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
+import { useContext } from "react";
+import { AuthContext } from "@/provider/AuthProvider/AuthContextProvider";
+
 
 function SignupPage() {
   const navigate = useNavigate();
@@ -27,6 +30,7 @@ function SignupPage() {
   const [toggle2, setToggle2] = useState(true);
   const [date, setDate] = useState();
   const [loading, setLoading] = useState(false);
+  const { fetchData } = useContext(AuthContext);
 
   const {
     register,
@@ -103,9 +107,10 @@ function SignupPage() {
           .then(res => {
             console.log("API Response:", res);
             if (res.data && res.data.token) {
+              toast.success('Successfully logged in')
               localStorage.setItem("token", res.data.token);
-              window.location.reload();
-              navigate("/dashboard/user/user-homepage");
+              fetchData();
+              window.location.href = "/dashboard/user/user-homepage";
             }
           })
           .catch(error => {
@@ -301,7 +306,7 @@ function SignupPage() {
         </div>
 
         <div
-          onClick={() => { }}
+          onClick={() => {}}
           data-aos="zoom-up"
           data-aos-duration="2000"
           className=" w-full"
@@ -368,7 +373,11 @@ function SignupPage() {
         </div>
       </div>
 
-      <div data-aos="zoom-in" data-aos-duration="2000" className="lg:w-7/12 hidden md:block p-20">
+      <div
+        data-aos="zoom-in"
+        data-aos-duration="2000"
+        className="lg:w-7/12 hidden md:block p-20"
+      >
         <img
           className="w-full"
           src="https://i.ibb.co.com/1RHw2mj/aa0ada24ef439cbe3b561d248f33efd6.png"
