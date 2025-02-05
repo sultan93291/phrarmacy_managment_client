@@ -59,6 +59,9 @@ export const checkOutMedicineDetialsSlice = createSlice({
       };
       localStorage.setItem("mailTrack", JSON.stringify(RoyalMailData));
     },
+    removeMailServiceData: state => {
+      localStorage.removeItem("mailTrack");
+    },
   },
 });
 
@@ -67,6 +70,7 @@ export const {
   removeMedicineFromCheckout,
   clearCheckout,
   addRoyalMailServiceData,
+  removeMailServiceData,
 } = checkOutMedicineDetialsSlice.actions;
 
 export default checkOutMedicineDetialsSlice.reducer;
