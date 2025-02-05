@@ -20,10 +20,13 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addMedicineToCheckout,
   addRoyalMailServiceData,
+  clearCheckout,
+  removeMailServiceData,
 } from "@/Redux/features/medicineDetails";
 import toast from "react-hot-toast";
 import { current } from "@reduxjs/toolkit";
 import { Checkbox } from "@radix-ui/react-checkbox";
+import { clearAssesmentData } from "@/Redux/features/assesmentSlice";
 
 const SiteURl = import.meta.env.VITE_SITE_URL;
 
@@ -60,6 +63,7 @@ function StepForm() {
   const [isAddressEditMode, setIsAddressEditMode] = useState(false);
   const [uploadedFile, setUploadedFile] = useState([]);
   const [payableAmount, setpayableAmount] = useState();
+  const [SuccessFullOrderData, setSuccessFullOrderData] = useState();
 
   const [
     applyCouponIntent,
@@ -312,6 +316,9 @@ function StepForm() {
     });
   }, [medicineDetils]);
 
+  const [successFullOrderDetailsData, setsuccessFullOrderDetailsData] =
+    useState();
+
   console.log(allItemPricQuantity, "all item price quanity");
 
   const {
@@ -367,15 +374,21 @@ function StepForm() {
       })
     );
 
+    const formData = new FormData();
+
+    formData.append("prescription", uploadedFile);
+
     // prescription: uploadedFile,
+
+    const roaylMail =
+      parseFloat(allItemPricQuantity.subTotalQuantity) *
+      parseFloat(optionValues).toFixed(2);
 
     const orderData = {
       treatment_id: parseInt(assesMentDetails[0]?.id),
-      royal_mail_tracked_price:
-        parseFloat(allItemPricQuantity.subTotalQuantity) *
-        parseFloat(optionValues).toFixed(2),
+      royal_mail_tracked_price: roaylMail ? roaylMail : 0,
       subscription: isChecked,
-      code: fixedcoupon,
+      code: fixedcoupon ? fixedcoupon : null,
       sub_total: allItemPricQuantity.subTotalPrice,
       discount: discountAmount,
       total: payableAmount,
@@ -409,12 +422,71 @@ function StepForm() {
         },
       });
 
-
       console.log("Server response:", response); // The exact response from the server
 
       // Handle success response
-      if (response.code === 200) {
-        toast.success("Order placed successfully!");
+      if (response.status === 200) {
+        if (!uploadedFile) {
+          toast.error("Please upload a prescription");
+          return;
+        } else {
+          try {
+            toast.success("Order placed successfully!");
+            console.log(response.data.data);
+
+            const prescrepitonResponse = await axios({
+              method: "POST",
+              url: `${SiteURl}/api/order-prescription/upload/${response.data.data}`,
+              data: formData,
+
+              headers: {
+                Authorization: `Bearer ${token}`, // Send the token as a Bearer token
+              },
+            });
+
+            if (prescrepitonResponse.status === 200) {
+              dispatch(clearAssesmentData());
+              dispatch(clearCheckout());
+              dispatch(removeMailServiceData());
+              toast.success("Prescreption  uploaded  successfully!");
+              setCurrentStep(4);
+              console.log();
+
+              axios({
+                method: "GET",
+                url: `${SiteURl}/api/order-invoice/${response.data.data}`,
+                headers: {
+                  Authorization: `Bearer ${token}`, // Send the token as a Bearer token
+                },
+              })
+                .then(res => {
+                  setsuccessFullOrderDetailsData(res?.data?.data);
+                  console.log(
+                    res,
+                    "this is the success respone after successful order "
+                  );
+                })
+                .catch(err => {
+                  console.log(err);
+                });
+            }
+          } catch (error) {
+            // Error handling for mutation request (e.g., network issues, invalid response)
+            if (error.response) {
+              // If error has a response (from the server)
+              console.error("Error response from server:", error.response);
+              toast.error(`Error: ${error.response.data.message}`);
+            } else if (error.message) {
+              // If there's a general message (network error, etc.)
+              console.error("Error message:", error.message);
+              toast.error(`Error: ${error.message || error.data}`);
+            } else {
+              // Handle unexpected errors
+              console.error("Unexpected error:", error);
+              toast.error("Something went wrong");
+            }
+          }
+        }
       } else {
         // Handle non-200 success response (e.g., any custom error handling logic from server)
         toast.error(`Error: ${response.message || "Something went wrong"}`);
@@ -438,6 +510,11 @@ function StepForm() {
       }
     }
   };
+
+  console.log(
+    successFullOrderDetailsData,
+    "this is the successfull order details data"
+  );
 
   return (
     <div>
@@ -501,7 +578,7 @@ function StepForm() {
                 billingDetails.postCode &&
                 billingDetails.gpAdress &&
                 billingDetails.gpName &&
-                setCurrentStep(4);
+                setCurrentStep(3);
             }}
             className={currentStep >= 4 ? "active" : ""}
           >
@@ -771,7 +848,8 @@ function StepForm() {
             </div>
             {/* {/ button  /} */}
             <div>
-              <button type="submit"
+              <button
+                type="submit"
                 className="py-2 lg:py-[22px] px-10 text-center lg:px-20 bg-primryDark rounded-[10px] sm:text-[24px] font-bold text-white w-fit mx-auto mt-10 cursor-pointer"
                 onClick={handleNext}
               >
@@ -980,7 +1058,8 @@ function StepForm() {
                   {cardData?.data?.length > 0 &&
                     cardData.data.map((item, index) => {
                       return (
-                        <div className=" w-full"
+                        <div
+                          className=" w-full"
                           key={index}
                           onClick={() => {
                             handleSelectCard(item), setSelectedCard(index);
@@ -1174,7 +1253,7 @@ function StepForm() {
         {currentStep === 4 && (
           <div className="setp-two mt-16 lg:mt-[110px]">
             <div>
-              <Receipt />
+              <Receipt OrderData={successFullOrderDetailsData} />
             </div>
           </div>
         )}
