@@ -8,6 +8,8 @@ import {
 import { useGetUserOrderDetailsIntentQuery } from "@/Redux/features/api/apiSlice";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 const UserOrderDetails = () => {
   const [open, setOpen] = useState(false);
@@ -23,6 +25,93 @@ const UserOrderDetails = () => {
       setAllMedicine(data.data.order_items);
     }
   }, [data]);
+
+  const downloadInvoice = () => {
+    if (!data?.data) {
+      console.error("No data available to generate the invoice.");
+      return;
+    }
+
+    const doc = new jsPDF();
+
+    // Header Section
+    doc.setFillColor(5, 45, 76); // Dark Blue
+    doc.rect(0, 0, 210, 30, "F");
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(24);
+    doc.text("Order Invoice", 105, 20, { align: "center" });
+
+    // Billing Information Box
+    doc.setFillColor(240, 248, 255); // Light Blue
+    doc.roundedRect(14, 40, 180, 50, 5, 5, "F");
+    doc.setFontSize(12);
+    doc.setTextColor(5, 45, 76); // Dark Blue Text
+
+    doc.text(`Billed To: ${billingAdress?.name || "N/A"}`, 20, 50);
+    doc.text(`Email: ${billingAdress?.email || "N/A"}`, 20, 58);
+    doc.text(
+      `Address: ${billingAdress?.address || "N/A"}, ${
+        billingAdress?.city || ""
+      }`,
+      20,
+      66
+    );
+    doc.text(`Contact: ${billingAdress?.contact || "N/A"}`, 20, 74);
+
+    // Order Table
+    const tableData = allMedicne.map((med, index) => [
+      index + 1,
+      med.medicine,
+      med.quantity,
+      `$${med.unit_price}`,
+      `$${med.total_price}`,
+    ]);
+
+    doc.autoTable({
+      startY: 95,
+      head: [["#", "Description", "Qty", "Price", "Amount"]],
+      body: tableData,
+      styles: {
+        fillColor: [255, 255, 255],
+        textColor: [33, 33, 33],
+        lineWidth: 0.2,
+      },
+      headStyles: {
+        fillColor: [5, 45, 76],
+        textColor: [255, 255, 255],
+        fontStyle: "bold",
+      },
+      alternateRowStyles: { fillColor: [245, 250, 255] },
+      margin: { left: 14, right: 14 },
+      theme: "grid",
+    });
+
+    // Doctor Notes Section
+    const finalY = doc.lastAutoTable.finalY + 10;
+    doc.setFillColor(255, 150, 58); // Orange
+    doc.roundedRect(14, finalY, 180, 25, 5, 5, "F");
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(14);
+    doc.text("Doctor Notes:", 20, finalY + 10);
+
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    const note = data?.data?.note || "No notes available";
+    doc.text(note, 20, finalY + 17, { maxWidth: 170 });
+
+    // Footer Section
+    const footerY = finalY + 35;
+    doc.setDrawColor(5, 45, 76);
+    doc.line(14, footerY, 196, footerY);
+    doc.setFontSize(10);
+    doc.setTextColor(102, 102, 102);
+    doc.text("Thank you for your purchase!", 105, footerY + 10, {
+      align: "center",
+    });
+
+    // Save PDF
+    doc.save(`Invoice-${id}.pdf`);
+  };
 
   if (isLoading) return <p>Loading order details...</p>;
   if (error) return <p>Error fetching order details.</p>;
@@ -46,7 +135,10 @@ const UserOrderDetails = () => {
 
           <div className="flex flex-wrap justify-center items-center gap-5">
             {/* Print Button */}
-            <button className="px-5 sm:px-8 py-2 text-sm sm:text-base sm:py-3 rounded-full bg-primary text-white flex items-center justify-center gap-2">
+            <button
+              onClick={downloadInvoice}
+              className="px-5 sm:px-8 py-2 text-sm sm:text-base sm:py-3 rounded-full bg-primary text-white flex items-center justify-center gap-2"
+            >
               <PrintSvg /> <span>Download Invoice</span>
             </button>
 
@@ -90,33 +182,32 @@ const UserOrderDetails = () => {
 
           {/* Order Items */}
           <div className="mt-12 overflow-x-auto">
-  {/* Table Header */}
-  <div className="grid grid-cols-4 sm:grid-cols-4 gap-3 sm:gap-6 pb-4 border-b border-[#E7EBF4] text-xs sm:text-lg font-bold text-[#052D4C]">
-    <h2 className="text-left">Description</h2>
-    <h2 className="text-center">Qty</h2>
-    <h2 className="text-center">Price</h2>
-    <h2 className="text-center ">Amount</h2> 
-  </div>
+            {/* Table Header */}
+            <div className="grid grid-cols-4 sm:grid-cols-4 gap-3 sm:gap-6 pb-4 border-b border-[#E7EBF4] text-xs sm:text-lg font-bold text-[#052D4C]">
+              <h2 className="text-left">Description</h2>
+              <h2 className="text-center">Qty</h2>
+              <h2 className="text-center">Price</h2>
+              <h2 className="text-center ">Amount</h2>
+            </div>
 
-  {/* Table Body */}
-  {allMedicne?.map((med) => (
-    <div
-      key={med.name}
-      className="grid grid-cols-4 sm:grid-cols-4 gap-3 sm:gap-6 py-2 border-b border-[#E7EBF4] text-xs sm:text-base items-center"
-    >
-      <div className="text-left">
-        <h2 className="font-bold">{med?.medicine}</h2>
-        <p className="text-[10px] sm:text-sm text-gray-500">
-          {med?.quantity} Medicine included
-        </p>
-      </div>
-      <h2 className="text-center">{med?.quantity}</h2>
-      <h2 className="text-center">$ {med?.unit_price}</h2>
-      <h2 className="text-center ">$ {med?.total_price}</h2>
-    </div>
-  ))}
-</div>
-
+            {/* Table Body */}
+            {allMedicne?.map(med => (
+              <div
+                key={med.name}
+                className="grid grid-cols-4 sm:grid-cols-4 gap-3 sm:gap-6 py-2 border-b border-[#E7EBF4] text-xs sm:text-base items-center"
+              >
+                <div className="text-left">
+                  <h2 className="font-bold">{med?.medicine}</h2>
+                  <p className="text-[10px] sm:text-sm text-gray-500">
+                    {med?.quantity} Medicine included
+                  </p>
+                </div>
+                <h2 className="text-center">{med?.quantity}</h2>
+                <h2 className="text-center">$ {med?.unit_price}</h2>
+                <h2 className="text-center ">$ {med?.total_price}</h2>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Doctor Notes */}
