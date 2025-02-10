@@ -30,30 +30,6 @@ import { clearAssesmentData } from "@/Redux/features/assesmentSlice";
 
 const SiteURl = import.meta.env.VITE_SITE_URL;
 
-const suggestedMedicine = [
-  {
-    id: 1,
-    imgUrl: "https://i.ibb.co.com/285jsS4/Rectangle-2154.png",
-    name: "Company Vitamin C by Nature’s Bounty for Immune Support",
-    price: "153.99",
-    isSelected: false,
-  },
-  {
-    id: 2,
-    imgUrl: "https://i.ibb.co.com/285jsS4/Rectangle-2154.png",
-    name: "Company Vitamin C by Nature’s Bounty for Immune Support",
-    price: "153.99",
-    isSelected: false,
-  },
-  {
-    id: 3,
-    imgUrl: "https://i.ibb.co.com/285jsS4/Rectangle-2154.png",
-    name: "Company Vitamin C by Nature’s Bounty for Immune Support",
-    price: "153.99",
-    isSelected: false,
-  },
-];
-
 function StepForm() {
   const [currentStep, setCurrentStep] = useState(1);
   const [deliveryData, setdeliveryData] = useState();
@@ -93,6 +69,9 @@ function StepForm() {
         const response = await applyCouponIntent({
           coupon_code: coupon,
           total_amount: totalPrice,
+          ...(assesMentDetails[0]?.id && {
+            treatment_id: parseInt(assesMentDetails[0].id),
+          }),
         }).unwrap();
 
         console.log("✅ Coupon Response:", response);
@@ -378,7 +357,7 @@ function StepForm() {
 
     formData.append("prescription", uploadedFile);
 
-    // prescription: uploadedFile,
+    // prescription: uploadedFile,a
 
     const roaylMail =
       parseFloat(allItemPricQuantity.subTotalQuantity) *
@@ -1194,7 +1173,21 @@ function StepForm() {
                 <div className="space-y-2 py-4 border-b text-gray-700">
                   <div className="flex font-nunito justify-between">
                     <span>Subtotal</span>
-                    <span>${allItemPricQuantity.subTotalPrice}</span>
+                    <span>
+                      ${parseInt(allItemPricQuantity.subTotalPrice).toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="flex font-nunito justify-between">
+                    <span>Royal Mail Tracked</span>
+                    {optionValues && (
+                      <span>
+                        $
+                        {(
+                          parseFloat(allItemPricQuantity.subTotalQuantity) *
+                          optionValues
+                        ).toFixed(2)}
+                      </span>
+                    )}
                   </div>
                   {discountAmount && payableAmount && (
                     <div className="flex flex-col gap-y-2">
@@ -1208,19 +1201,6 @@ function StepForm() {
                       </div>
                     </div>
                   )}
-
-                  <div className="flex font-nunito justify-between">
-                    <span>Royal Mail Tracked</span>
-                    {optionValues && (
-                      <span>
-                        $
-                        {(
-                          parseFloat(allItemPricQuantity.subTotalQuantity) *
-                          optionValues
-                        ).toFixed(2)}
-                      </span>
-                    )}
-                  </div>
                 </div>
 
                 {/* Total Price */}
@@ -1228,7 +1208,7 @@ function StepForm() {
                   <div>
                     <p className="text-base font-nunito">Total</p>
                     <p className="text-xs text-gray-500">
-                      Including $2.24 in taxes
+                      Include taxes
                     </p>
                   </div>
                   <p className="text-xl lg:text-2xl font-bold text-gray-900">
@@ -1239,10 +1219,9 @@ function StepForm() {
                       ? (
                           allItemPricQuantity.subTotalPrice +
                           parseFloat(allItemPricQuantity.subTotalQuantity) *
-                            optionValues +
-                          2.24
+                            optionValues 
                         ).toFixed(2)
-                      : (allItemPricQuantity.subTotalPrice + 2.24).toFixed(2)}
+                      : (allItemPricQuantity.subTotalPrice ).toFixed(2)}
                   </p>
                 </div>
               </div>

@@ -207,10 +207,14 @@ export const apiSlice = createApi({
     }),
 
     applyCouponIntent: builder.mutation({
-      query: ({ coupon_code, total_amount }) => ({
+      query: ({ coupon_code, total_amount, treatment_id }) => ({
         url: `/api/apply-coupon`,
         method: "POST",
-        data: { coupon_code: coupon_code, total_amount: total_amount },
+        data: {
+          coupon_code: coupon_code,
+          total_amount: total_amount,
+          ...(treatment_id !== undefined && { treatment_id }),
+        },
         includeToken: true,
       }),
     }),
