@@ -40,7 +40,9 @@ function StepForm() {
   const [uploadedFile, setUploadedFile] = useState([]);
   const [payableAmount, setpayableAmount] = useState();
   const [SuccessFullOrderData, setSuccessFullOrderData] = useState();
-
+  const assesMentDetails = useSelector(
+    state => state.assesmentSlice.assesmentData
+  );
   const [
     applyCouponIntent,
     { data, error: couponError, isLoading: isCouponLoading },
@@ -61,8 +63,11 @@ function StepForm() {
   );
 
   const [discountAmount, setdiscountAmount] = useState();
+    console.log(assesMentDetails[0].id);
 
   const handleCoupon = async totalPrice => {
+  
+    
     if (coupon && totalPrice) {
       try {
         // Apply coupon mutation
@@ -320,9 +325,7 @@ function StepForm() {
     state => state.checkOutMedicineReducer.checkOutMedicineDetials
   );
 
-  const assesMentDetails = useSelector(
-    state => state.assesmentSlice.assesmentData
-  );
+
 
   const handleOrderPlace = async () => {
     console.log(checkOutMedicineDetials, "this is the medicine details");
