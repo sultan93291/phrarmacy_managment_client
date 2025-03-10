@@ -85,7 +85,7 @@ const DoctorDashboardMeetingManagement = () => {
     setallMeetingData(data?.data);
   }, [data]);
 
-  if (allMeetingData.length < 1)
+  if (allMeetingData?.length < 1)
     return (
       <h3 className="text-lg text-[#898989] font-semibold ">
         {" "}

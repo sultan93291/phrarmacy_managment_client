@@ -7,7 +7,7 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: axiosBaseQuery({ baseUrl: SiteURl }),
   tagTypes: ["Card", "Review", "SubsCreption", "Meeting"],
-  
+
   endpoints: builder => ({
     // Create PaymentIntent for Stripe
     createAddCardIntent: builder.mutation({
@@ -178,6 +178,7 @@ export const apiSlice = createApi({
         data: data,
         includeToken: true,
       }),
+      invalidatesTags: ["Meeting"],
     }),
 
     // get all meetings
