@@ -6,7 +6,8 @@ const SiteURl = import.meta.env.VITE_SITE_URL;
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: axiosBaseQuery({ baseUrl: SiteURl }),
-  tagTypes: ["Card", "Review", "SubsCreption"],
+  tagTypes: ["Card", "Review", "SubsCreption", "Meeting"],
+  
   endpoints: builder => ({
     // Create PaymentIntent for Stripe
     createAddCardIntent: builder.mutation({
@@ -57,8 +58,8 @@ export const apiSlice = createApi({
         url: "/api/auth-review",
         method: "GET",
         includeToken: true,
-        providesTags: ["Review"],
       }),
+      providesTags: ["Review"],
     }),
 
     getUserOrderIntent: builder.query({
@@ -90,16 +91,16 @@ export const apiSlice = createApi({
         url: `/api/my-subscriptions`,
         method: "GET",
         includeToken: true,
-        providesTags: ["SubsCreption"],
       }),
+      providesTags: ["SubsCreption"],
     }),
 
     deleteSubsCreationIntent: builder.mutation({
       query: id => ({
         url: `/subscriptions/${id}`, // Your DELETE endpoint
         method: "DELETE",
-        invalidatesTags: ["SubsCreption"],
       }),
+      invalidatesTags: ["SubsCreption"],
     }),
 
     // Delete Card
@@ -108,8 +109,8 @@ export const apiSlice = createApi({
         url: `/api/remove/stripe/customer/payment-method/${cardId}`,
         method: "DELETE",
         includeToken: true,
-        invalidatesTags: ["Card"],
       }),
+      invalidatesTags: ["Card"],
     }),
 
     // post review
@@ -119,8 +120,8 @@ export const apiSlice = createApi({
         method: "POST",
         data: { rating: rating, review: review },
         includeToken: true,
-        invalidatesTags: ["Review"],
       }),
+      invalidatesTags: ["Review"],
     }),
 
     // get all notifications
@@ -171,10 +172,10 @@ export const apiSlice = createApi({
       },
     }),
     createMeetingIntent: builder.mutation({
-      query: ({ id, title, description, date, time }) => ({
+      query: ({ id, data }) => ({
         url: `/api/meeting/${id}`,
         method: "POST",
-        body: { title, description, date, time },
+        data: data,
         includeToken: true,
       }),
     }),
@@ -186,13 +187,16 @@ export const apiSlice = createApi({
         method: "GET",
         includeToken: true,
       }),
+      providesTags: ["Meeting"],
     }),
 
     updateMeetingIntent: builder.mutation({
       query: ({ id, status }) => ({
         url: `/api/meeting-update/${id}`,
-        method: "PUT", // Use PUT or PATCH for updates
-        body: { status },
+        method: "POST",
+        data: {
+          status,
+        },
         includeToken: true,
       }),
     }),
@@ -217,6 +221,14 @@ export const apiSlice = createApi({
         },
         includeToken: true,
       }),
+    }),
+    deleteMeetingIntent: builder.mutation({
+      query: id => ({
+        url: `/api/delete/meeting/${id}`,
+        method: "DELETE",
+        includeToken: true,
+      }),
+      invalidatesTags: ["Meeting"],
     }),
   }),
 
@@ -247,4 +259,5 @@ export const {
   useUpdateMeetingIntentMutation,
   useCreatePlaceOrderIntentMutation,
   useApplyCouponIntentMutation,
+  useDeleteMeetingIntentMutation,
 } = apiSlice;

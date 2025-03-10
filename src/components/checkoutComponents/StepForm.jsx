@@ -63,7 +63,7 @@ function StepForm() {
   );
 
   const [discountAmount, setdiscountAmount] = useState();
-    console.log(assesMentDetails[0].id);
+    
 
   const handleCoupon = async totalPrice => {
   
