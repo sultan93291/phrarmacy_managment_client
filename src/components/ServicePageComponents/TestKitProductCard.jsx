@@ -33,7 +33,7 @@ function TestKitProductCard({ item }) {
             {item.description.slice(0, 60)}...
           </h3>
           <p className="mt-[10px] text-[20px] font-bold text-primary">
-            ${item.price}
+            £{item.price}
           </p>
           {/* button  */}
           <div className="flex items-center justify-between mt-5">

@@ -63,11 +63,8 @@ function StepForm() {
   );
 
   const [discountAmount, setdiscountAmount] = useState();
-    
 
   const handleCoupon = async totalPrice => {
-  
-    
     if (coupon && totalPrice) {
       try {
         // Apply coupon mutation
@@ -324,8 +321,6 @@ function StepForm() {
   const checkOutMedicineDetials = useSelector(
     state => state.checkOutMedicineReducer.checkOutMedicineDetials
   );
-
-
 
   const handleOrderPlace = async () => {
     console.log(checkOutMedicineDetials, "this is the medicine details");
@@ -870,26 +865,26 @@ function StepForm() {
                     <ul className="treatment-preference-medicine max-w-[640px]">
                       <li className="lg:text-lg text-base">
                         <p> ({item?.quantity} doses)</p>
-                        <p> €{item.total_price} </p>
+                        <p> £ {item.total_price} </p>
                       </li>
                       {isRoyalMailChecked && (
                         <li>
                           <p>Royal mail Tracked,</p>
-                          <p> €{optionValues} </p>
+                          <p> £ {optionValues} </p>
                         </li>
                       )}
                       <li className="total-pay">
                         <p>Total Pay:</p>
                         {isRoyalMailChecked ? (
                           <p>
-                            €
+                            £
                             {(
                               parseFloat(item.total_price) +
                               parseFloat(optionValues)
                             ).toFixed(2)}
                           </p>
                         ) : (
-                          <p> €{item.total_price} </p>
+                          <p> £ {item.total_price} </p>
                         )}
                       </li>
                     </ul>
@@ -963,7 +958,7 @@ function StepForm() {
                             {item?.title} {item?.description}
                           </h4>
                           <p className="text-[18px] font-bold text-primryDark mt-4">
-                            &euro;{item?.price}
+                            £ {item?.price}
                           </p>
                         </div>
                         <div>
@@ -1081,17 +1076,16 @@ function StepForm() {
                     }}
                     className="flex w-full text-sm lg:text-base items-center justify-center p-3 lg:p-[20px] gap-5 bg-primryDark rounded-[10px]  text-white"
                   >
-                    Pay EURO{" "}
+                    Pay GBP{" "}
                     {payableAmount
                       ? payableAmount.toFixed(2)
                       : optionValues
                       ? (
                           allItemPricQuantity.subTotalPrice +
                           parseFloat(allItemPricQuantity.subTotalQuantity) *
-                            optionValues +
-                          2.24
+                            optionValues
                         ).toFixed(2)
-                      : (allItemPricQuantity.subTotalPrice + 2.24).toFixed(2)}
+                      : allItemPricQuantity.subTotalPrice.toFixed(2)}
                   </button>
                 </div>
                 <div className="lg:w-[620px] mx-auto">
@@ -1130,7 +1124,7 @@ function StepForm() {
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-semibold font-nunito text-gray-800">
-                        ${item.total_price}
+                        £ {item.total_price}
                       </p>
                       <p className="text-xs font-nunito text-gray-500">
                         Qty: {item.quantity}
@@ -1177,14 +1171,15 @@ function StepForm() {
                   <div className="flex font-nunito justify-between">
                     <span>Subtotal</span>
                     <span>
-                      ${parseInt(allItemPricQuantity.subTotalPrice).toFixed(2)}
+                      £{" "}
+                      {parseFloat(allItemPricQuantity.subTotalPrice).toFixed(2)}
                     </span>
                   </div>
                   <div className="flex font-nunito justify-between">
                     <span>Royal Mail Tracked</span>
                     {optionValues && (
                       <span>
-                        $
+                        £
                         {(
                           parseFloat(allItemPricQuantity.subTotalQuantity) *
                           optionValues
@@ -1196,11 +1191,11 @@ function StepForm() {
                     <div className="flex flex-col gap-y-2">
                       <div className="flex font-nunito justify-between">
                         <span>Discount Amount</span>
-                        <span> ${discountAmount.toFixed(2)} </span>
+                        <span> £ {discountAmount.toFixed(2)} </span>
                       </div>
                       <div className="flex font-nunito justify-between">
                         <span>Payable Amount After Discount</span>
-                        <span>${payableAmount.toFixed(2)}</span>
+                        <span>£ {payableAmount.toFixed(2)}</span>
                       </div>
                     </div>
                   )}
@@ -1210,21 +1205,19 @@ function StepForm() {
                 <div className="pt-4 flex justify-between items-center font-nunito">
                   <div>
                     <p className="text-base font-nunito">Total</p>
-                    <p className="text-xs text-gray-500">
-                      Include taxes
-                    </p>
+                    <p className="text-xs text-gray-500">Include taxes</p>
                   </div>
                   <p className="text-xl lg:text-2xl font-bold text-gray-900">
-                    $
+                    £
                     {payableAmount
                       ? payableAmount.toFixed(2)
                       : optionValues
                       ? (
                           allItemPricQuantity.subTotalPrice +
                           parseFloat(allItemPricQuantity.subTotalQuantity) *
-                            optionValues 
+                            optionValues
                         ).toFixed(2)
-                      : (allItemPricQuantity.subTotalPrice ).toFixed(2)}
+                      : allItemPricQuantity.subTotalPrice.toFixed(2)}
                   </p>
                 </div>
               </div>

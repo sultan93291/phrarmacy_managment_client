@@ -231,6 +231,13 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Meeting"],
     }),
+
+    getCompanyData: builder.query({
+      query: () => ({
+        url: `/api/get-setting`,
+        method:"GET"
+      }),
+    }),
   }),
 
   // create meeting
@@ -261,4 +268,5 @@ export const {
   useCreatePlaceOrderIntentMutation,
   useApplyCouponIntentMutation,
   useDeleteMeetingIntentMutation,
+  useGetCompanyDataQuery
 } = apiSlice;
