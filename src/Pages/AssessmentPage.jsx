@@ -18,29 +18,28 @@ function AssessmentPage() {
   const { id } = useParams();
   const [healthQuestion, sethealthQuestion] = useState([]);
   const SiteURl = import.meta.env.VITE_SITE_URL;
+  const [selectedValues, setSelectedValues] = useState({});
 
   const { isAuthenticated } = useContext(AuthContext);
   const medicineId = useSelector(state => state.assesmentSlice.medicineId);
   const assesMentId = useSelector(state => state.assesmentSlice.assesMentId);
 
   const loggedInUser = useSelector(
-    (state) => state.loggedInuserSlice.loggedInUserData
+    state => state.loggedInuserSlice.loggedInUserData
   );
 
   const dispatch = useDispatch();
-
-  console.log(id);
 
   useEffect(() => {
     axios({
       method: "GET",
       url: `${SiteURl}/api/treatment/${id}/consultation`,
     })
-      .then((res) => {
+      .then(res => {
         console.log(res.data.data.assessments);
         sethealthQuestion(res.data.data.assessments);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   }, []);
@@ -49,9 +48,10 @@ function AssessmentPage() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => {
+  const onSubmit = data => {
     console.log(data);
     // const filteredData = Object.fromEntries(
     //   Object.entries(data).filter(
@@ -71,7 +71,7 @@ function AssessmentPage() {
       },
     ];
 
-    const dataValue = fieldkeys.map((item) => {
+    const dataValue = fieldkeys.map(item => {
       const assetementId = item.split("_")[2];
 
       return {
@@ -85,9 +85,9 @@ function AssessmentPage() {
 
     const combinedData = [];
 
-    dataValue.forEach((item) => {
+    dataValue.forEach(item => {
       const existingItem = combinedData.find(
-        (combinedItem) => combinedItem.assetment_id === item.assetment_id
+        combinedItem => combinedItem.assetment_id === item.assetment_id
       );
 
       if (existingItem) {
@@ -123,17 +123,25 @@ function AssessmentPage() {
       toast.success("Assesment saved successfully");
       dispatch(setAssesmentRedirect(`${`/treatment/consultation/${id}`}`));
       navigate("/auth/login");
-    } else if(medicineId && assesMentId && isAuthenticated) {
+    } else if (medicineId && assesMentId && isAuthenticated) {
       toast.success("Assesment saved successfully");
       window.location.href = `/medicine-details/${medicineId}/consultation/${assesMentId}`;
     } else {
-      toast.success('Assesment saved successfully ')
+      toast.success("Assesment saved successfully ");
       window.location.href = `/service/${id}`;
     }
 
-
     console.log("final", finalData);
   };
+
+  useEffect(() => {
+    const subscription = watch(value => {
+      setSelectedValues(value); // Store watched values in state
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
+  console.log(selectedValues);
 
   return (
     <div className="font-dmsans">
@@ -146,6 +154,8 @@ function AssessmentPage() {
           className="py-8 sm:py-14 space-y-2.5"
         >
           {healthQuestion.map((item, index) => {
+            const selectedValue = watch(`radio_input_${item.id}`);
+
             return (
               <CommonQuestionBox
                 key={index}
@@ -158,7 +168,7 @@ function AssessmentPage() {
                 >
                   {/* radio buttons */}
                   <div className="flex items-center flex-wrap gap-5">
-                    {item.options.map((option) => (
+                    {item.options.map(option => (
                       <div key={option?.id}>
                         <input
                           className="peer hidden"
@@ -200,6 +210,15 @@ function AssessmentPage() {
                     {...register("result")}
                     defaultValue={item.answer}
                   /> */}
+                  {/* Error message if selected value matches condition */}
+                  {console.log(item)}
+                  {selectedValue === item.condition && (
+                    <div className="py-2">
+                      <span className="text-lg sm:text-xl text-subtitleText text-red-400">
+                        {item?.condition_message}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </CommonQuestionBox>
             );
