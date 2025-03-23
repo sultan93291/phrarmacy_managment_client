@@ -1004,7 +1004,7 @@ function StepForm() {
                   className="relative cursor-pointer pl-8 lg:pl-[60px]"
                 >
                   I Consist to MYHEALTHLONDON Connecting to my GP and to the
-                  sharing of information
+                  sharing of information <span className="text-red-400" >*</span>
                 </label>
               </div>
               {/* {/ payment options  /} */}

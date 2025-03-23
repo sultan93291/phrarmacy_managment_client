@@ -214,7 +214,7 @@ function AssessmentPage() {
                   {console.log(item)}
                   {selectedValue === item.condition && (
                     <div className="py-2">
-                      <span className="text-lg sm:text-xl text-subtitleText text-red-400">
+                      <span className="text-lg sm:text-xl  text-red-400">
                         {item?.condition_message}
                       </span>
                     </div>
