@@ -120,22 +120,6 @@ const AddPaymentModal = ({ setOpen }) => {
                   />
                 </div>
 
-                <div className="space-y-2 w-full">
-                  <label
-                    className="text-[#0A0D13] font-medium"
-                    htmlFor="expirationDate"
-                  >
-                    Expiration Date
-                  </label>
-                  <input
-                    {...register("expirationDate", { required: true })}
-                    className="text w-full border rounded-md px-5 focus:outline-none py-3"
-                    placeholder="MM/YY"
-                    type="text"
-                    name="expirationDate"
-                    id="expirationDate"
-                  />
-                </div>
 
                 <div className="mt-6 w-full">
                   <button

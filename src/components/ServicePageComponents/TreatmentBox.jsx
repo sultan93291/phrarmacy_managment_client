@@ -14,7 +14,7 @@ function TreatmentBox({ item }) {
               to={`/service/${treatment.id}`}
               className="treatment outline outline-[white] duration-200 ease-in-out bg-white py-3 px-[22px] rounded-[10px] flex items-center gap-5 hover:outline-primary"
             >
-              <img src={`${SiteURl}/${treatment.icon}`} alt={treatment.title} />
+              <img src={`${SiteURl}/${treatment.icon}`} className="w-[50px] h-[50px] object-cover " alt={treatment.title} />
               <p className="text-lg sm:text-[24px] font-semibold text-menuLinkColor">
                 {treatment.title}
               </p>

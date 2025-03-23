@@ -45,7 +45,7 @@ function AllTreatmentSection() {
             <Searchbar />
           </div>
         </div>
-        <div className="mt-10">
+        <div className="mt-10 flex flex-col gap-y-10  ">
           {treatmentsCategories.map((category, idx) => (
             <div
               data-aos="zoom-in"

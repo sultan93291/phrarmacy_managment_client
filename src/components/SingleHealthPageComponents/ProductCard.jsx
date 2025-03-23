@@ -37,13 +37,11 @@ function ProductCard({ item }) {
             {item.description}
           </h3>
           <p className="mt-[10px] text-[20px] font-bold text-primary">
-            ${item.price}
+            £{item.price}
           </p>
           {/* button  */}
           <div className="flex items-center justify-between mt-5">
-            <Link
-              to={`/medicine-details/${item.id}/consultation/${id}`}
-            >
+            <Link to={`/medicine-details/${item.id}/consultation/${id}`}>
               <CommonButtonV2 type="fill" text="Continue" />
             </Link>
             <Link to={"/"}>
