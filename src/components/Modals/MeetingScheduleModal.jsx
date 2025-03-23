@@ -13,7 +13,7 @@ import { useCreateMeetingIntentMutation } from "@/Redux/features/api/apiSlice";
 
 const MeetingScheduleModal = ({ setOpen }) => {
   const navigate = useNavigate();
-  const { register, handleSubmit ,reset } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const { id } = useParams();
 
   const [createMeeting, { isLoading, isError, error, isSuccess }] =
@@ -34,7 +34,6 @@ const MeetingScheduleModal = ({ setOpen }) => {
 
       if (response.code === 201) {
         toast.success(response?.message);
-        navigate("/dashboard/doctor/meeting-management");
       }
       console.log("Response:", response);
     } catch (err) {
@@ -45,7 +44,8 @@ const MeetingScheduleModal = ({ setOpen }) => {
         }`
       );
     } finally {
-      reset()
+      reset();
+      setOpen(false);
     }
   };
 
@@ -125,7 +125,6 @@ const MeetingScheduleModal = ({ setOpen }) => {
                   <div className="w-full space-y-3">
                     <button
                       type="submit"
-                      onClick={() => setOpen(false)}
                       className="w-full text-center py-3 rounded-md bg-primary text-white font-semibold"
                     >
                       Next
