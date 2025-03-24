@@ -63,11 +63,13 @@ export const apiSlice = createApi({
     }),
 
     getUserOrderIntent: builder.query({
-      query: () => ({
-        url: "/api/orders?column=&value=&sort=&page=&per_page=",
-        method: "POST",
-        includeToken: true,
-      }),
+      query: ({ url }) => {
+        return {
+          url: `/api/${url}`,
+          method: "POST",
+          includeToken: true,
+        };
+      },
     }),
 
     getUserOrderDetailsIntent: builder.query({
@@ -160,9 +162,7 @@ export const apiSlice = createApi({
     updateMedicineStatusDataIntent: builder.mutation({
       query: ({ id, status, note }) => {
         const body = { status };
-        if (note) {
-          body.note = note;
-        }
+        body.note = note;
         return {
           url: `/api/order-status-note-update/${id}`,
           method: "POST",
@@ -235,7 +235,7 @@ export const apiSlice = createApi({
     getCompanyData: builder.query({
       query: () => ({
         url: `/api/get-setting`,
-        method:"GET"
+        method: "GET",
       }),
     }),
   }),
@@ -268,5 +268,5 @@ export const {
   useCreatePlaceOrderIntentMutation,
   useApplyCouponIntentMutation,
   useDeleteMeetingIntentMutation,
-  useGetCompanyDataQuery
+  useGetCompanyDataQuery,
 } = apiSlice;

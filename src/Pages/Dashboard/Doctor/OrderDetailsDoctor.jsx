@@ -79,49 +79,16 @@ const OrderDetailsDoctor = () => {
         toast.success(response?.message);
       }
       console.log(response);
-
-      // Additional success handling (e.g., display a success message)
     } catch (err) {
       console.error("Update failed:", err);
-      // Additional error handling (e.g., display an error message)
       toast.error(
         `Update failed: ${err.message || "An unexpected error occurred"}`
       );
     }
   };
 
-  const medicineInfo = [
-    {
-      name: "Paracetamol",
-      quantity: 5,
-      price: 900,
-      totalPrice: 4500,
-    },
-    {
-      name: "Ibuprofen",
-      quantity: 3,
-      price: 700,
-      totalPrice: 2100,
-    },
-  ];
-
   return (
     <div>
-      {/* top title */}
-      <div className="w-full flex flex-col sm:flex-row sm:items-center justify-between">
-        <div className="text-[#052D4C] flex items-center font-semibold text-sm lg:text-lg gap-2">
-          <h2>Order Management</h2>
-          <RightArrowSvg />
-          <h2>Order Details</h2>
-        </div>
-        <Link
-          to="/dashboard/doctor/order-management"
-          type="submit"
-          className="mt-5 sm:mt-0  font-semibold p-2 lg:px-5 text-sm md:text-base text-center lg:py-3 rounded-lg bg-primary text-white"
-        >
-          Update Order
-        </Link>
-      </div>
 
       {/* Details */}
       <div className="mt-5 flex flex-col lg:flex-row gap-10 font-nunito w-full">
@@ -374,7 +341,7 @@ const OrderDetailsDoctor = () => {
                   type="submit"
                   className="mt-4 sm:mt-5 text-sm md:text-base font-semibold px-4 sm:px-5 py-2 sm:py-3 rounded-lg bg-primary text-white w-full sm:w-auto"
                 >
-                  Add Note
+                  Update order
                 </button>
               </form>
             </div>

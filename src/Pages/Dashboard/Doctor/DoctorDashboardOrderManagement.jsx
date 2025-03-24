@@ -89,8 +89,13 @@ import { useEffect, useState } from "react";
 const DoctorDashboardOrderManagement = () => {
   const totalPages = 8;
   const [activePage, setActivePage] = useState(1);
+  const [searchData, setsearchData] = useState();
+  const [url, seturl] = useState(
+    `orders?column=status&value=&sort=&page=&per_page=`
+  );
   const handlePageChange = pageNumber => {
     setActivePage(pageNumber);
+    seturl(`orders?column=status&value=&sort=&page=${pageNumber}&per_page=`);
   };
 
   const [allOrder, setAllOrder] = useState([]);
@@ -100,11 +105,34 @@ const DoctorDashboardOrderManagement = () => {
     isLoading,
     isError,
     error,
-  } = useGetUserOrderIntentQuery();
+  } = useGetUserOrderIntentQuery({
+    url,
+  });
 
   useEffect(() => {
     setAllOrder(orderdData?.data?.orders);
   }, [orderdData]);
+
+  const handleAscDesc = value => {
+    seturl(
+      `orders?column=status&value=&sort=${
+        value ? value : "asc"
+      }&page=&per_page=`
+    );
+  };
+
+  const searchOrderDetails = e => {
+    e.preventDefault();
+    seturl(`orders?column=&value=${searchData}&sort=&page=&per_page=`);
+  };
+
+  useEffect(() => {
+    if (searchData?.length < 1) {
+      seturl(`orders?column=status&value=&sort=&page=&per_page=`);
+    }
+  }, [searchData]);
+
+  console.log(orderdData?.data?.pagination, "this is the order data");
 
   return (
     <div>
@@ -121,22 +149,34 @@ const DoctorDashboardOrderManagement = () => {
             placeholder="Order ID Search"
             name="searchOrder"
             id="searchOrder"
+            onChange={e => {
+              setsearchData(e.target.value);
+            }}
+            value={searchData}
           />
-          <button>
+          <button
+            onClick={e => {
+              searchOrderDetails(e);
+            }}
+          >
             <SearchSvg />
           </button>
         </form>
 
         {/* select */}
         <div>
-          <Select>
+          <Select
+            onValueChange={value => {
+              handleAscDesc(value);
+            }}
+          >
             <SelectTrigger className="w-full border h-12 sm:h-16 rounded-xl px-5 sm:px-8 py-1 sm:text-lg text-[#6B7280] font-md">
               <SelectValue placeholder="All Order" />
             </SelectTrigger>
             <SelectContent className={"font-medium"}>
               <SelectItem value="All Order">All Order</SelectItem>
-              <SelectItem value="Recent">Recent</SelectItem>
-              <SelectItem value="Old">Old</SelectItem>
+              <SelectItem value="asc">Recent</SelectItem>
+              <SelectItem value="desc">Old</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -156,7 +196,10 @@ const DoctorDashboardOrderManagement = () => {
 
         {/* Pagination */}
         <div className="mt-10 sm:mt-20 border-t border-[#E5E7EB] w-full flex flex-col md:flex-row gap-5 items-center justify-between py-6">
-          <p className="text-[#374151]">Showing 1 to 10 of 97 results</p>
+          <p className="text-[#374151]">
+            Showing {orderdData?.data?.pagination?.current_page} to{" "}
+            {orderdData?.data?.pagination?.last_page}
+          </p>
 
           {/* pagination btn */}
           <div className="h-10 border-black/10 rounded-md flex gap-1 flex-wrap justify-center sm:justify-start items-center">
@@ -169,25 +212,28 @@ const DoctorDashboardOrderManagement = () => {
             </button>
 
             {/* btns */}
-            {[...Array(totalPages)].map((_, index) => {
-              const pageNumber = index + 1;
-              return (
-                <button
-                  key={pageNumber}
-                  className={`
-                size-10  border text-[#374151] border-black/10 px-4 py-2
-                transition-all duration-200 ease-in-out
-                ${activePage === pageNumber
-                      ? "bg-primary !text-white"
-                      : "hover:bg-primary hover:!text-white"
-                    }
-              `}
-                  onClick={() => handlePageChange(pageNumber)}
-                >
-                  {pageNumber}
-                </button>
-              );
-            })}
+            {[...Array(orderdData?.data?.pagination?.last_page)].map(
+              (_, index) => {
+                const pageNumber = index + 1;
+                return (
+                  <button
+                    key={pageNumber}
+                    className={`
+        size-10 border text-[#374151] border-black/10 px-4 py-2
+        transition-all duration-200 ease-in-out
+        ${
+          activePage === pageNumber
+            ? "bg-primary !text-white"
+            : "hover:bg-primary hover:!text-white"
+        }
+      `}
+                    onClick={() => handlePageChange(pageNumber)}
+                  >
+                    {pageNumber}
+                  </button>
+                );
+              }
+            )}
 
             <button
               disabled={activePage === totalPages}
