@@ -53,23 +53,8 @@ function AssessmentPage() {
   } = useForm();
   const onSubmit = data => {
     console.log(data);
-    // const filteredData = Object.fromEntries(
-    //   Object.entries(data).filter(
-    //     ([_, value]) => value !== null && value !== ""
-    //   )
-    // );
-    // console.log(filteredData);
-    // const medicineData = { ...filteredData, id };
 
     const fieldkeys = Object.keys(data);
-
-    let storeQuestion = [
-      {
-        assetment_id: "2",
-        selected_option: null,
-        notes: null,
-      },
-    ];
 
     const dataValue = fieldkeys.map(item => {
       const assetementId = item.split("_")[2];
@@ -122,6 +107,7 @@ function AssessmentPage() {
     if (!isAuthenticated) {
       toast.success("Assesment saved successfully");
       dispatch(setAssesmentRedirect(`${`/treatment/consultation/${id}`}`));
+      localStorage.setItem("AssesMentRedirectid", id);
       navigate("/auth/login");
     } else if (medicineId && assesMentId && isAuthenticated) {
       toast.success("Assesment saved successfully");

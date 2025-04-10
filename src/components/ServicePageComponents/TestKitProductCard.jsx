@@ -30,7 +30,7 @@ function TestKitProductCard({ item }) {
             <p className="text-sm mt-3">({item.review})</p>
           </div>
           <h3 className="sm:text-[18px] font-medium capitalize mt-4 text-categoryBtnColor">
-            {item.description.slice(0, 60)}...
+            {item?.description?.slice(0, 60)}...
           </h3>
           <p className="mt-[10px] text-[20px] font-bold text-primary">
             £{item.price}
