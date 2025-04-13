@@ -181,7 +181,8 @@ function AssessmentPage() {
                   {item.note && (
                     <div className="flex flex-col gap-2">
                       <label className="text-subtitleText">{item?.note}</label>
-                      {item?.note?.toLowerCase() === "kilograms" ? (
+                      {item?.note?.toLowerCase() === "kilograms" ||
+                      item?.note?.toLowerCase() === "kg" ? (
                         <div className="flex flex-col gap-2">
                           <input
                             type="text"
@@ -194,6 +195,28 @@ function AssessmentPage() {
                                 /^(\d+(\.\d+)?|\.\d+)$/.test(value.trim()) ||
                                 "Please enter a valid decimal number",
                             })}
+                            onKeyDown={(e) => {
+                              const allowedKeys = [
+                                "Backspace",
+                                "Tab",
+                                "ArrowLeft",
+                                "ArrowRight",
+                                "Delete",
+                                "Home",
+                                "End",
+                              ];
+                              const isNumber = /^[0-9.]$/.test(e.key);
+
+                              if (!isNumber && !allowedKeys.includes(e.key)) {
+                                e.preventDefault();
+                              }
+                              if (
+                                e.key === "." &&
+                                e.currentTarget.value.includes(".")
+                              ) {
+                                e.preventDefault();
+                              }
+                            }}
                           />
                         </div>
                       ) : (
