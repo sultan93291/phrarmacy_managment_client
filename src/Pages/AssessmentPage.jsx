@@ -18,18 +18,17 @@ function AssessmentPage() {
   const { id } = useParams();
   const [healthQuestion, sethealthQuestion] = useState([]);
   const SiteURl = import.meta.env.VITE_SITE_URL;
+  const [selectedValues, setSelectedValues] = useState({});
 
   const { isAuthenticated } = useContext(AuthContext);
-  const medicineId = useSelector(state => state.assesmentSlice.medicineId);
-  const assesMentId = useSelector(state => state.assesmentSlice.assesMentId);
+  const medicineId = useSelector((state) => state.assesmentSlice.medicineId);
+  const assesMentId = useSelector((state) => state.assesmentSlice.assesMentId);
 
   const loggedInUser = useSelector(
     (state) => state.loggedInuserSlice.loggedInUserData
   );
 
   const dispatch = useDispatch();
-
-  console.log(id);
 
   useEffect(() => {
     axios({
@@ -49,27 +48,13 @@ function AssessmentPage() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
     console.log(data);
-    // const filteredData = Object.fromEntries(
-    //   Object.entries(data).filter(
-    //     ([_, value]) => value !== null && value !== ""
-    //   )
-    // );
-    // console.log(filteredData);
-    // const medicineData = { ...filteredData, id };
 
     const fieldkeys = Object.keys(data);
-
-    let storeQuestion = [
-      {
-        assetment_id: "2",
-        selected_option: null,
-        notes: null,
-      },
-    ];
 
     const dataValue = fieldkeys.map((item) => {
       const assetementId = item.split("_")[2];
@@ -122,18 +107,27 @@ function AssessmentPage() {
     if (!isAuthenticated) {
       toast.success("Assesment saved successfully");
       dispatch(setAssesmentRedirect(`${`/treatment/consultation/${id}`}`));
+      localStorage.setItem("AssesMentRedirectid", id);
       navigate("/auth/login");
-    } else if(medicineId && assesMentId && isAuthenticated) {
+    } else if (medicineId && assesMentId && isAuthenticated) {
       toast.success("Assesment saved successfully");
       window.location.href = `/medicine-details/${medicineId}/consultation/${assesMentId}`;
     } else {
-      toast.success('Assesment saved successfully ')
+      toast.success("Assesment saved successfully ");
       window.location.href = `/service/${id}`;
     }
 
-
     console.log("final", finalData);
   };
+
+  useEffect(() => {
+    const subscription = watch((value) => {
+      setSelectedValues(value); // Store watched values in state
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
+  console.log(selectedValues);
 
   return (
     <div className="font-dmsans">
@@ -146,6 +140,9 @@ function AssessmentPage() {
           className="py-8 sm:py-14 space-y-2.5"
         >
           {healthQuestion.map((item, index) => {
+            const selectedValue = watch(`radio_input_${item.id}`);
+            console.log(item);
+
             return (
               <CommonQuestionBox
                 key={index}
@@ -184,13 +181,53 @@ function AssessmentPage() {
                   {item.note && (
                     <div className="flex flex-col gap-2">
                       <label className="text-subtitleText">{item?.note}</label>
-                      <textarea
-                        className="rounded-xl h-20 resize-none border border-borderLight p-3 sm:p-4 text-sm"
-                        placeholder="Write here.."
-                        {...register(`note_input_${item.id}`, {
-                          required: !!item.note,
-                        })} // Register only if note exists
-                      ></textarea>
+                      {item?.note?.toLowerCase() === "kilograms" ||
+                      item?.note?.toLowerCase() === "kg" ? (
+                        <div className="flex flex-col gap-2">
+                          <input
+                            type="text"
+                            inputMode="decimal"
+                            className="rounded-xl h-12 border border-borderLight p-3 sm:p-4 text-sm"
+                            placeholder="Write here..."
+                            {...register(`note_input_${item.id}`, {
+                              required: "This field is required",
+                              validate: (value) =>
+                                /^(\d+(\.\d+)?|\.\d+)$/.test(value.trim()) ||
+                                "Please enter a valid decimal number",
+                            })}
+                            onKeyDown={(e) => {
+                              const allowedKeys = [
+                                "Backspace",
+                                "Tab",
+                                "ArrowLeft",
+                                "ArrowRight",
+                                "Delete",
+                                "Home",
+                                "End",
+                              ];
+                              const isNumber = /^[0-9.]$/.test(e.key);
+
+                              if (!isNumber && !allowedKeys.includes(e.key)) {
+                                e.preventDefault();
+                              }
+                              if (
+                                e.key === "." &&
+                                e.currentTarget.value.includes(".")
+                              ) {
+                                e.preventDefault();
+                              }
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <textarea
+                          className="rounded-xl h-20 resize-none border border-borderLight p-3 sm:p-4 text-sm"
+                          placeholder="Write here.."
+                          {...register(`note_input_${item.id}`, {
+                            required: !!item.note,
+                          })} // Register only if note exists
+                        ></textarea>
+                      )}
                     </div>
                   )}
 
@@ -200,6 +237,15 @@ function AssessmentPage() {
                     {...register("result")}
                     defaultValue={item.answer}
                   /> */}
+                  {/* Error message if selected value matches condition */}
+                  {console.log(item)}
+                  {selectedValue === item.condition && (
+                    <div className="py-2">
+                      <span className="text-lg sm:text-xl  text-red-400">
+                        {item?.condition_message}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </CommonQuestionBox>
             );

@@ -5,19 +5,29 @@ import {
   PrintSvg,
   RightArrowSvg,
 } from "@/components/SvgContainer/SvgContainer";
-import { useGetUserOrderDetailsIntentQuery } from "@/Redux/features/api/apiSlice";
+import {
+  useGetUserOrderDetailsIntentQuery,
+  useGetCompanyDataQuery,
+} from "@/Redux/features/api/apiSlice";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import siteLogo from "../../../assets/images/logo/logo.png";
 
 const UserOrderDetails = () => {
   const [open, setOpen] = useState(false);
   const { id } = useParams();
   const [billingAdress, setBillingAddress] = useState(null);
   const [allMedicne, setAllMedicine] = useState([]);
+  const [companyData, setcompanyData] = useState();
 
   const { data, error, isLoading } = useGetUserOrderDetailsIntentQuery({ id });
+  const {
+    data: companyDataobj,
+    error: companyError,
+    isLoading: isCompanyLoading,
+  } = useGetCompanyDataQuery();
 
   useEffect(() => {
     if (data?.data) {
@@ -26,6 +36,12 @@ const UserOrderDetails = () => {
     }
   }, [data]);
 
+  useEffect(() => {
+    setcompanyData(companyDataobj?.data);
+  }, [companyData]);
+
+  console.log(companyData, " this is the company data");
+
   const downloadInvoice = () => {
     if (!data?.data) {
       console.error("No data available to generate the invoice.");
@@ -33,32 +49,61 @@ const UserOrderDetails = () => {
     }
 
     const doc = new jsPDF();
+    const imgWidth = 40;
+    const imgHeight = 40;
 
-    // Header Section
+    const img = siteLogo; // Ensure this is a base64 or URL for the image
+
+    // Header Background (increased height to accommodate company details)
+    const headerHeight = 60; // Increased height for the header box
     doc.setFillColor(5, 45, 76); // Dark Blue
-    doc.rect(0, 0, 210, 30, "F");
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(24);
-    doc.text("Order Invoice", 105, 20, { align: "center" });
+    doc.rect(0, 0, 210, headerHeight, "F");
 
-    // Billing Information Box
+    // Logo (on the left side of the header)
+    doc.addImage(img, "PNG", 14, 10, imgWidth, imgHeight);
+
+    // Company Details (on the right side of the header)
+    doc.setTextColor(255, 255, 255); // White text color
+    doc.setFontSize(10);
+
+    // Position the company details inside the header box
+    doc.text(companyData?.title || "Company Name", 70, 15);
+    doc.text(companyData?.address || "Company Address", 70, 22);
+    doc.text(`Email: ${companyData?.email || "N/A"}`, 70, 29);
+    doc.text(`Phone: ${companyData?.phone || "N/A"}`, 70, 36);
+
+    // Invoice Title (adjusted to be below the header box)
+    doc.setFontSize(24);
+    doc.text("Order Invoice", 105, headerHeight + 10, { align: "center" });
+
+    // Billing Information Box (shifted below the header)
+    const billingStartY = headerHeight + 20; // Add extra space after header
     doc.setFillColor(240, 248, 255); // Light Blue
-    doc.roundedRect(14, 40, 180, 50, 5, 5, "F");
+    doc.roundedRect(14, billingStartY, 180, 50, 5, 5, "F");
     doc.setFontSize(12);
     doc.setTextColor(5, 45, 76); // Dark Blue Text
 
-    doc.text(`Billed To: ${billingAdress?.name || "N/A"}`, 20, 50);
-    doc.text(`Email: ${billingAdress?.email || "N/A"}`, 20, 58);
+    doc.text(
+      `Billed To: ${billingAdress?.name || "N/A"}`,
+      20,
+      billingStartY + 10
+    );
+    doc.text(`Email: ${billingAdress?.email || "N/A"}`, 20, billingStartY + 18);
     doc.text(
       `Address: ${billingAdress?.address || "N/A"}, ${
         billingAdress?.city || ""
       }`,
       20,
-      66
+      billingStartY + 26
     );
-    doc.text(`Contact: ${billingAdress?.contact || "N/A"}`, 20, 74);
+    doc.text(
+      `Contact: ${billingAdress?.contact || "N/A"}`,
+      20,
+      billingStartY + 34
+    );
 
     // Order Table
+    const tableStartY = billingStartY + 60; // Add extra space after billing info
     const tableData = allMedicne.map((med, index) => [
       index + 1,
       med.medicine,
@@ -68,14 +113,10 @@ const UserOrderDetails = () => {
     ]);
 
     doc.autoTable({
-      startY: 95,
+      startY: tableStartY,
       head: [["#", "Description", "Qty", "Price", "Amount"]],
       body: tableData,
-      styles: {
-        fillColor: [255, 255, 255],
-        textColor: [33, 33, 33],
-        lineWidth: 0.2,
-      },
+      styles: { textColor: [33, 33, 33], lineWidth: 0.2 },
       headStyles: {
         fillColor: [5, 45, 76],
         textColor: [255, 255, 255],

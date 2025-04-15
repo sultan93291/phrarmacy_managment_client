@@ -6,21 +6,31 @@ function TreatmentBox({ item }) {
 
   return (
     <div className="px-10 pt-5 pb-8 bg-headerBg rounded-[10px]">
-      <h3 className="text-2xl sm:text-[32px] font-semibold text-primary">{item.name}</h3>
+      <h3 className="text-2xl sm:text-[32px] font-semibold text-primary">
+        {item.name}
+      </h3>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 md:gap-5 treatment--row">
-        {item.services.map((treatment, idx) => (
-          <div key={idx} className="mt-5">
-            <Link
-              to={`/service/${treatment.id}`}
-              className="treatment outline outline-[white] duration-200 ease-in-out bg-white py-3 px-[22px] rounded-[10px] flex items-center gap-5 hover:outline-primary"
-            >
-              <img src={`${SiteURl}/${treatment.icon}`} alt={treatment.title} />
-              <p className="text-lg sm:text-[24px] font-semibold text-menuLinkColor">
-                {treatment.title}
-              </p>
-            </Link>
-          </div>
-        ))}
+        {item.services.map((treatment, idx) => {
+          console.log(treatment.id, "this is a single treatment");
+
+          return (
+            <div key={idx} className="mt-5">
+              <Link
+                to={`/service/${treatment.id}`}
+                className="treatment outline outline-[white] duration-200 ease-in-out bg-white py-3 px-[22px] rounded-[10px] flex items-center gap-5 hover:outline-primary"
+              >
+                <img
+                  src={`${SiteURl}/${treatment.icon}`}
+                  className="w-[50px] h-[50px] object-cover "
+                  alt={treatment.title}
+                />
+                <p className="text-lg sm:text-[24px] font-semibold text-menuLinkColor">
+                  {treatment.title}
+                </p>
+              </Link>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

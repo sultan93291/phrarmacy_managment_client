@@ -9,12 +9,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
+  useDeleteMeetingIntentMutation,
   useGetAllMeetingsIntentQuery,
   useUpdateMeetingIntentMutation,
 } from "@/Redux/features/api/apiSlice";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const DoctorDashboardMeetingManagement = () => {
+  const [allMeetingData, setallMeetingData] = useState([]);
+
+  const { data, error, isLoading, isError } = useGetAllMeetingsIntentQuery();
   const [
     updateMeeting,
     {
@@ -24,6 +29,9 @@ const DoctorDashboardMeetingManagement = () => {
       error: meeingEror,
     },
   ] = useUpdateMeetingIntentMutation();
+
+  const [deleteMetting, { isLoading: isdeleteLoading, error: deleteError }] =
+    useDeleteMeetingIntentMutation();
 
   const tableHead = [
     "Meeting Date",
@@ -39,98 +47,51 @@ const DoctorDashboardMeetingManagement = () => {
   const handleUpdate = async ({ value, id }) => {
     console.log(value, id);
 
-    return;
     try {
-      const response = await updateMeeting({ id: meetingId, status }).unwrap();
-      console.log("Meeting updated successfully:", response);
-      // Handle success (e.g., display a success message)
+      const response = await updateMeeting({
+        id: id,
+        status: value,
+      }).unwrap();
+
+      if (response.code === 200) {
+        toast.success(response?.message);
+      }
     } catch (err) {
-      console.error("Error updating meeting:", err);
-      // Handle error (e.g., display an error message)
+      toast.error(
+        `Error: ${
+          err.message || err.data.message || "An unexpected error occurred"
+        }`
+      );
     }
   };
 
-  const [allMeetingData, setallMeetingData] = useState([]);
+  const handleDelete = async id => {
+    try {
+      const response = await deleteMetting(id).unwrap();
 
-  const { data, error, isLoading, isError } = useGetAllMeetingsIntentQuery();
+      if (response.code === 200) {
+        toast.success(response?.message);
+      }
+    } catch (err) {
+      toast.error(
+        `Error: ${
+          err.message || err.data.message || "An unexpected error occurred"
+        }`
+      );
+    }
+  };
 
   useEffect(() => {
     setallMeetingData(data?.data);
   }, [data]);
 
-  const tableData = [
-    {
-      meetingDate: "12/11/24",
-      meetingTime: "12:00AM",
-      meetingUrl: "https://zoom.us/i/1983475281",
-      userName: "Cody Fisher",
-      meetingStatus: "Pending",
-    },
-    {
-      meetingDate: "12/12/24",
-      meetingTime: "1:00PM",
-      meetingUrl: "https://zoom.us/i/1983475282",
-      userName: "Amelia Rose",
-      meetingStatus: "Scheduled",
-    },
-    {
-      meetingDate: "12/13/24",
-      meetingTime: "2:00PM",
-      meetingUrl: "https://zoom.us/i/1983475283",
-      userName: "Liam Carter",
-      meetingStatus: "Completed",
-    },
-    {
-      meetingDate: "12/14/24",
-      meetingTime: "3:00AM",
-      meetingUrl: "https://zoom.us/i/1983475284",
-      userName: "Emma Lewis",
-      meetingStatus: "Pending",
-    },
-    {
-      meetingDate: "12/15/24",
-      meetingTime: "4:00PM",
-      meetingUrl: "https://zoom.us/i/1983475285",
-      userName: "Jack Smith",
-      meetingStatus: "Scheduled",
-    },
-    {
-      meetingDate: "12/16/24",
-      meetingTime: "5:00AM",
-      meetingUrl: "https://zoom.us/i/1983475286",
-      userName: "Sophia Johnson",
-      meetingStatus: "Completed",
-    },
-    {
-      meetingDate: "12/17/24",
-      meetingTime: "6:00PM",
-      meetingUrl: "https://zoom.us/i/1983475287",
-      userName: "James Davis",
-      meetingStatus: "Pending",
-    },
-    {
-      meetingDate: "12/18/24",
-      meetingTime: "7:00AM",
-      meetingUrl: "https://zoom.us/i/1983475288",
-      userName: "Mia Robinson",
-      meetingStatus: "Scheduled",
-    },
-    {
-      meetingDate: "12/19/24",
-      meetingTime: "8:00PM",
-      meetingUrl: "https://zoom.us/i/1983475289",
-      userName: "Benjamin Lee",
-      meetingStatus: "Completed",
-    },
-    {
-      meetingDate: "12/20/24",
-      meetingTime: "9:00AM",
-      meetingUrl: "https://zoom.us/i/1983475290",
-      userName: "Isabella Clark",
-      meetingStatus: "Pending",
-    },
-  ];
-
+  if (allMeetingData?.length < 1)
+    return (
+      <h3 className="text-lg text-[#898989] font-semibold ">
+        {" "}
+        Currently there is no meeting data data
+      </h3>
+    );
   return (
     <div>
       <div className="mb-5 sm:hidden">
@@ -159,7 +120,7 @@ const DoctorDashboardMeetingManagement = () => {
               </thead>
 
               <tbody>
-                {tableData?.map((data, idx) => (
+                {allMeetingData?.map((data, idx) => (
                   <tr
                     key={idx}
                     className="border-y hover:bg-primary/20 transition duration-300 text-sm md:text-base text-[#052D4C] font-medium"
@@ -167,28 +128,28 @@ const DoctorDashboardMeetingManagement = () => {
                     <td
                       className={`whitespace-nowrap px-4 py-2 text-[#898989] md:px-5 md:py-4`}
                     >
-                      {data?.meetingDate}
+                      {data?.date}
                     </td>
                     <td
                       className={`whitespace-nowrap px-4 py-2 text-[#898989] md:px-5 md:py-4`}
                     >
-                      {data?.meetingTime}
+                      {data?.time}
                     </td>
                     <td
                       className={`whitespace-nowrap px-4 py-2 text-[#898989] md:px-5 md:py-4`}
                     >
                       <Link
                         target="_blank"
-                        to={data?.meetingUrl}
+                        to={data?.link}
                         className="text-[#1E40AF] rounded-lg bg-[#DBEAFE] px-2 py-1 border border-[#93C5FD]"
                       >
                         Join Now
                       </Link>
                     </td>
                     <td
-                      className={`whitespace-nowrap px-4 py-2 text-[#898989] md:px-5 md:py-4`}
+                      className={`whitespace-nowrap px-4 py-2 text-[#898989] truncate md:px-5 md:py-4`}
                     >
-                      {data?.userName}
+                      {data?.user}
                     </td>
                     <td
                       className={`whitespace-nowrap px-4 py-2 text-[#898989] md:px-5 md:py-4`}
@@ -196,7 +157,7 @@ const DoctorDashboardMeetingManagement = () => {
                       <Select
                         onValueChange={value => {
                           setvalue(value);
-                          handleUpdate({ value, id: 1 });
+                          handleUpdate({ value, id: data?.id });
                         }}
                       >
                         <SelectTrigger className="border h-10 w-32 rounded-xl px-4 py-1 text-base text-[#6B7280] font-md">
@@ -206,16 +167,21 @@ const DoctorDashboardMeetingManagement = () => {
                           <SelectItem value="Select" disabled>
                             Select
                           </SelectItem>
-                          <SelectItem value="Scheduled">Scheduled</SelectItem>
-                          <SelectItem value="Pending">Pending</SelectItem>
-                          <SelectItem value="Completed">Completed</SelectItem>
+                          <SelectItem value="scheduled">Scheduled</SelectItem>
+                          <SelectItem value="completed">Completed</SelectItem>
+                          <SelectItem value="canceled">Canceled</SelectItem>
                         </SelectContent>
                       </Select>
                     </td>
                     <td
                       className={`whitespace-nowrap px-4 py-2 text-[#898989] md:px-5 md:py-4`}
                     >
-                      <div className="cursor-pointer">
+                      <div
+                        onClick={() => {
+                          handleDelete(data?.id);
+                        }}
+                        className="cursor-pointer"
+                      >
                         <DeleteSvg />
                       </div>
                     </td>

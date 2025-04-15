@@ -1,11 +1,12 @@
 function ProcessCard({ item }) {
   console.log(item);
+  const siteUrl = import.meta.env.VITE_SITE_URL;
 
   return (
     <div>
       <img
         className="max-w-[158px] lg:h-[134px] h-[60px] mx-auto"
-        src={`https://aamairk.softvencefsd.xyz/${item.avatar}`}
+        src={`${siteUrl}/${item.avatar}`}
         alt={item.title}
       />
       <div className="text-center mt-6">

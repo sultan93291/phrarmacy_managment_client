@@ -13,7 +13,8 @@ import { useCreateMeetingIntentMutation } from "@/Redux/features/api/apiSlice";
 
 const MeetingScheduleModal = ({ setOpen }) => {
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
+  const { id } = useParams();
 
   const [createMeeting, { isLoading, isError, error, isSuccess }] =
     useCreateMeetingIntentMutation();
@@ -22,20 +23,29 @@ const MeetingScheduleModal = ({ setOpen }) => {
     console.log(data);
     try {
       const response = await createMeeting({
-        title: data?.topic,
-        description: data?.description,
-        date: data?.date,
-        time: data?.time,
+        id: id,
+        data: {
+          title: data?.title,
+          description: data?.description,
+          date: data?.date,
+          time: `${data?.time}:00`,
+        },
       }).unwrap();
 
-      if (response.code === 200) {
+      if (response.code === 201) {
         toast.success(response?.message);
-        navigate("/dashboard/doctor/meeting-management");
       }
       console.log("Response:", response);
     } catch (err) {
       console.error("Error creating meeting:", err);
-      toast.error(`Error: ${err.message || "An unexpected error occurred"}`);
+      toast.error(
+        `Error: ${
+          err.message || err.data.message || "An unexpected error occurred"
+        }`
+      );
+    } finally {
+      reset();
+      setOpen(false);
     }
   };
 
@@ -65,10 +75,10 @@ const MeetingScheduleModal = ({ setOpen }) => {
                       Title *
                     </legend>
                     <input
-                      {...register("topic", { required: true })}
+                      {...register("title", { required: true })}
                       type="text"
                       placeholder="Enter Topic"
-                      name="topic"
+                      name="title"
                       className="w-full border-0 outline-none px-2 py-1 text-gray-700"
                     />
                   </fieldset>
@@ -114,7 +124,7 @@ const MeetingScheduleModal = ({ setOpen }) => {
 
                   <div className="w-full space-y-3">
                     <button
-                      onClick={() => setOpen(false)}
+                      type="submit"
                       className="w-full text-center py-3 rounded-md bg-primary text-white font-semibold"
                     >
                       Next

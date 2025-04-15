@@ -17,16 +17,15 @@ import { addMedicineToCheckout } from "@/Redux/features/medicineDetails";
 import { useCreatePlaceOrderIntentMutation } from "@/Redux/features/api/apiSlice";
 
 function MedicineDetails({ data }) {
-  console.log("my details ", data);
 
   const { id, counsultainid } = useParams();
 
-  const [selectedValue, setSelectedValue] = useState("1"); // State to store selected value
+  const [selectedValue, setSelectedValue] = useState("1");
   const [subtotalPrice, setsubTotalPrice] = useState();
   const [quantitys, setquantity] = useState();
 
   const handleValueChange = value => {
-    setSelectedValue(value); // Update the selected value
+    setSelectedValue(value); 
 
     const quantity = parseInt(data?.quantity * value);
     const subTotalPrice = data?.price * value;
@@ -36,20 +35,7 @@ function MedicineDetails({ data }) {
 
   const navigate = useNavigate();
 
-  const images = [
-    {
-      img_url:
-        "https://images.unsplash.com/photo-1633171029787-3a1022cfc922?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      img_url:
-        "https://plus.unsplash.com/premium_photo-1672941426599-44cc7bc767b9?q=80&w=1992&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      img_url:
-        "https://images.unsplash.com/photo-1512069772995-ec65ed45afd6?q=80&w=1937&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-  ];
+
   const [preview, setPreview] = useState(data?.avatars?.[0]?.avatar || "");
   const [isAsseesMentAvailable, setisAsseesMentAvailable] = useState();
     const [createPlaceOrderIntent, { isLoading, isSuccess, isError, error }] =

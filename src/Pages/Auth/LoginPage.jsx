@@ -40,6 +40,7 @@ function LoginPage() {
 
   const onSubmit = data => {
     setLoading(true);
+    const AssesmentRedirect = localStorage.getItem("AssesMentRedirectid");
     axios
       .post(`${SiteURl}/api/login`, {
         email: data?.email,
@@ -57,6 +58,12 @@ function LoginPage() {
           if (medicineId) {
             fetchData();
             window.location.href = `/medicine-details/${medicineId}/consultation/${assesMentId}`;
+          } else if (AssesmentRedirect) {
+            fetchData();
+            window.location.href = `/service/${AssesmentRedirect}`;
+            setTimeout(() => {
+              localStorage.removeItem("AssesmentRedirect");
+            }, 3000);
           } else {
             fetchData();
             window.location.href = "/dashboard/user/user-homepage";

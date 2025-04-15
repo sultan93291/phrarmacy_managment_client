@@ -11,14 +11,13 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 const ClientId = import.meta.env.VITE_GOOGLE_AUTH_ID;
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <GoogleOAuthProvider
       clientId={ClientId}
-      redirectUri="https://phrarmacy-managment-client.vercel.app/auth/signup"
+      redirectUri="https://dev.myhealthneeds.co.uk/auth/signup"
     >
       <Provider store={store}>
         <AuthProvider>

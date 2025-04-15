@@ -8,38 +8,6 @@ import {
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-// const faqData = [
-//   {
-//     id: 1,
-//     question: "How do I know if this supplement is right for me?",
-//     answer:
-//       "Our healthcare professionals can help assess your individual needs. You may also consult your doctor to see if this supplement aligns with your current health goals.",
-//   },
-//   {
-//     id: 2,
-//     question: "How long does it take to see results?",
-//     answer:
-//       "Our healthcare professionals can help assess your individual needs. You may also consult your doctor to see if this supplement aligns with your current health goals.",
-//   },
-//   {
-//     id: 3,
-//     question: "Can I take this supplement with my current medications?",
-//     answer:
-//       "Our healthcare professionals can help assess your individual needs. You may also consult your doctor to see if this supplement aligns with your current health goals.",
-//   },
-//   {
-//     id: 4,
-//     question: "Is this supplement safe for long-term use?",
-//     answer:
-//       "Our healthcare professionals can help assess your individual needs. You may also consult your doctor to see if this supplement aligns with your current health goals.",
-//   },
-//   {
-//     id: 5,
-//     question: "How should I store this supplement?",
-//     answer:
-//       "Our healthcare professionals can help assess your individual needs. You may also consult your doctor to see if this supplement aligns with your current health goals.",
-//   },
-// ];
 
 function FaqSection() {
   const SiteURl = import.meta.env.VITE_SITE_URL;

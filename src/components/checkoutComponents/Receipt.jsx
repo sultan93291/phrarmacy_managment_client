@@ -25,7 +25,7 @@ const Receipt = ({ OrderData }) => {
     error,
   } = useGetCardDataIntentQuery();
 
-  console.log(cardData, isLoading, error, isError);
+
   return (
     <>
       <div className="mx-auto mb-4  pt-10 lg:pt-0 lg:p-6">
@@ -60,7 +60,7 @@ const Receipt = ({ OrderData }) => {
                   {item.quantity}
                 </div>
                 <div className="py-2 border-t border-gray-300 text-right">
-                  €{item.total_price}
+                  £ {item.total_price}
                 </div>
               </React.Fragment>
             ))}
@@ -70,31 +70,31 @@ const Receipt = ({ OrderData }) => {
         <hr className="my-4 border-gray-300 border-dashed" />
         <div className="flex justify-between text-[13px] lg:text-[17px]  font-semibold font-nunito text-primryDark">
           <span>Sub total amount:</span>
-          <span>€{OrderData?.sub_total}</span>
+          <span>£ {OrderData?.sub_total}</span>
         </div>
         <hr className="my-4 border-gray-300 border-dashed" />
         {OrderData?.discount && (
           <>
             <div className="flex justify-between text-[13px] lg:text-[17px] font-semibold font-nunito text-primryDark">
               <span>Discount amount:</span>
-              <span>€{OrderData?.discount}</span>
+              <span>£ {OrderData?.discount}</span>
             </div>
           </>
         )}
         <hr className="my-4 border-gray-300 border-dashed" />
         <div className="flex justify-between text-[13px] lg:text-[17px] font-semibold font-nunito text-primryDark">
           <span>Sub total amount:</span>
-          <span>€{OrderData?.sub_total}</span>
+          <span>£ {OrderData?.sub_total}</span>
         </div>
         <hr className="my-4 border-gray-300 border-dashed" />
         <div className="flex justify-between text-[13px] lg:text-[17px] font-semibold font-nunito text-primryDark">
           <span>Shipping charge:</span>
-          <span>€{OrderData?.shipping_charge}</span>
+          <span>£ {OrderData?.shipping_charge}</span>
         </div>
         <hr className="my-4 border-gray-300 border-dashed" />
         <div className="flex justify-between items-center  lg:text-2xl font-semibold font-nunito text-primryDark">
           <span>Total amount:</span>
-          <span>€{OrderData?.total_price}</span>
+          <span>£ {OrderData?.total_price}</span>
         </div>
         <hr className="border-gray-300 border-dashed" />
         <div className="lg:mt-12 flex flex-col gap-y-6 mt-6">
@@ -106,7 +106,10 @@ const Receipt = ({ OrderData }) => {
           </p>
         </div>
       </div>
-      <Link to={"/"} className=" pt-6 underline text-sm lg:text-2xl font-bold font-nunito text-primryDark ">
+      <Link
+        to={"/"}
+        className=" pt-6 underline text-sm lg:text-2xl font-bold font-nunito text-primryDark "
+      >
         Back to Home
       </Link>
     </>
