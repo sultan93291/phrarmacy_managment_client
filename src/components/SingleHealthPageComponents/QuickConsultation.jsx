@@ -61,7 +61,7 @@ function QuickConsultation() {
               </ul>
               {/* btn  */}
               <div className="mt-9">
-                <Link to={`/treatment/consultation/${consultationData?.id}`}>
+                <Link to={`/treatment/consultation/${id}`}>
                   <CommonButtonV2
                     type="fill"
                     text={consultationData?.button?.name}
