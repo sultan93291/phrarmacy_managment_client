@@ -53,6 +53,12 @@ function AssessmentPage() {
     formState: { errors },
   } = useForm();
   const onSubmit = data => {
+
+    if (isDisabled === true) {
+      return toast.error(
+        "Assessment indicates you're not eligible to purchase this medicine."
+      );
+    }
     console.log(data);
 
     const fieldkeys = Object.keys(data);
@@ -123,12 +129,12 @@ function AssessmentPage() {
 
   useEffect(() => {
     const subscription = watch(value => {
-      setSelectedValues(value); // Store watched values in state
+      setSelectedValues(value); 
     });
     return () => subscription.unsubscribe();
   }, [watch]);
 
-  const watchedValues = watch(); // watches all fields
+  const watchedValues = watch(); 
   const isConditionMatched = healthQuestion.some(item => {
     const selectedValue = watchedValues[`radio_input_${item.id}`];
     return selectedValue === item.condition;
@@ -263,7 +269,6 @@ function AssessmentPage() {
 
           <div className="flex flex-col sm:flex-row items-center gap-4 pt-5 sm:pt-10">
             <button
-              disabled={isDisabled}
               data-aos="zoom-in"
               data-aos-duration="2000"
               type="submit"
