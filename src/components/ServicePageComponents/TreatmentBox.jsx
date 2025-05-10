@@ -16,7 +16,7 @@ function TreatmentBox({ item }) {
           return (
             <div key={idx} className="mt-5">
               <Link
-                to={`/service/${treatment.id}`}
+                to={`/service/${item.id}`}
                 className="treatment outline outline-[white] duration-200 ease-in-out bg-white py-3 px-[22px] rounded-[10px] flex items-center gap-5 hover:outline-primary"
               >
                 <img
