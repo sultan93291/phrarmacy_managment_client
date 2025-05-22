@@ -82,6 +82,10 @@ function LoginPage() {
   const handleLoginWithGoogle = useGoogleLogin({
     onSuccess: response => {
       console.log("Google login success:", response);
+
+      console.log(response);
+      
+      return
       const token = response?.access_token;
 
       if (token) {

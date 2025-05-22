@@ -17,13 +17,14 @@ function QuickConsultation() {
       url: `${SiteURl}/api/get-consultation-data`,
     })
       .then(res => {
-        console.log(res.data.data, "consultation data");
         setconsultationData(res.data.data);
       })
       .catch(err => {
         console.log(err);
       });
   }, []);
+
+  console.log(consultationData);
 
   return (
     <section className="mb-14 sm:mb-[140px]">
@@ -72,11 +73,7 @@ function QuickConsultation() {
             {/* image wrapper  */}
             <div className="max-w-[620px]">
               <img
-                src={
-                  consultationData?.image
-                    ? `${SiteURl}/${consultationData?.image}`
-                    : checkImg
-                }
+                src={`${SiteURl}/${consultationData?.image}`}
                 alt="consulttionImg"
               />
             </div>

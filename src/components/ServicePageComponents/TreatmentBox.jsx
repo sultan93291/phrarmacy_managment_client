@@ -11,8 +11,6 @@ function TreatmentBox({ item }) {
       </h3>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 md:gap-5 treatment--row">
         {item.services.map((treatment, idx) => {
-          console.log(treatment.id, "this is a single treatment");
-
           return (
             <div key={idx} className="mt-5">
               <Link
