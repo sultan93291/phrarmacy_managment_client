@@ -1,42 +1,7 @@
 import ProductCard from "./ProductCard";
 
 function TreatmentOption({ data }) {
-  console.log(data, " data from treatment option");
 
-  const treatmentMedicine = [
-    {
-      id: 1,
-      imgUrl: "https://i.ibb.co.com/NLZJ9Pf/Product-Image.png",
-      category: "Medical Supplies",
-      title: "Company Vitamin C by Nature’s Bounty for Immune Support",
-      price: "40.50",
-      rating: 4,
-    },
-    {
-      id: 2,
-      imgUrl: "https://i.ibb.co.com/NLZJ9Pf/Product-Image.png",
-      category: "Medical Supplies",
-      title: "Company Vitamin C by Nature’s Bounty for Immune Support",
-      price: "40.50",
-      rating: 4,
-    },
-    {
-      id: 3,
-      imgUrl: "https://i.ibb.co.com/NLZJ9Pf/Product-Image.png",
-      category: "Medical Supplies",
-      title: "Company Vitamin C by Nature’s Bounty for Immune Support",
-      price: "40.50",
-      rating: 5,
-    },
-    {
-      id: 4,
-      imgUrl: "https://i.ibb.co.com/NLZJ9Pf/Product-Image.png",
-      category: "Medical Supplies",
-      title: "Company Vitamin C by Nature’s Bounty for Immune Support",
-      price: "40.50",
-      rating: 4,
-    },
-  ];
   return (
     <section className="mb-14 sm:pb-[140px]">
       <div className="container">

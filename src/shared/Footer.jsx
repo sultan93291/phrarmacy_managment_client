@@ -8,6 +8,25 @@ import { TiLocationOutline } from "react-icons/ti";
 import { MdOutlineEmail } from "react-icons/md";
 import { MdOutlinePhone } from "react-icons/md";
 
+const healthIssues = [
+  "Hair Loss",
+  "Weight Loss",
+  "Erectile Dysfunction",
+  "Sexual Health",
+];
+
+const infoSections = [
+  "How it works",
+  "Regulation",
+  "Privacy Policy",
+  "Terms and Conditions",
+  "FAQs",
+  "Complaints and Feedback",
+  "Cookies Policy",
+];
+
+const contactOptions = ["Careers", "Contact us", "Unsubscribe"];
+
 function Footer() {
   return (
     <footer className="px-4 xl:px-[47px] text-white mt-10 mb-5 sm:my-10">
@@ -16,7 +35,7 @@ function Footer() {
         data-aos-duration="1000"
         className="py-10 sm:pt-[70px] sm:pb-[90px] xl:pb-[117px] bg-primryDark rounded-2xl md:rounded-[40px]"
       >
-        <div className="container">
+        <div className="container flex flex-col gap-y-10   ">
           <div className="grid grid-cols-1 md:grid-cols-2 w-full xl:flex items-start justify-between gap-8 xl:gap-[100px]">
             {/* footer box  */}
             <div
@@ -36,9 +55,10 @@ function Footer() {
                 data-aos-duration="2000"
                 className="max-w-[444px] mt-6"
               >
-                We’ll show you exactly how you can achieve 30% increase in
-                revenue and a 99.9% claim rate within 120 days—while focusing
-                more on patient care.
+                At My Health Needs we are committed to delivering trusted,
+                affordable, and accessible healthcare solutions. Our mission is
+                to provide a seamless online pharmacy experience, ensuring your
+                health and well-being are always our top priority.
               </p>
               {/* footer social  */}
               <ul
@@ -75,7 +95,7 @@ function Footer() {
               >
                 <li data-aos="zoom-up" data-aos-duration="2000">
                   <TiLocationOutline />
-                  23 Main Street, 12345,Pakistan
+                  12 St Dunstand's Hill Sutton, SM1 2UE123
                 </li>
                 <li
                   data-aos="zoom-up"
@@ -83,7 +103,9 @@ function Footer() {
                   className="mt-5"
                 >
                   <MdOutlineEmail />
-                  <Link to={"/"}>alihassanux@gmail.com</Link>
+                  <a href="mailto:info@myhealthneeds.co.uk">
+                    info@myhealthneeds.co.uk
+                  </a>
                 </li>
                 <li
                   data-aos="zoom-up"
@@ -105,27 +127,13 @@ function Footer() {
                 Our Services
               </h4>
               <ul className="-mt-7 lg:-mt-5">
-                <li data-aos="zoom-up" data-aos-duration="2000">
-                  <Link to={"/"}>Medical Billing</Link>
-                </li>
-                <li data-aos="zoom-up" data-aos-duration="2000">
-                  <Link to={"/"}>Medical Coding</Link>
-                </li>
-                <li data-aos="zoom-up" data-aos-duration="2000">
-                  <Link to={"/"}>Revenue Cycle Management</Link>
-                </li>
-                <li data-aos="zoom-up" data-aos-duration="2000">
-                  <Link to={"/"}>Practice Management</Link>
-                </li>
-                <li data-aos="zoom-up" data-aos-duration="2000">
-                  <Link to={"/"}>Account Receivable</Link>
-                </li>
-                <li data-aos="zoom-up" data-aos-duration="2000">
-                  <Link to={"/"}>Provider Credentialing</Link>
-                </li>
-                <li data-aos="zoom-up" data-aos-duration="2000">
-                  <Link to={"/"}>Medical Virtual Staffing (Remote)</Link>
-                </li>
+                {healthIssues.map((item, idx) => {
+                  return (
+                    <li key={idx} data-aos="zoom-up" data-aos-duration="2000">
+                      <Link to={"/"}> {item} </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
             {/* footer box  */}
@@ -138,18 +146,13 @@ function Footer() {
                 Customer Support
               </h4>
               <ul className="-mt-7 lg:-mt-5">
-                <li data-aos="zoom-up" data-aos-duration="2000">
-                  <Link to={"/"}>FAQ’s</Link>
-                </li>
-                <li data-aos="zoom-up" data-aos-duration="2000">
-                  <Link to={"/"}>Knowledge Base</Link>
-                </li>
-                <li data-aos="zoom-up" data-aos-duration="2000">
-                  <Link to={"/"}>Privacy policy</Link>
-                </li>
-                <li data-aos="zoom-up" data-aos-duration="2000">
-                  <Link to={"/"}>Terms and Conditions</Link>
-                </li>
+                {infoSections.map((item, idx) => {
+                  return (
+                    <li data-aos="zoom-up" data-aos-duration="2000">
+                      <Link to={"/"}> {item} </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
             {/* footer box  */}
@@ -162,18 +165,25 @@ function Footer() {
                 Useful Links
               </h4>
               <ul className="-mt-7 lg:-mt-5">
-                <li data-aos="zoom-up" data-aos-duration="2000">
-                  <Link to={"/"}>Careers</Link>
-                </li>
-                <li data-aos="zoom-up" data-aos-duration="2000">
-                  <Link to={"/"}>Contact us</Link>
-                </li>
-                <li data-aos="zoom-up" data-aos-duration="2000">
-                  <Link to={"/"}>Unsubscribe</Link>
-                </li>
+                {contactOptions.map((item, idx) => {
+                  return (
+                    <li data-aos="zoom-up" data-aos-duration="2000">
+                      <Link to={"/"}> {item} </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </div>
+          <p>
+            © 2025 My Health Needs Ltd. All rights reserved. My Health Needs Ltd
+            is a registered UK company (Company No. 15808096). Our pharmacy
+            premises are registered with the General Pharmaceutical Council
+            (GPhC No. 12345678). Superintendent Pharmacist and Independent
+            Prescriber: Araim Zeenah, GPhC No. 2077620.Our prescribers are
+            regulated by the General Pharmaceutical Council. You can verify our
+            registration status on the GPhC website.
+          </p>
         </div>
       </div>
     </footer>

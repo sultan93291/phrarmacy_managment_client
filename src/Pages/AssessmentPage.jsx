@@ -19,13 +19,14 @@ function AssessmentPage() {
   const [healthQuestion, sethealthQuestion] = useState([]);
   const SiteURl = import.meta.env.VITE_SITE_URL;
   const [selectedValues, setSelectedValues] = useState({});
+  const [isDisabled, setisDisabled] = useState(false);
 
   const { isAuthenticated } = useContext(AuthContext);
-  const medicineId = useSelector((state) => state.assesmentSlice.medicineId);
-  const assesMentId = useSelector((state) => state.assesmentSlice.assesMentId);
+  const medicineId = useSelector(state => state.assesmentSlice.medicineId);
+  const assesMentId = useSelector(state => state.assesmentSlice.assesMentId);
 
   const loggedInUser = useSelector(
-    (state) => state.loggedInuserSlice.loggedInUserData
+    state => state.loggedInuserSlice.loggedInUserData
   );
 
   const dispatch = useDispatch();
@@ -35,11 +36,11 @@ function AssessmentPage() {
       method: "GET",
       url: `${SiteURl}/api/treatment/${id}/consultation`,
     })
-      .then((res) => {
+      .then(res => {
         console.log(res.data.data.assessments);
         sethealthQuestion(res.data.data.assessments);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   }, []);
@@ -51,12 +52,17 @@ function AssessmentPage() {
     watch,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => {
+  const onSubmit = data => {
+    if (isDisabled === true) {
+      return toast.error(
+        "Assessment indicates you're not eligible to purchase this medicine."
+      );
+    }
     console.log(data);
 
     const fieldkeys = Object.keys(data);
 
-    const dataValue = fieldkeys.map((item) => {
+    const dataValue = fieldkeys.map(item => {
       const assetementId = item.split("_")[2];
 
       return {
@@ -70,9 +76,9 @@ function AssessmentPage() {
 
     const combinedData = [];
 
-    dataValue.forEach((item) => {
+    dataValue.forEach(item => {
       const existingItem = combinedData.find(
-        (combinedItem) => combinedItem.assetment_id === item.assetment_id
+        combinedItem => combinedItem.assetment_id === item.assetment_id
       );
 
       if (existingItem) {
@@ -121,13 +127,21 @@ function AssessmentPage() {
   };
 
   useEffect(() => {
-    const subscription = watch((value) => {
-      setSelectedValues(value); // Store watched values in state
+    const subscription = watch(value => {
+      setSelectedValues(value);
     });
     return () => subscription.unsubscribe();
   }, [watch]);
 
-  console.log(selectedValues);
+  const watchedValues = watch();
+  const isConditionMatched = healthQuestion.some(item => {
+    const selectedValue = watchedValues[`radio_input_${item.id}`];
+    return selectedValue === item.condition;
+  });
+
+  useEffect(() => {
+    setisDisabled(isConditionMatched);
+  }, [isConditionMatched]);
 
   return (
     <div className="font-dmsans">
@@ -141,12 +155,11 @@ function AssessmentPage() {
         >
           {healthQuestion.map((item, index) => {
             const selectedValue = watch(`radio_input_${item.id}`);
-            console.log(item);
 
             return (
               <CommonQuestionBox
                 key={index}
-                question={`${item.id}. ${item.question}`}
+                question={`${index + 1}. ${item.question}`}
               >
                 <div
                   data-aos="zoom-up"
@@ -155,7 +168,7 @@ function AssessmentPage() {
                 >
                   {/* radio buttons */}
                   <div className="flex items-center flex-wrap gap-5">
-                    {item.options.map((option) => (
+                    {item.options.map((option, idx) => (
                       <div key={option?.id}>
                         <input
                           className="peer hidden"
@@ -191,11 +204,11 @@ function AssessmentPage() {
                             placeholder="Write here..."
                             {...register(`note_input_${item.id}`, {
                               required: "This field is required",
-                              validate: (value) =>
+                              validate: value =>
                                 /^(\d+(\.\d+)?|\.\d+)$/.test(value.trim()) ||
                                 "Please enter a valid decimal number",
                             })}
-                            onKeyDown={(e) => {
+                            onKeyDown={e => {
                               const allowedKeys = [
                                 "Backspace",
                                 "Tab",
@@ -238,7 +251,6 @@ function AssessmentPage() {
                     defaultValue={item.answer}
                   /> */}
                   {/* Error message if selected value matches condition */}
-                  {console.log(item)}
                   {selectedValue === item.condition && (
                     <div className="py-2">
                       <span className="text-lg sm:text-xl  text-red-400">

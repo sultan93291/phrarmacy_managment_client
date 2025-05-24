@@ -56,8 +56,6 @@ function SingleHealthPage() {
       });
   }, [id]);
 
-  console.log(medicineData, "this is the medicine data");
-
   return (
     <div>
       <HeroSection data={TreatmentData} />

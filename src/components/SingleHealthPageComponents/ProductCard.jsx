@@ -4,11 +4,12 @@ import CommonButtonV2 from "../Common/CommonButtonV2";
 
 function ProductCard({ item }) {
   const params = useParams();
-  console.log(params);
-  const SiteURl = import.meta.env.VITE_SITE_URL;
-  console.log("single item", item);
 
+  const SiteURl = import.meta.env.VITE_SITE_URL;
   const { id } = useParams();
+
+  console.log(item);
+  
 
   return (
     <div className="product-wrapper">

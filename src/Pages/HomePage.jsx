@@ -15,7 +15,7 @@ function HomePage() {
       <HeroSection />
       <SymptomsSection />
       <PersonalizedSection />
-      <PopularTreatment />
+      {/* <PopularTreatment /> */}
       <HealthcareSection />
       <TeamSection />
       <TestimonialSection />
