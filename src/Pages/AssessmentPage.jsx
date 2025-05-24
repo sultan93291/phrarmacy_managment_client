@@ -53,7 +53,6 @@ function AssessmentPage() {
     formState: { errors },
   } = useForm();
   const onSubmit = data => {
-
     if (isDisabled === true) {
       return toast.error(
         "Assessment indicates you're not eligible to purchase this medicine."
@@ -129,12 +128,12 @@ function AssessmentPage() {
 
   useEffect(() => {
     const subscription = watch(value => {
-      setSelectedValues(value); 
+      setSelectedValues(value);
     });
     return () => subscription.unsubscribe();
   }, [watch]);
 
-  const watchedValues = watch(); 
+  const watchedValues = watch();
   const isConditionMatched = healthQuestion.some(item => {
     const selectedValue = watchedValues[`radio_input_${item.id}`];
     return selectedValue === item.condition;
@@ -143,8 +142,6 @@ function AssessmentPage() {
   useEffect(() => {
     setisDisabled(isConditionMatched);
   }, [isConditionMatched]);
-
-  console.log(selectedValues);
 
   return (
     <div className="font-dmsans">
@@ -162,7 +159,7 @@ function AssessmentPage() {
             return (
               <CommonQuestionBox
                 key={index}
-                question={`${item.id}. ${item.question}`}
+                question={`${index + 1}. ${item.question}`}
               >
                 <div
                   data-aos="zoom-up"
@@ -171,7 +168,7 @@ function AssessmentPage() {
                 >
                   {/* radio buttons */}
                   <div className="flex items-center flex-wrap gap-5">
-                    {item.options.map(option => (
+                    {item.options.map((option, idx) => (
                       <div key={option?.id}>
                         <input
                           className="peer hidden"
@@ -254,7 +251,6 @@ function AssessmentPage() {
                     defaultValue={item.answer}
                   /> */}
                   {/* Error message if selected value matches condition */}
-                  {console.log(item)}
                   {selectedValue === item.condition && (
                     <div className="py-2">
                       <span className="text-lg sm:text-xl  text-red-400">

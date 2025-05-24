@@ -139,7 +139,7 @@
   .breadcrumb--item.active {
     @apply text-white;
   }
-  .treatment-wrap {
+  /* .treatment-wrap {
     padding-left: 10px;
     padding-right: 10px;
     width: 33.33%;
@@ -148,7 +148,7 @@
   .treatment--row {
     margin-right: -10px;
     margin-left: -10px;
-  }
+  } */
   .quick-consultation-feature li {
     @apply flex items-center gap-[6px] mt-[10px] first:mt-0;
   }
