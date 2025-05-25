@@ -106,24 +106,25 @@ function AssessmentPage() {
 
     const AssesmentData = { id, finalData };
 
-    console.log(AssesmentData);
 
     dispatch(setAssesmentData(AssesmentData));
 
     if (!isAuthenticated) {
-      toast.success("Assesment saved successfully");
-      dispatch(setAssesmentRedirect(`${`/treatment/consultation/${id}`}`));
-      localStorage.setItem("AssesMentRedirectid", id);
-      navigate("/auth/login");
-    } else if (medicineId && assesMentId && isAuthenticated) {
-      toast.success("Assesment saved successfully");
-      window.location.href = `/medicine-details/${medicineId}/consultation/${assesMentId}`;
-    } else {
-      toast.success("Assesment saved successfully ");
-      window.location.href = `/service/${id}`;
-    }
+      toast.success("Assessment saved successfully");
 
-    console.log("final", finalData);
+      // Save where we want to redirect after login
+      const redirectPath =
+        medicineId && assesMentId
+          ? `/medicine-details/${medicineId}/consultation/${assesMentId}`
+          : `/service/${id}`;
+
+      localStorage.setItem("AssesMentRedirectPath", redirectPath);
+      localStorage.setItem("AssesMentRedirectId", id); // optional
+
+      dispatch(setAssesmentRedirect(redirectPath));
+      navigate("/auth/login");
+    }
+    
   };
 
   useEffect(() => {

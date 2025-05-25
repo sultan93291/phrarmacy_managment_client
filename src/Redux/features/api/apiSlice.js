@@ -238,6 +238,20 @@ export const apiSlice = createApi({
         method: "GET",
       }),
     }),
+
+    getPersonalizedData: builder.query({
+      query: () => ({
+        url: `/api/cms/get-personalized-page-data`,
+        method: "GET",
+      }),
+    }),
+
+    getConsultationData: builder.query({
+      query: () => ({
+        url: `/api/get-consultation-data`,
+        method: `GET`,
+      }),
+    }),
   }),
 
   // create meeting
@@ -269,4 +283,6 @@ export const {
   useApplyCouponIntentMutation,
   useDeleteMeetingIntentMutation,
   useGetCompanyDataQuery,
+  useGetPersonalizedDataQuery,
+  useGetConsultationDataQuery
 } = apiSlice;

@@ -105,7 +105,6 @@ function SignupPage() {
           },
         })
           .then(res => {
-            console.log("API Response:", res);
             if (res.data && res.data.token) {
               toast.success('Successfully logged in')
               localStorage.setItem("token", res.data.token);

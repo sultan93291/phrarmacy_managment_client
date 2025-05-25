@@ -81,11 +81,6 @@ function LoginPage() {
 
   const handleLoginWithGoogle = useGoogleLogin({
     onSuccess: response => {
-      console.log("Google login success:", response);
-
-      console.log(response);
-      
-      return
       const token = response?.access_token;
 
       if (token) {
@@ -103,27 +98,29 @@ function LoginPage() {
           },
         })
           .then(res => {
-            console.log("API Response:", res);
             if (res.data && res.data.token) {
               localStorage.setItem("token", res.data.token);
-              toast.success("successfully logged in");
+              toast.success("Successfully logged in");
+
               setTimeout(() => {
-                if (medicineId) {
-                  fetchData();
-                  window.location.href = `/medicine-details/${medicineId}/consultation/${assesMentId}`;
+                fetchData();
+
+                const redirectPath = localStorage.getItem(
+                  "AssesMentRedirectPath"
+                );
+                if (redirectPath) {
+                  localStorage.removeItem("AssesMentRedirectPath"); // Clean up
+                  window.location.href = redirectPath;
                 } else {
-                  fetchData();
                   window.location.href = "/dashboard/user/user-homepage";
                 }
-              }, 3000);
+              }, 1000); // Keep delay short, 3s is long
             }
           })
           .catch(error => {
-            console.error("Error during API request:", error);
             toast.success(error.data.message);
           });
       } else {
-        console.error("No token received from Google login.");
         toast.error("Token not found");
       }
     },
