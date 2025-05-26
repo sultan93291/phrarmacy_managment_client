@@ -7,9 +7,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 function HeroSection() {
-
-  const SiteURl = import.meta.env.VITE_SITE_URL
+  const SiteURl = import.meta.env.VITE_SITE_URL;
   const [avatar, setavatar] = useState();
+  const [heroData, setheroData] = useState();
 
   useEffect(() => {
     axios({
@@ -17,13 +17,16 @@ function HeroSection() {
       url: `${SiteURl}/api/cms/get-banner-page-data`,
     })
       .then(res => {
-        console.log(res.data.data.avatar);
         setavatar(res.data.data.avatar);
+        setheroData(res?.data?.data);
       })
       .catch(err => {
         console.error(err);
       });
   }, []);
+
+;
+
   return (
     <section className="px-4 xl:px-[47px] mt-10 mb-14 lg:my-20">
       <div
@@ -37,7 +40,7 @@ function HeroSection() {
             data-aos-duration="1000"
             className="text-[40px] sm:text-[100px] md:text-[130px] lg:text-[180px] xl:text-[250px] 2xl:text-[320px] font-bold text-white sm:text-center"
           >
-            Pharmacy
+            {heroData?.title}
           </h1>
           <div className="flex flex-col justify-center items-center lg:flex-row lg:mt-[-150px] xl:mt-[-200px] lg:items-end lg:justify-between ">
             <div className="">
@@ -46,8 +49,7 @@ function HeroSection() {
                 data-aos-duration="3000"
                 className="max-w-[510px] text-lg sm:text-xl xl:text-[24px] text-white pb-8 sm:pb-14 2xl:pb-[85px]"
               >
-                Operational bottlenecks, frequent billing errors, and mismanaged
-                schedules can lead to revenue loss and frustrated patients.
+                {heroData?.sub_title}
               </p>
               <Link
                 data-aos="zoom-in"
@@ -60,8 +62,6 @@ function HeroSection() {
                   data-aos-duration="2000"
                   text="Order Now"
                   arrowIcon={ArrowIconBlack}
-                // height="45px"
-                // width="45px"
                 />
               </Link>
             </div>
