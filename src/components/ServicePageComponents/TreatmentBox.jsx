@@ -5,14 +5,12 @@ function TreatmentBox({ item }) {
   const SiteURl = import.meta.env.VITE_SITE_URL;
 
   return (
-    <div className="px-10 pt-5 pb-8 bg-headerBg rounded-[10px]">
+    <div className="px-10 pt-5 w-full pb-8 bg-headerBg  rounded-[10px]">
       <h3 className="text-2xl sm:text-[32px] font-semibold text-primary">
         {item.name}
       </h3>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 md:gap-5 treatment--row">
+      <div className=" w-full treatment--row">
         {item.services.map((treatment, idx) => {
-          console.log(treatment.id, "this is a single treatment");
-
           return (
             <div key={idx} className="mt-5">
               <Link

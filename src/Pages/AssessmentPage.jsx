@@ -4,11 +4,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import InnerSection from "@/components/Common/InnerSection";
 import assesmentBg from "../assets/images/assesment-bg.png";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setAssesmentData } from "@/Redux/features/assesmentSlice";
-import { useContext } from "react";
 import { AuthContext } from "@/provider/AuthProvider/AuthContextProvider";
 import { setAssesmentRedirect } from "@/Redux/features/loggedInUserSlice";
 import toast from "react-hot-toast";
@@ -24,11 +23,9 @@ function AssessmentPage() {
   const { isAuthenticated } = useContext(AuthContext);
   const medicineId = useSelector(state => state.assesmentSlice.medicineId);
   const assesMentId = useSelector(state => state.assesmentSlice.assesMentId);
-
   const loggedInUser = useSelector(
     state => state.loggedInuserSlice.loggedInUserData
   );
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -45,45 +42,37 @@ function AssessmentPage() {
       });
   }, []);
 
-  // hook form
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
-  const onSubmit = data => {
 
+  const onSubmit = data => {
     if (isDisabled === true) {
       return toast.error(
         "Assessment indicates you're not eligible to purchase this medicine."
       );
     }
-    console.log(data);
 
     const fieldkeys = Object.keys(data);
-
     const dataValue = fieldkeys.map(item => {
       const assetementId = item.split("_")[2];
 
       return {
-        assetment_id: item.split("_")[2],
+        assetment_id: assetementId,
         selected_option: item.includes("radio_input") ? data[item] : null,
         notes: item.includes("note_input") ? data[item] : null,
       };
     });
 
-    console.log("raw data", dataValue);
-
     const combinedData = [];
-
     dataValue.forEach(item => {
       const existingItem = combinedData.find(
         combinedItem => combinedItem.assetment_id === item.assetment_id
       );
-
       if (existingItem) {
-        // Merge the properties
         if (item.selected_option !== null) {
           existingItem.selected_option = item.selected_option;
         }
@@ -91,50 +80,43 @@ function AssessmentPage() {
           existingItem.notes = item.notes;
         }
       } else {
-        // Add the item to the combinedData array
         combinedData.push({ ...item });
       }
     });
 
-    console.log("refined", dataValue);
-
-    const finalData = combinedData.map((item, index) => {
-      return {
-        ...item,
-        result: healthQuestion[index].answer,
-      };
-    });
+    const finalData = combinedData.map((item, index) => ({
+      ...item,
+      result: healthQuestion[index].answer,
+    }));
 
     const AssesmentData = { id, finalData };
-
-    console.log(AssesmentData);
-
     dispatch(setAssesmentData(AssesmentData));
 
-    if (!isAuthenticated) {
-      toast.success("Assesment saved successfully");
-      dispatch(setAssesmentRedirect(`${`/treatment/consultation/${id}`}`));
-      localStorage.setItem("AssesMentRedirectid", id);
-      navigate("/auth/login");
-    } else if (medicineId && assesMentId && isAuthenticated) {
-      toast.success("Assesment saved successfully");
-      window.location.href = `/medicine-details/${medicineId}/consultation/${assesMentId}`;
-    } else {
-      toast.success("Assesment saved successfully ");
-      window.location.href = `/service/${id}`;
-    }
+    const redirectPath =
+      medicineId && assesMentId
+        ? `/medicine-details/${medicineId}/consultation/${assesMentId}`
+        : `/service/${id}`;
 
-    console.log("final", finalData);
+    if (!isAuthenticated) {
+      toast.success("Assessment saved successfully");
+      localStorage.setItem("AssesMentRedirectPath", redirectPath);
+      localStorage.setItem("AssesMentRedirectId", id);
+      dispatch(setAssesmentRedirect(redirectPath));
+      navigate("/auth/login");
+    } else {
+      toast.success("Assessment saved successfully");
+      navigate(redirectPath);
+    }
   };
 
   useEffect(() => {
     const subscription = watch(value => {
-      setSelectedValues(value); 
+      setSelectedValues(value);
     });
     return () => subscription.unsubscribe();
   }, [watch]);
 
-  const watchedValues = watch(); 
+  const watchedValues = watch();
   const isConditionMatched = healthQuestion.some(item => {
     const selectedValue = watchedValues[`radio_input_${item.id}`];
     return selectedValue === item.condition;
@@ -144,25 +126,21 @@ function AssessmentPage() {
     setisDisabled(isConditionMatched);
   }, [isConditionMatched]);
 
-  console.log(selectedValues);
-
   return (
     <div className="font-dmsans">
       <InnerSection bgImg={assesmentBg} service="Treatment" />
       <div data-aos="zoom-up" data-aos-duration="2000" className="container ">
         <FormHeader></FormHeader>
-
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="py-8 sm:py-14 space-y-2.5"
         >
           {healthQuestion.map((item, index) => {
             const selectedValue = watch(`radio_input_${item.id}`);
-
             return (
               <CommonQuestionBox
                 key={index}
-                question={`${item.id}. ${item.question}`}
+                question={`${index + 1}. ${item.question}`}
               >
                 <div
                   data-aos="zoom-up"
@@ -171,16 +149,16 @@ function AssessmentPage() {
                 >
                   {/* radio buttons */}
                   <div className="flex items-center flex-wrap gap-5">
-                    {item.options.map(option => (
+                    {item.options.map((option, idx) => (
                       <div key={option?.id}>
                         <input
                           className="peer hidden"
                           type="radio"
-                          name={item.name} // Ensure consistency
-                          id={`${item.id}-${option?.id}`} // Unique per option
+                          name={item.name}
+                          id={`${item.id}-${option?.id}`}
                           {...register(`radio_input_${item.id}`, {
                             required: true,
-                          })} // Register using item.name
+                          })}
                           value={option.value}
                         />
                         <label
@@ -192,6 +170,13 @@ function AssessmentPage() {
                       </div>
                     ))}
                   </div>
+
+                  {/* radio error */}
+                  {errors[`radio_input_${item.id}`] && (
+                    <p className="text-sm text-red-500">
+                      This question is required.
+                    </p>
+                  )}
 
                   {/* notes */}
                   {item.note && (
@@ -222,7 +207,6 @@ function AssessmentPage() {
                                 "End",
                               ];
                               const isNumber = /^[0-9.]$/.test(e.key);
-
                               if (!isNumber && !allowedKeys.includes(e.key)) {
                                 e.preventDefault();
                               }
@@ -234,30 +218,37 @@ function AssessmentPage() {
                               }
                             }}
                           />
+                          {/* note error */}
+                          {errors[`note_input_${item.id}`] && (
+                            <p className="text-sm text-red-500">
+                              {errors[`note_input_${item.id}`]?.message ||
+                                "This field is required"}
+                            </p>
+                          )}
                         </div>
                       ) : (
-                        <textarea
-                          className="rounded-xl h-20 resize-none border border-borderLight p-3 sm:p-4 text-sm"
-                          placeholder="Write here.."
-                          {...register(`note_input_${item.id}`, {
-                            required: !!item.note,
-                          })} // Register only if note exists
-                        ></textarea>
+                        <>
+                          <textarea
+                            className="rounded-xl h-20 resize-none border border-borderLight p-3 sm:p-4 text-sm"
+                            placeholder="Write here.."
+                            {...register(`note_input_${item.id}`, {
+                              required: !!item.note,
+                            })}
+                          ></textarea>
+                          {errors[`note_input_${item.id}`] && (
+                            <p className="text-sm text-red-500">
+                              This field is required.
+                            </p>
+                          )}
+                        </>
                       )}
                     </div>
                   )}
 
-                  {/* hiddent input */}
-                  {/* <input
-                    type="text"
-                    {...register("result")}
-                    defaultValue={item.answer}
-                  /> */}
-                  {/* Error message if selected value matches condition */}
-                  {console.log(item)}
+                  {/* condition message */}
                   {selectedValue === item.condition && (
                     <div className="py-2">
-                      <span className="text-lg sm:text-xl  text-red-400">
+                      <span className="text-lg sm:text-xl text-red-400">
                         {item?.condition_message}
                       </span>
                     </div>

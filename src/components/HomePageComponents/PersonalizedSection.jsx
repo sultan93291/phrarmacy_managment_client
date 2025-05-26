@@ -2,8 +2,15 @@ import CommonBtn from "../Common/CommonBtn";
 import ArrowIcon from "../../assets/images/icon/arrow-up-white.svg";
 import personalizedImg from "../../assets/images/personalied-healthcare.png";
 import { Link } from "react-router-dom";
+import { useGetPersonalizedDataQuery } from "@/Redux/features/api/apiSlice";
 
 function PersonalizedSection() {
+  const { data, error, isLoading } = useGetPersonalizedDataQuery();
+
+  console.log(data?.data);
+
+  const imgBaseurl = import.meta.env.VITE_SITE_URL;
+
   return (
     <section className="px-4 xl:px-[47px]">
       <div
@@ -13,24 +20,20 @@ function PersonalizedSection() {
       >
         <div className="container">
           <div className="grid lg:grid-cols-2 items-center gap-10 lg:gap-20 xl:gap-[162px]">
-            <div data-aos="zoom-up"
-              data-aos-duration="2000" className="ps-3">
+            <div data-aos="zoom-up" data-aos-duration="2000" className="ps-3">
               <h3
                 data-aos="zoom-up"
                 data-aos-duration="2000"
                 className="text-2xl sm:text-3xl md:text-4xl opacity-1 text-[#0ca6fc] font-bold lg:text--xl"
               >
-                Personalized Healthcare, Just a Click Away
+                {data?.data?.title}
               </h3>
               <p
                 data-aos="zoom-up"
                 data-aos-duration="3000"
                 className="text-lg sm:text-[24px] font-medium text-categoryBtnColor mt-6"
               >
-                Experience healthcare that's designed around your needs. Access
-                safe, approved treatments without the hassle of waiting rooms.
-                Get genuine prescriptions delivered discreetly to your door, so
-                you can focus on what matters most — your health.
+                {data?.data?.description}
               </p>
               <Link to={"/service"} className="inline-block mt-10">
                 <CommonBtn
@@ -50,7 +53,7 @@ function PersonalizedSection() {
                 data-aos="zoom-in"
                 data-aos-duration="2000"
                 className="object-cover"
-                src={personalizedImg}
+                src={`${imgBaseurl}/${data?.data?.avatar}`}
                 alt="personalizedImg "
               />
             </div>

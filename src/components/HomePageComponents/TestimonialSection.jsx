@@ -74,16 +74,16 @@ function TestimonialSection() {
       method: "get",
       url: `${SiteURl}/api/medicine/review?sort=&per_page=&page=`,
     })
-      .then((res) => {
+      .then(res => {
         console.log(res.data.data, " all review  data");
         setallReview(res.data.data);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   }, []);
 
-  return (
+  return allReview.lenght > 0 ? (
     <section className="px-4 xl:px-[47px]">
       <div className="bg-headerBg rounded-xl sm:rounded-[40px] py-10 sm:py-[100px]">
         <div className="container">
@@ -121,7 +121,7 @@ function TestimonialSection() {
                 },
               }}
             >
-              {allReview.map((item) => (
+              {allReview.map(item => (
                 <SwiperSlide key={item.id}>
                   <div
                     data-aos="zoom-in"
@@ -152,7 +152,7 @@ function TestimonialSection() {
         </div>
       </div>
     </section>
-  );
+  ) : null;
 }
 
 export default TestimonialSection;
