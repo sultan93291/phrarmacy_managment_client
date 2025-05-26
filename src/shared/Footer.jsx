@@ -16,13 +16,13 @@ const healthIssues = [
 ];
 
 const infoSections = [
-  "How it works",
-  "Regulation",
-  "Privacy Policy",
-  "Terms and Conditions",
-  "FAQs",
-  "Complaints and Feedback",
-  "Cookies Policy",
+  { label: "How it works", link: "/howitworks" },
+  { label: "Regulation", link: "/regulation" },
+  { label: "Privacy Policy", link: "/privacypolicy" },
+  { label: "Terms and Conditions", link: "/terms" },
+  { label: "FAQs", link: "/faq" },
+  { label: "Complaints and Feedback", link: "/complaints" },
+  { label: "Cookies Policy", link: "/cookies" },
 ];
 
 const contactOptions = ["Careers", "Contact us", "Unsubscribe"];
@@ -130,7 +130,7 @@ function Footer() {
                 {healthIssues.map((item, idx) => {
                   return (
                     <li key={idx} data-aos="zoom-up" data-aos-duration="2000">
-                      <Link to={"/"}> {item} </Link>
+                      <Link to={"/service"}> {item} </Link>
                     </li>
                   );
                 })}
@@ -148,8 +148,8 @@ function Footer() {
               <ul className="-mt-7 lg:-mt-5">
                 {infoSections.map((item, idx) => {
                   return (
-                    <li data-aos="zoom-up" data-aos-duration="2000">
-                      <Link to={"/"}> {item} </Link>
+                    <li key={idx} data-aos="zoom-up" data-aos-duration="2000">
+                      <Link to={item.link}> {item?.label} </Link>
                     </li>
                   );
                 })}
@@ -182,7 +182,13 @@ function Footer() {
             (GPhC No. 12345678). Superintendent Pharmacist and Independent
             Prescriber: Araim Zeenah, GPhC No. 2077620.Our prescribers are
             regulated by the General Pharmaceutical Council. You can verify our
-            registration status on the GPhC website.
+            registration status on the
+            <a
+              className="text-blue-200 underline ml-1 "
+              href="https://www.pharmacyregulation.org/registers"
+            >
+              GPhC website.
+            </a>
           </p>
         </div>
       </div>

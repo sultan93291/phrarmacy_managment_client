@@ -30,6 +30,13 @@ import OrderDetailsDoctor from "@/Pages/Dashboard/Doctor/OrderDetailsDoctor";
 import PharmacistOrderDetailsPage from "@/Pages/Dashboard/Pharmacist/PharmacistOrderDetailsPage";
 import ProtectedRoute from "@/ProtectRoute/ProtectRoute";
 import PublicRoute from "@/PublicRoute/PublicRoute";
+import PrivacyPolicy from "@/Pages/PrivacyPolicy";
+import RegulationPolicy from "@/Pages/RegulationPolicy";
+import TermsAndConditions from "@/Pages/TermsAndConditions ";
+import CookiesPolicy from "@/Pages/CookiesPolicy ";
+import ComplaintsAndFeedback from "@/Pages/ComplaintsAndFeedback ";
+
+
 
 // Breadcrumb configuration
 const routes = [
@@ -87,6 +94,26 @@ const router = createBrowserRouter(
         {
           path: "/faq",
           element: <FaqPage />,
+        },
+        {
+          path: "/privacypolicy",
+          element: <PrivacyPolicy />,
+        },
+        {
+          path: "/regulation",
+          element: <RegulationPolicy />,
+        },
+        {
+          path: "/terms",
+          element: <TermsAndConditions />,
+        },
+        {
+          path: "/cookies",
+          element: <CookiesPolicy />,
+        },
+        {
+          path: "/complaints",
+          element: <ComplaintsAndFeedback />,
         },
       ],
     },

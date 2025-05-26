@@ -114,7 +114,7 @@ function LoginPage() {
                 } else {
                   window.location.href = "/dashboard/user/user-homepage";
                 }
-              }, 1000); // Keep delay short, 3s is long
+              }, 1000);
             }
           })
           .catch(error => {
