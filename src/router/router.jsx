@@ -35,8 +35,7 @@ import RegulationPolicy from "@/Pages/RegulationPolicy";
 import TermsAndConditions from "@/Pages/TermsAndConditions ";
 import CookiesPolicy from "@/Pages/CookiesPolicy ";
 import ComplaintsAndFeedback from "@/Pages/ComplaintsAndFeedback ";
-
-
+import NotFoundPage from "@/Pages/NotFoundPage/NotFoundPage";
 
 // Breadcrumb configuration
 const routes = [
@@ -57,6 +56,10 @@ const router = createBrowserRouter(
         {
           path: "/",
           element: <HomePage />,
+        },
+        {
+          path: "*",
+          element: <NotFoundPage />,
         },
         {
           path: "/service",

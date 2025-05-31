@@ -30,7 +30,7 @@ function Navbar() {
   const navLinks = [
     {
       path: "/service",
-      title: "HealthCare Service",
+      title: "All treatment",
     },
     {
       path: "/howitworks",
@@ -105,7 +105,7 @@ function Navbar() {
               {...register("search")}
               type="text"
               name="search"
-              placeholder="Search your remdies"
+              placeholder="Search your treatments"
               className="sm:py-[13px] placeholder:text-[11px] sm:placeholder:text-base  py-2 px-3 sm:px-6 bg-white w-full text-sm rounded-[40px] text-black focus:outline-none font-semibold"
             />
             <button
@@ -129,10 +129,10 @@ function Navbar() {
                   role == "user"
                     ? "/dashboard/user/user-homepage"
                     : role == "doctor"
-                      ? "/dashboard/doctor/homepage"
-                      : role == "pharmacist"
-                        ? "/dashboard/pharmacist/homepage"
-                        : "/"
+                    ? "/dashboard/doctor/homepage"
+                    : role == "pharmacist"
+                    ? "/dashboard/pharmacist/homepage"
+                    : "/"
                 }
               >
                 <HeaderBtn
