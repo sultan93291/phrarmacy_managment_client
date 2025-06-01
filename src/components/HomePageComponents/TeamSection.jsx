@@ -63,13 +63,13 @@ function TeamSection() {
           </h3>
         </div>
         {/* Grid with centering */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5  items-center max-w-7xl w-full">
+        <div className=" flex flex-row items-center justify-center flex-wrap   gap-5 max-w-7xl w-full">
           {DoctorData.map((item, index) => (
             <div
               key={index}
               data-aos="zoom-up"
               data-aos-duration="2000"
-              className="flex justify-center w-full"
+              className="flex justify-center max-w-[365px] w-full"
             >
               <TeamCard item={item} />
             </div>

@@ -25,8 +25,7 @@ const infoSections = [
   { label: "Cookies Policy", link: "/cookies" },
 ];
 
-const contactOptions = ["Careers", "Contact us", "Unsubscribe"];
-
+const contactOptions = ["Careers", "Contact us"];
 function Footer() {
   return (
     <footer className="px-4 xl:px-[47px] text-white mt-10 mb-5 sm:my-10">
@@ -113,7 +112,7 @@ function Footer() {
                   className="mt-5"
                 >
                   <MdOutlinePhone />
-                  <Link to={"/"}>1234567890</Link>
+                  <p to={""}>+44(0)2082642464</p>
                 </li>
               </ul>
             </div>

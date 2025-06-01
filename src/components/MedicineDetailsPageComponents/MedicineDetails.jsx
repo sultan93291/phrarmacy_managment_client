@@ -61,10 +61,8 @@ function MedicineDetails({ data }) {
 
   useEffect(() => {
     dispatch(isIdPresent({ id: counsultainid }));
-    console.log(assesMentResult);
   }, [counsultainid]);
 
-  console.log(assesMentResult, "asseesMentAvailable");
 
   const SiteURl = import.meta.env.VITE_SITE_URL;
 
@@ -83,7 +81,6 @@ function MedicineDetails({ data }) {
       avatar: data.avatars[0]?.avatar,
     };
 
-    console.log(MedicineDetails, "this is the medicine details");
 
      if (counsultainid) {
        if (assesMentResult.assesmentResult) {
@@ -141,10 +138,6 @@ function MedicineDetails({ data }) {
           <h3 className="text-3xl pb-4 font-semibold text-[#0065A7]">
             {data?.title}
           </h3>
-          <h3 className="text-2xl pb-6 font-semibold text-[#007ECE]">
-            Vitamin
-          </h3>
-
           <Rating
             className="h-10 gap-1 flex"
             style={{ maxWidth: 250 }}

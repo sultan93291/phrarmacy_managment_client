@@ -141,7 +141,7 @@ function SignupPage() {
             data-aos-duration="2000"
             className="text-[#969696]"
           >
-            Sign up to enjoy the feature of MyLondonPharmacy
+            Sign up to enjoy the feature of MY Health Needs London
           </p>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} action="">

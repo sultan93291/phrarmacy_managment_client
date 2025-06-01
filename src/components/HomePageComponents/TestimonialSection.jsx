@@ -75,7 +75,6 @@ function TestimonialSection() {
       url: `${SiteURl}/api/medicine/review?sort=&per_page=&page=`,
     })
       .then(res => {
-        console.log(res.data.data, " all review  data");
         setallReview(res.data.data);
       })
       .catch(err => {

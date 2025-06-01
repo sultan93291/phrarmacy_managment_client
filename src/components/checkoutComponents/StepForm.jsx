@@ -22,6 +22,7 @@ import {
   addRoyalMailServiceData,
   clearCheckout,
   removeMailServiceData,
+  removeMedicineFromCheckout,
 } from "@/Redux/features/medicineDetails";
 import toast from "react-hot-toast";
 import { current } from "@reduxjs/toolkit";
@@ -80,7 +81,6 @@ function StepForm() {
           }),
         }).unwrap();
 
-        console.log("✅ Coupon Response:", response);
 
         // Check for a valid response code
         if (response.code === 200) {
@@ -120,7 +120,6 @@ function StepForm() {
   const handleFileChange = e => {
     const file = e.target.files[0];
     if (file) {
-      console.log("Uploaded file:", file);
       setUploadedFile(file);
     }
   };
@@ -135,7 +134,6 @@ function StepForm() {
       url: `${SiteURl}/api/medicines`,
     })
       .then(res => {
-        console.log("test kti", res.data);
         settreatmentMedicine(res?.data?.data);
       })
       .catch(err => {
@@ -149,7 +147,6 @@ function StepForm() {
       url: `${SiteURl}/api/get-delivery-info-data`,
     })
       .then(res => {
-        console.log(res.data.data, "log delivery data");
         setdeliveryData(res.data.data);
       })
       .catch(err => {
@@ -171,8 +168,7 @@ function StepForm() {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckedChange = e => {
-    e.target.checked; // ✅ Directly updates the boolean value
-    console.log(e.target.checked); // ✅ Logs true/false when toggled
+    e.target.checked; // ✅ Directly updates the boolean value// ✅ Logs true/false when toggled
     setIsChecked(e.target.checked);
   };
   const onSumbit = data => {
@@ -192,13 +188,11 @@ function StepForm() {
 
   const [SelectedCardId, setSelectedCardID] = useState();
   const handleSelectCard = item => {
-    console.log(item?.id, "this is the payment method id");
     setSelectedCardID(item?.id);
   };
 
   const [fixedcoupon, setfixedcoupon] = useState();
 
-  console.log(billingDetails);
 
   const handleBillingDetailsChange = e => {
     setbillingrDetails({ ...billingDetails, [e.target.name]: e.target.value });
@@ -209,8 +203,6 @@ function StepForm() {
 
   const handleCheckboxChange = (e, optionValue) => {
     setIsRoyalMailChecked(e.target.checked ? true : false);
-    console.log("Royal Mail Checkbox is:", e.target.checked ? true : false);
-    console.log("Option Value:", optionValue); // Accessing the option_value
     setoptionValues(optionValue);
     dispatch(
       addRoyalMailServiceData({
@@ -222,7 +214,6 @@ function StepForm() {
 
   const handleAddMedicine = item => {
     if (item !== null) {
-      console.log(item, "this is the new item");
 
       const MedicineDetails = {
         medicine_id: item?.id,
@@ -254,7 +245,6 @@ function StepForm() {
       window.scrollTo(0, 0);
     } else {
       // Optionally, handle the case where the fields are not all filled
-      console.log("Please fill in all the required fields.");
     }
   };
 
@@ -293,8 +283,7 @@ function StepForm() {
       .map(item => item.itemSinglePeicePrice) // Get all single item prices
       .reduce((sum, price) => sum + price, 0);
 
-    console.log("Subtotal Quantity:", subTotalQuantity);
-    console.log("Subtotal Price:", subTotalPrice);
+
     setAllItemPricQuantity({
       subTotalQuantity: subTotalQuantity,
       subTotalPrice: subTotalPrice,
@@ -304,7 +293,6 @@ function StepForm() {
   const [successFullOrderDetailsData, setsuccessFullOrderDetailsData] =
     useState();
 
-  console.log(allItemPricQuantity, "all item price quanity");
 
   const {
     data: cardData,
@@ -313,7 +301,6 @@ function StepForm() {
     error,
   } = useGetCardDataIntentQuery();
 
-  console.log(cardData, isLoading, error, isError);
   const [selectedCard, setSelectedCard] = useState(null);
 
   const handleAddExtraMedicine = () => {
@@ -327,18 +314,6 @@ function StepForm() {
   );
 
   const handleOrderPlace = async () => {
-    console.log(checkOutMedicineDetials, "this is the medicine details");
-    console.log(assesMentDetails, "assesMentDetails");
-    console.log(optionValues, "this is the option values");
-    console.log(uploadedFile, "upload file ");
-    console.log(SelectedCardId, "selected card id ");
-    console.log(
-      "royal mail track value",
-      parseFloat(allItemPricQuantity.subTotalQuantity) *
-        parseFloat(optionValues).toFixed(2)
-    );
-    console.log("this is the supscrepton", isChecked);
-
     const formattedMedicineDetails = checkOutMedicineDetials.map(medicine => ({
       medicine_id: medicine.medicine_id,
       quantity: parseInt(medicine.quantity), // Ensure quantity is a number
@@ -387,7 +362,6 @@ function StepForm() {
       // other necessary order details
     };
 
-    console.log(orderData, "this is the order data");
 
     try {
       // Prepare order data (e.g., payment details, shipping address, etc.)
@@ -403,7 +377,6 @@ function StepForm() {
         },
       });
 
-      console.log("Server response:", response); // The exact response from the server
 
       // Handle success response
       if (response.status === 200) {
@@ -413,8 +386,6 @@ function StepForm() {
         } else {
           try {
             toast.success("Order placed successfully!");
-            console.log(response.data.data);
-
             const prescrepitonResponse = await axios({
               method: "POST",
               url: `${SiteURl}/api/order-prescription/upload/${response.data.data}`,
@@ -431,7 +402,6 @@ function StepForm() {
               dispatch(removeMailServiceData());
               toast.success("Prescreption  uploaded  successfully!");
               setCurrentStep(4);
-              console.log();
 
               axios({
                 method: "GET",
@@ -442,10 +412,6 @@ function StepForm() {
               })
                 .then(res => {
                   setsuccessFullOrderDetailsData(res?.data?.data);
-                  console.log(
-                    res,
-                    "this is the success respone after successful order "
-                  );
                 })
                 .catch(err => {
                   console.log(err);
@@ -475,8 +441,6 @@ function StepForm() {
     } catch (error) {
       // Error handling for mutation request (e.g., network issues, invalid response)
       if (error.response) {
-        // If error has a response (from the server)
-        console.error("Error response from server:", error.response);
         toast.error(
           `Error: ${error.response.data.message || "An unknown error occurred"}`
         );
@@ -492,10 +456,7 @@ function StepForm() {
     }
   };
 
-  console.log(
-    successFullOrderDetailsData,
-    "this is the successfull order details data"
-  );
+
 
   return (
     <>
@@ -533,7 +494,7 @@ function StepForm() {
               className={currentStep >= 2 ? "active" : ""}
             >
               <p className="icon cursor-pointer">2</p>
-              <span>Review and pay</span>
+              <span>Review </span>
             </li>
             <li
               onClick={() => {
@@ -549,7 +510,7 @@ function StepForm() {
               className={currentStep >= 3 ? "active" : ""}
             >
               <p className="icon cursor-pointer">3</p>
-              <span>Receipt</span>
+              <span>Pay</span>
             </li>
             <li
               onClick={() => {
@@ -861,22 +822,33 @@ function StepForm() {
                     key={item.id}
                     className="py-5 lg:py-12 px-5 lg:px-[75px] bg-primaryLight rounded-[10px] mt-10 lg:mt-[100px]"
                   >
-                    <h4 className="text-[24px] font-bold mb-[30px] text-primryDark">
-                      Your treatment preference
-                    </h4>
+                    <div className="flex justify-between items-start">
+                      <h4 className="text-[24px] font-bold mb-[30px] text-primryDark">
+                        Your treatment preference
+                      </h4>
+                      <button
+                        onClick={() =>
+                          dispatch(removeMedicineFromCheckout(item.medicine_id))
+                        }
+                        className="text-red-500 text-sm hover:underline"
+                      >
+                        Remove
+                      </button>
+                    </div>
+
                     <div>
                       <p className="text-[18px] font-bold text-primryDark mb-[10px]">
                         {item?.title} starting dose {item.dosage}
                       </p>
                       <ul className="treatment-preference-medicine max-w-[640px]">
                         <li className="lg:text-lg text-base">
-                          <p> ({item?.quantity} doses)</p>
-                          <p> £ {item.total_price} </p>
+                          <p>({item?.quantity} doses)</p>
+                          <p>£ {item.total_price}</p>
                         </li>
                         {isRoyalMailChecked && (
                           <li>
                             <p>Royal mail Tracked,</p>
-                            <p> £ {optionValues} </p>
+                            <p>£ {optionValues}</p>
                           </li>
                         )}
                         <li className="total-pay">
@@ -890,7 +862,7 @@ function StepForm() {
                               ).toFixed(2)}
                             </p>
                           ) : (
-                            <p> £ {item.total_price} </p>
+                            <p>£ {item.total_price}</p>
                           )}
                         </li>
                       </ul>
@@ -1003,8 +975,9 @@ function StepForm() {
                   htmlFor="deliveryAgreements"
                   className="relative cursor-pointer pl-8 lg:pl-[60px]"
                 >
-                  I Consist to MYHEALTHLONDON Connecting to my GP and to the
-                  sharing of information <span className="text-red-400" >*</span>
+                  I consent to allow <strong>MyHealthNeeds</strong> to connect
+                  with <strong>MyGP</strong> and share my health information as
+                  needed. <span className="text-red-500">*</span>
                 </label>
               </div>
               {/* {/ payment options  /} */}
@@ -1033,7 +1006,8 @@ function StepForm() {
                 <div className="flex order-2 lg:order-1 flex-col space-y-8 ">
                   <div>
                     <p className="text-lg lg:text-[25px] pb-2 font-bold text-primryDark border-b border-[#ACACAC]">
-                      Payment Method
+                      Payment Method{" "}
+                      <span className="text-red-500">(*Please select your card*)</span>
                     </p>
                   </div>
 

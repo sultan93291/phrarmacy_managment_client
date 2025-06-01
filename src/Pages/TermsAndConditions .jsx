@@ -170,7 +170,7 @@ const TermsAndConditions = () => {
           </p>
           <ul className="list-disc pl-6 mt-2 space-y-1">
             <li>Email: complaints@myhealthneeds.co.uk</li>
-            <li>Phone: 12345678</li>
+            <li>Phone: +44(0)2082642464</li>
             <li>
               Address: Complaints Department, My Health Needs Ltd, 12 St.
               Dunstans Hill, Cheam, Sutton, England, SM1 2UE
@@ -274,7 +274,7 @@ const TermsAndConditions = () => {
               support@myhealthneeds.co.uk
             </a>
             <br />
-            Phone: xxxxxxxxxx
+            Phone: +44(0)2082642464
             <br />
             Address: 12 St. Dunstans Hill, Cheam, Sutton, England, SM1 2UE
           </p>

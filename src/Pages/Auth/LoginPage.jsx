@@ -1,7 +1,7 @@
 import { setLoggedInUserData } from "@/Redux/features/loggedInUserSlice";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { Toaster } from "react-hot-toast";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
@@ -9,18 +9,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
-import { useContext } from "react";
 import { AuthContext } from "@/provider/AuthProvider/AuthContextProvider";
 
 function LoginPage() {
   const [toggle, setToggle] = useState(true);
+  const [loading, setLoading] = useState(false);
   const loggedInUserData = useSelector(
     state => state.loggedInuserSlice?.loggedInUserData
   );
-  const [loading, setLoading] = useState(false);
-
+  const medicineId = useSelector(state => state.assesmentSlice.medicineId);
+  const assesMentId = useSelector(state => state.assesmentSlice.assesMentId);
   const dispatch = useDispatch();
-  console.log(loggedInUserData);
   const navigate = useNavigate();
   const { fetchData } = useContext(AuthContext);
 
@@ -32,100 +31,79 @@ function LoginPage() {
 
   const SiteURl = import.meta.env.VITE_SITE_URL;
 
-  const medicineId = useSelector(state => state.assesmentSlice.medicineId);
-  const assesMentId = useSelector(state => state.assesmentSlice.assesMentId);
-
-  console.log(medicineId, " medicine id");
-  console.log("assesement id ,", assesMentId);
-
-  const onSubmit = data => {
+  const onSubmit = async data => {
     setLoading(true);
-    const AssesmentRedirect = localStorage.getItem("AssesMentRedirectid");
-    axios
-      .post(`${SiteURl}/api/login`, {
+    const assesMentRedirect = localStorage.getItem("AssesMentRedirect");
+
+    try {
+      const res = await axios.post(`${SiteURl}/api/login`, {
         email: data?.email,
         password: data?.password,
-      })
-      .then(res => {
-        console.log(res); // Log response to see the data
-        toast.success(res?.data?.message);
-        setLoading(false);
-
-        // Dispatch action to store user data in Redux
-        dispatch(setLoggedInUserData(res?.data));
-        localStorage.setItem("token", res?.data?.token);
-        setTimeout(() => {
-          if (medicineId) {
-            fetchData();
-            window.location.href = `/medicine-details/${medicineId}/consultation/${assesMentId}`;
-          } else if (AssesmentRedirect) {
-            fetchData();
-            window.location.href = `/service/${AssesmentRedirect}`;
-            setTimeout(() => {
-              localStorage.removeItem("AssesmentRedirect");
-            }, 3000);
-          } else {
-            fetchData();
-            window.location.href = "/dashboard/user/user-homepage";
-          }
-        }, 1500);
-      })
-      .catch(error => {
-        console.log(error);
-        toast.error(error.response?.data?.message);
-      })
-      .finally(() => {
-        setLoading(false);
       });
+
+      toast.success(res?.data?.message);
+      dispatch(setLoggedInUserData(res?.data));
+      localStorage.setItem("token", res?.data?.token);
+
+      await fetchData(); // Ensure fetchData completes before redirecting
+
+      if (medicineId && assesMentId) {
+        navigate(`/medicine-details/${medicineId}/consultation/${assesMentId}`);
+      } else if (assesMentRedirect) {
+        navigate(`/service/${assesMentRedirect}`);
+        localStorage.removeItem("AssesMentRedirect");
+      } else {
+        navigate("/dashboard/user/user-homepage");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleLoginWithGoogle = useGoogleLogin({
-    onSuccess: response => {
+    onSuccess: async response => {
       const token = response?.access_token;
 
       if (token) {
-        console.log(token);
+        try {
+          const res = await axios.post(
+            `${SiteURl}/api/social-login`,
+            { token, provider: "google" },
+            { headers: { "Content-Type": "application/json" } }
+          );
 
-        axios({
-          method: "POST",
-          url: `${SiteURl}/api/social-login`,
-          data: {
-            token: token,
-            provider: "google",
-          },
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then(res => {
-            if (res.data && res.data.token) {
-              localStorage.setItem("token", res.data.token);
-              toast.success("Successfully logged in");
+          if (res.data && res.data.token) {
+            localStorage.setItem("token", res.data.token);
+            toast.success("Successfully logged in");
 
-              setTimeout(() => {
-                fetchData();
+            await fetchData(); // Ensure fetchData completes before redirecting
 
-                const redirectPath = localStorage.getItem(
-                  "AssesMentRedirectPath"
-                );
-                if (redirectPath) {
-                  localStorage.removeItem("AssesMentRedirectPath"); // Clean up
-                  window.location.href = redirectPath;
-                } else {
-                  window.location.href = "/dashboard/user/user-homepage";
-                }
-              }, 1000);
+            const redirectPath = localStorage.getItem("AssesMentRedirectPath");
+            if (redirectPath) {
+              navigate(redirectPath);
+              localStorage.removeItem("AssesMentRedirectPath");
+            } else if (medicineId && assesMentId) {
+              navigate(
+                `/medicine-details/${medicineId}/consultation/${assesMentId}`
+              );
+            } else {
+              navigate("/dashboard/user/user-homepage");
             }
-          })
-          .catch(error => {
-            toast.success(error.data.message);
-          });
+          }
+        } catch (error) {
+          console.error(error);
+          toast.error(error.response?.data?.message || "Google login failed");
+        }
       } else {
         toast.error("Token not found");
       }
     },
     onError: error => {
       console.error("Google Login Failed:", error);
+      toast.error("Google login failed");
     },
   });
 
@@ -133,23 +111,12 @@ function LoginPage() {
     <div className="pt-28 sm:py-10 flex flex-col lg:flex-row justify-center items-center">
       <div className="container lg:w-4/12">
         <div data-aos="zoom-up" data-aos-duration="2000">
-          <h3
-            data-aos="zoom-up"
-            data-aos-duration="2000"
-            className="text-4xl font-bold pb-2 text-[#232323]"
-          >
-            Sign in
-          </h3>
-          <p
-            data-aos="zoom-up"
-            data-aos-duration="2000"
-            className="text-[#969696]"
-          >
+          <h3 className="text-4xl font-bold pb-2 text-[#232323]">Sign in</h3>
+          <p className="text-[#969696]">
             Please login to continue to your account.
           </p>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} action="">
-          {/* input */}
           <div className="bg-white pt-4 space-y-6 rounded-lg">
             <div
               data-aos="zoom-up"
@@ -160,7 +127,7 @@ function LoginPage() {
                 type="email"
                 id="email"
                 name="email"
-                className="peer bg-transparent h-12  w-full rounded-md text-[#232323] placeholder-transparent ring-1 px-4 ring-gray-300 focus:ring-[#367AFF] focus:outline-none "
+                className="peer bg-transparent h-12 w-full rounded-md text-[#232323] placeholder-transparent ring-1 px-4 ring-gray-300 focus:ring-[#367AFF] focus:outline-none"
                 placeholder="Email"
                 {...register("email", { required: true })}
               />
@@ -180,7 +147,7 @@ function LoginPage() {
                 type={toggle ? "password" : "text"}
                 id="password"
                 name="password"
-                className="peer  bg-transparent h-12 w-full rounded-md text-[#232323] placeholder-transparent ring-1 pe-12 ps-4 ring-gray-300 focus:ring-[#367AFF] focus:outline-none "
+                className="peer bg-transparent h-12 w-full rounded-md text-[#232323] placeholder-transparent ring-1 pe-12 ps-4 ring-gray-300 focus:ring-[#367AFF] focus:outline-none"
                 placeholder="******"
                 {...register("password", { required: true })}
               />
@@ -205,9 +172,6 @@ function LoginPage() {
               )}
             </div>
           </div>
-          {/* checkbox */}
-
-          {/* button */}
           <div data-aos="zoom-up" data-aos-duration="2000" className="pt-6">
             <button className="bg-primary text-lg text-white font-semibold w-full py-4 rounded-lg">
               {loading ? (
@@ -230,12 +194,10 @@ function LoginPage() {
         </div>
 
         <div
-          onClick={() => {
-            handleLoginWithGoogle();
-          }}
+          onClick={() => handleLoginWithGoogle()}
           data-aos="zoom-up"
           data-aos-duration="2000"
-          className=" w-full"
+          className="w-full"
         >
           <button className="flex w-full justify-center py-4 border rounded-lg items-center gap-3">
             <h4 className="text-lg font-semibold text-[#232323]">
