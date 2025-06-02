@@ -1,15 +1,15 @@
+import { AuthContext } from "@/provider/AuthProvider/AuthContextProvider";
 import { setLoggedInUserData } from "@/Redux/features/loggedInUserSlice";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import { useEffect, useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Toaster } from "react-hot-toast";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
-import { AuthContext } from "@/provider/AuthProvider/AuthContextProvider";
 
 function LoginPage() {
   const [toggle, setToggle] = useState(true);
@@ -20,7 +20,6 @@ function LoginPage() {
   const medicineId = useSelector(state => state.assesmentSlice.medicineId);
   const assesMentId = useSelector(state => state.assesmentSlice.assesMentId);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { fetchData } = useContext(AuthContext);
 
   const {
@@ -31,9 +30,20 @@ function LoginPage() {
 
   const SiteURl = import.meta.env.VITE_SITE_URL;
 
+  // Log initial state for debugging
+  useEffect(() => {
+    console.log({
+      medicineId,
+      assesMentId,
+      assesMentRedirect: localStorage.getItem("AssesMentRedirect"),
+      redirectPath: localStorage.getItem("AssesMentRedirectPath"),
+    });
+  }, [medicineId, assesMentId]);
+
   const onSubmit = async data => {
     setLoading(true);
     const assesMentRedirect = localStorage.getItem("AssesMentRedirect");
+    const redirectPath = localStorage.getItem("AssesMentRedirectPath");
 
     try {
       const res = await axios.post(`${SiteURl}/api/login`, {
@@ -45,18 +55,45 @@ function LoginPage() {
       dispatch(setLoggedInUserData(res?.data));
       localStorage.setItem("token", res?.data?.token);
 
-      await fetchData(); // Ensure fetchData completes before redirecting
+      await fetchData();
 
-      if (medicineId && assesMentId) {
-        navigate(`/medicine-details/${medicineId}/consultation/${assesMentId}`);
+      console.log({
+        medicineId,
+        assesMentId,
+        assesMentRedirect,
+        redirectPath,
+        targetUrl: redirectPath
+          ? redirectPath
+          : medicineId && assesMentId
+          ? `/medicine-details/${medicineId}/consultation/${assesMentId}`
+          : assesMentRedirect
+          ? `/service/${assesMentRedirect}`
+          : medicineId
+          ? `/medicine-details/${medicineId}`
+          : "/dashboard/user/user-homepage",
+        conditionMet: {
+          hasRedirectPath: !!redirectPath,
+          hasMedicineAndAssessment: !!(medicineId && assesMentId),
+          hasAssesMentRedirect: !!assesMentRedirect,
+          hasMedicineOnly: !!(medicineId && !assesMentId),
+        },
+      });
+
+      if (redirectPath) {
+        window.location.href = redirectPath;
+        localStorage.removeItem("AssesMentRedirectPath");
+      } else if (medicineId && assesMentId) {
+        window.location.href = `/medicine-details/${medicineId}/consultation/${assesMentId}`;
       } else if (assesMentRedirect) {
-        navigate(`/service/${assesMentRedirect}`);
+        window.location.href = `/service/${assesMentRedirect}`;
         localStorage.removeItem("AssesMentRedirect");
+      } else if (medicineId) {
+        window.location.href = `/medicine-details/${medicineId}`;
       } else {
-        navigate("/dashboard/user/user-homepage");
+        window.location.href = "/dashboard/user/user-homepage";
       }
     } catch (error) {
-      console.error(error);
+      console.error("API Error:", error.response?.data, error.response?.status);
       toast.error(error.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
@@ -78,23 +115,44 @@ function LoginPage() {
           if (res.data && res.data.token) {
             localStorage.setItem("token", res.data.token);
             toast.success("Successfully logged in");
-
-            await fetchData(); // Ensure fetchData completes before redirecting
+            await fetchData();
 
             const redirectPath = localStorage.getItem("AssesMentRedirectPath");
+            console.log({
+              medicineId,
+              assesMentId,
+              redirectPath,
+              targetUrl: redirectPath
+                ? redirectPath
+                : medicineId && assesMentId
+                ? `/medicine-details/${medicineId}/consultation/${assesMentId}`
+                : medicineId
+                ? `/medicine-details/${medicineId}`
+                : "/dashboard/user/user-homepage",
+              conditionMet: {
+                hasRedirectPath: !!redirectPath,
+                hasMedicineAndAssessment: !!(medicineId && assesMentId),
+                hasMedicineOnly: !!(medicineId && !assesMentId),
+              },
+            });
+
             if (redirectPath) {
-              navigate(redirectPath);
+              window.location.href = redirectPath;
               localStorage.removeItem("AssesMentRedirectPath");
             } else if (medicineId && assesMentId) {
-              navigate(
-                `/medicine-details/${medicineId}/consultation/${assesMentId}`
-              );
+              window.location.href = `/medicine-details/${medicineId}/consultation/${assesMentId}`;
+            } else if (medicineId) {
+              window.location.href = `/medicine-details/${medicineId}`;
             } else {
-              navigate("/dashboard/user/user-homepage");
+              window.location.href = "/dashboard/user/user-homepage";
             }
           }
         } catch (error) {
-          console.error(error);
+          console.error(
+            "Google Login Error:",
+            error.response?.data,
+            error.response?.status
+          );
           toast.error(error.response?.data?.message || "Google login failed");
         }
       } else {
@@ -243,12 +301,12 @@ function LoginPage() {
           data-aos-duration="2000"
           className="flex justify-center items-center pt-5"
         >
-          <h4 className="text-[#6C6C6C]">
+          <h3 className="text-[#6C6C6C]">
             Need an account?{" "}
             <Link to={"/auth/signup"} className="text-[#367AFF] font-medium">
               Create one
             </Link>
-          </h4>
+          </h3>
         </div>
       </div>
 

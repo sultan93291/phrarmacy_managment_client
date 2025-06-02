@@ -65,7 +65,7 @@ const AuthProvider = ({ children }) => {
     setRole,
     isAuthenticated: localStorage.getItem("token"),
     handleLogout,
-    fetchData, // ✅ Expose fetchData here
+    fetchData, 
   };
 
   return (
