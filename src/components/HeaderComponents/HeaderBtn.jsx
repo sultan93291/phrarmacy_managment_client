@@ -8,7 +8,6 @@ function HeaderBtn({ text }) {
     state => state.loggedInuserSlice.loggedInUserData
   );
 
-  console.log("logged in user", loggedInUser);
 
   return (
     <div className="xl:py-[7px] justify-center py-[5px] px-3 btn-gradient rounded-[50px] flex items-center gap-3 xl:gap-[18px]">

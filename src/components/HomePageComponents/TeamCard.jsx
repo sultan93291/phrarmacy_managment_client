@@ -3,8 +3,6 @@ import React from "react";
 function TeamCard({ item }) {
   const SiteURl = import.meta.env.VITE_SITE_URL;
 
-  console.log(item);
-
   return (
     <div
       data-aos="zoom-in"

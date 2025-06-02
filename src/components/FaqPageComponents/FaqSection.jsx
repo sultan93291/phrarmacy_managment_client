@@ -19,7 +19,6 @@ function FaqSection() {
     })
       .then(res => {
         // setfaqData(res?.data?.data);
-        console.log(res.data.data);
         setfaqDatas(res?.data?.data)
 
       })
@@ -28,7 +27,6 @@ function FaqSection() {
       });
   }, []);
 
-  console.log(faqDatas, " this is a faq data ");
   return (
     <section className="my-10 sm:my-20 max-w-[1000px] mx-auto faq-section">
       <div className="container">

@@ -252,9 +252,14 @@ export const apiSlice = createApi({
         method: `GET`,
       }),
     }),
-  }),
 
-  // create meeting
+    getSearchedTreatment: builder.query({
+      query: query => ({
+        url: `/api/treatments?search=${query}`,
+        method: `GET`,
+      }),
+    }),
+  }),
 });
 
 // Export hooks for each endpoint
@@ -284,5 +289,6 @@ export const {
   useDeleteMeetingIntentMutation,
   useGetCompanyDataQuery,
   useGetPersonalizedDataQuery,
-  useGetConsultationDataQuery
+  useGetConsultationDataQuery,
+  useGetSearchedTreatmentQuery
 } = apiSlice;

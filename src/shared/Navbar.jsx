@@ -1,4 +1,4 @@
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import Logo from "../assets/images/logo/logo.svg";
 import CartIcon from "../assets/images/icon/cart.svg";
 import { useForm } from "react-hook-form";
@@ -11,15 +11,25 @@ import SideBarNav from "./SideBarNav";
 import { useContext } from "react";
 import { AuthContext } from "@/provider/AuthProvider/AuthContextProvider";
 import { useSelector } from "react-redux";
+import { useGetSearchedTreatmentQuery } from "@/Redux/features/api/apiSlice";
 
 function Navbar() {
   const { role } = useAuth();
   const { register, handleSubmit } = useForm();
   const [isOpen, setOpen] = useState(false);
-  const onSubmit = data => {
-    console.log(data);
-  };
+  const [activeTreament, setactiveTreament] = useState();
+
   const { isAuthenticated } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const { data, error, isLoading } = useGetSearchedTreatmentQuery(
+    activeTreament,
+    {
+      skip: !activeTreament,
+      refetchOnFocus: true,
+      refetchOnReconnect: true,
+    }
+  );
 
   const loggedInUser = useSelector(
     state => state.loggedInuserSlice.loggedInUserData
@@ -72,10 +82,8 @@ function Navbar() {
             <ul className="xl:flex items-center gap-[30px] hidden ">
               {navLinks?.map(navLink => {
                 if (navLink.title === "Login" && isAuthenticated) {
-                  return null; // Don't render the "Login" link if the user is authenticated
+                  return null;
                 }
-
-                // Otherwise, render the navigation link
                 return (
                   <NavLink
                     key={navLink.title}
@@ -97,16 +105,16 @@ function Navbar() {
           className="flex items-center gap-2 sm:gap-[18px]"
         >
           {/* search  */}
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="relative w-full md:w-[350px]"
-          >
+          <form className="relative w-full md:w-[350px]">
             <input
-              {...register("search")}
+              onChange={e => {
+                setactiveTreament(e.target.value);
+              }}
               type="text"
               name="search"
               placeholder="Search your treatments"
               className="sm:py-[13px] placeholder:text-[11px] sm:placeholder:text-base  py-2 px-3 sm:px-6 bg-white w-full text-sm rounded-[40px] text-black focus:outline-none font-semibold"
+              value={activeTreament}
             />
             <button
               type="submit"
@@ -114,6 +122,44 @@ function Navbar() {
             >
               <GoSearch />
             </button>
+            {activeTreament?.length > 0 && (
+              <div
+                className={`${
+                  data?.data?.length > 0
+                    ? " w-[250px] md:w-[400px] h-[400px] py-5 px-4 overflow-y-auto"
+                    : "w-[250px] md:w-[400px] h-[250px] flex items-center justify-center"
+                } ease-in-out duration-300 bg-white shadow-md absolute mt-8 rounded-md`}
+              >
+                {data?.data?.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {data?.data?.map((item, index) => (
+                      <div
+                        onClick={() => {
+                          setactiveTreament("");
+                          navigate(`/service/${item?.id}`);
+                        }}
+                        key={item.id}
+                        className="flex cursor-pointer items-center gap-3 p-2 border border-gray-200 rounded hover:bg-gray-50 transition"
+                      >
+                        <img
+                          src={`${SiteURl}/${item.avatar}`}
+                          alt={item.name}
+                          className="w-10 h-10 rounded object-cover"
+                        />
+                        <span className="font-medium text-sm text-gray-700">
+                          {item.name}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className=" text-xl md:text-2xl">
+                    <span className="text-red-500">*</span>
+                    No Treatment found
+                  </p>
+                )}
+              </div>
+            )}
           </form>
           {/* cart  */}
           <div data-aos="zoom-left" data-aos-duration="2000"></div>
