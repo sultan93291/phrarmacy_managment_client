@@ -36,6 +36,7 @@ import TermsAndConditions from "@/Pages/TermsAndConditions ";
 import CookiesPolicy from "@/Pages/CookiesPolicy ";
 import ComplaintsAndFeedback from "@/Pages/ComplaintsAndFeedback ";
 import NotFoundPage from "@/Pages/NotFoundPage/NotFoundPage";
+import ContactUsPage from "@/Pages/ContactUsPage";
 
 // Breadcrumb configuration
 const routes = [
@@ -117,6 +118,10 @@ const router = createBrowserRouter(
         {
           path: "/complaints",
           element: <ComplaintsAndFeedback />,
+        },
+        {
+          path: "/contact-us",
+          element: <ContactUsPage />,
         },
       ],
     },

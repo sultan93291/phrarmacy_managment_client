@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import Logo from "../assets/images/logo/logo.svg";
 import { FaFacebook } from "react-icons/fa6";
 import { FaYoutube } from "react-icons/fa";
@@ -25,7 +25,16 @@ const infoSections = [
   { label: "Cookies Policy", link: "/cookies" },
 ];
 
-const contactOptions = ["Careers", "Contact us"];
+const contactOptions = [
+  {
+    label: "Careers",
+    redirectLink: "/",
+  },
+  {
+    label: "Contact us",
+    redirectLink: "/contact-us",
+  },
+];
 function Footer() {
   return (
     <footer className="px-4 xl:px-[47px] text-white mt-10 mb-5 sm:my-10">
@@ -129,7 +138,13 @@ function Footer() {
                 {healthIssues.map((item, idx) => {
                   return (
                     <li key={idx} data-aos="zoom-up" data-aos-duration="2000">
-                      <Link to={"/service"}> {item} </Link>
+                      <Link
+                        className="duration-200 ease-in-out hover:text-black"
+                        to={"/service"}
+                      >
+                        {" "}
+                        {item}{" "}
+                      </Link>
                     </li>
                   );
                 })}
@@ -148,7 +163,13 @@ function Footer() {
                 {infoSections.map((item, idx) => {
                   return (
                     <li key={idx} data-aos="zoom-up" data-aos-duration="2000">
-                      <Link to={item.link}> {item?.label} </Link>
+                      <Link
+                        className="duration-200 ease-in-out hover:text-black"
+                        to={item.link}
+                      >
+                        {" "}
+                        {item?.label}{" "}
+                      </Link>
                     </li>
                   );
                 })}
@@ -167,7 +188,13 @@ function Footer() {
                 {contactOptions.map((item, idx) => {
                   return (
                     <li data-aos="zoom-up" data-aos-duration="2000">
-                      <Link to={"/"}> {item} </Link>
+                      <Link
+                        to={item.redirectLink}
+                        className="duration-200 ease-in-out hover:text-black"
+                      >
+                        {" "}
+                        {item.label}{" "}
+                      </Link>
                     </li>
                   );
                 })}

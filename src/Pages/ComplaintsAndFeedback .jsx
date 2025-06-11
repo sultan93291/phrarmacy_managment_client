@@ -31,8 +31,11 @@ const ComplaintsAndFeedback = () => {
           <p className="mt-2">
             Please submit your formal complaint to:
             <br />
-            <a href="mailto:" className="text-blue-600 font-medium">
-              [Insert Email Here]
+            <a
+              href="mailto:info@myhealthneeds.co.uk"
+              className="text-blue-600 font-medium"
+            >
+              info@myhealthneeds.co.uk
             </a>
           </p>
         </section>
@@ -57,7 +60,7 @@ const ComplaintsAndFeedback = () => {
                 support@myhealthneeds.co.uk
               </a>
             </li>
-            <li>Phone: [Insert Phone Number]</li>
+            <li>Phone: +44(0)2082642464 </li>
           </ul>
         </section>
 

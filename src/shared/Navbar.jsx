@@ -40,7 +40,7 @@ function Navbar() {
   const navLinks = [
     {
       path: "/service",
-      title: "All treatment",
+      title: "All treatments",
     },
     {
       path: "/howitworks",

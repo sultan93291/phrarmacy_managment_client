@@ -3,33 +3,6 @@ import { useEffect, useState } from "react";
 import TeamCard from "./TeamCard";
 import axios from "axios";
 
-const teamData = [
-  {
-    id: 1,
-    imgUrl: "https://i.ibb.co.com/zfxR5Wm/Team-Member-Image-1.png",
-    name: "Willimas Jonshon",
-    designation: "Customer service",
-  },
-  {
-    id: 2,
-    imgUrl: "https://i.ibb.co.com/g4QBSxQ/Team-Member-Image-2.png",
-    name: "Tomas Murphy",
-    designation: "Customer service",
-  },
-  {
-    id: 3,
-    imgUrl: "https://i.ibb.co.com/HVrdvpR/Team-Member-Image-3.png",
-    name: "Robert Fox",
-    designation: "Contract Tracer",
-  },
-  {
-    id: 4,
-    imgUrl: "https://i.ibb.co.com/TvVhnVw/Team-Member-Image-4.png",
-    name: "Amalia nichole",
-    designation: "Nurse Aide",
-  },
-];
-
 function TeamSection() {
   const [DoctorData, setDoctorData] = useState([]);
   const SiteURl = import.meta.env.VITE_SITE_URL;
@@ -58,9 +31,18 @@ function TeamSection() {
             data-aos-duration="1000"
             className="max-w-[650px] text-center mx-auto text-2xl sm:text-3xl md:text-4xl text-[#0ca6fc] font-bold"
           >
-            Expert care from certified doctors - Convenient care at your
-            fingertips.
+            Meet Our Trusted Healthcare Pharmacists
           </h3>
+        </div>
+        <div className="mb-5 sm:mb-10">
+          <span
+            data-aos="zoom-up"
+            data-aos-duration="1000"
+            className="block max-w-[650px] mx-auto text-center text-base sm:text-lg md:text-xl text-black font-medium"
+          >
+            All our pharmacists are fully licensed and approved by the General
+            Pharmaceutical Council (GPhC).
+          </span>
         </div>
         {/* Grid with centering */}
         <div className=" flex flex-row items-center justify-center flex-wrap   gap-5 max-w-7xl w-full">

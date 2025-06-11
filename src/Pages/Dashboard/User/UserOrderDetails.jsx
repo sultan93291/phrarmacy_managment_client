@@ -108,8 +108,8 @@ const UserOrderDetails = () => {
       index + 1,
       med.medicine,
       med.quantity,
-      `$${med.unit_price}`,
-      `$${med.total_price}`,
+      `£${med.unit_price}`,
+      `£${med.total_price}`,
     ]);
 
     doc.autoTable({
@@ -244,8 +244,8 @@ const UserOrderDetails = () => {
                   </p>
                 </div>
                 <h2 className="text-center">{med?.quantity}</h2>
-                <h2 className="text-center">$ {med?.unit_price}</h2>
-                <h2 className="text-center ">$ {med?.total_price}</h2>
+                <h2 className="text-center">£ {med?.unit_price}</h2>
+                <h2 className="text-center ">£ {med?.total_price}</h2>
               </div>
             ))}
           </div>

@@ -7,10 +7,11 @@ import { Link } from "react-router-dom";
 import prescriptionIcon from "../../assets/images/icon/prescription.svg";
 import pdfIcon from "../../assets/images/icon/pdf.png";
 import axios from "axios";
-//ashiq
+import { PostcodeLookup } from "@ideal-postcodes/postcode-lookup";
 import orderImg from "../../assets/images/cards/orderImg.png";
 import Receipt from "./Receipt";
 import PaymentCard from "@/Pages/Dashboard/User/PaymentCard";
+
 import {
   useApplyCouponIntentMutation,
   useCreatePlaceOrderIntentMutation,
@@ -80,7 +81,6 @@ function StepForm() {
             treatment_id: parseInt(assesMentDetails[0].id),
           }),
         }).unwrap();
-
 
         // Check for a valid response code
         if (response.code === 200) {
@@ -193,7 +193,6 @@ function StepForm() {
 
   const [fixedcoupon, setfixedcoupon] = useState();
 
-
   const handleBillingDetailsChange = e => {
     setbillingrDetails({ ...billingDetails, [e.target.name]: e.target.value });
   };
@@ -214,7 +213,6 @@ function StepForm() {
 
   const handleAddMedicine = item => {
     if (item !== null) {
-
       const MedicineDetails = {
         medicine_id: item?.id,
         quantity: 1,
@@ -254,9 +252,34 @@ function StepForm() {
     window.scrollTo(0, 0);
   };
 
-  const options = {
-    apiKey: "public_W142itCDRC1b8YPvw8TnVJXyugYK",
-    accept: ".pdf",
+  const handlePostCodeLocation = () => {
+    if (!billingDetails.postCode) return alert("Please enter a postcode");
+
+    PostcodeLookup(
+      {
+        apiKey: import.meta.env.VITE_IDEAL_POSTCODES_API_KEY, // Make sure this is correct
+        postcode: billingDetails.postCode.trim(),
+      },
+      (err, addresses) => {
+        if (err) {
+          console.error("Postcode lookup failed:", err);
+          return;
+        }
+
+        if (addresses && addresses.length > 0) {
+          const first = addresses[0];
+          setBillingDetails(prev => ({
+            ...prev,
+            city: first.post_town,
+            gpAdress: `${first.line_1}, ${first.line_2 || ""}, ${
+              first.post_town
+            }`,
+          }));
+        } else {
+          alert("No addresses found for this postcode.");
+        }
+      }
+    );
   };
 
   const [allItemPricQuantity, setAllItemPricQuantity] = useState({
@@ -283,7 +306,6 @@ function StepForm() {
       .map(item => item.itemSinglePeicePrice) // Get all single item prices
       .reduce((sum, price) => sum + price, 0);
 
-
     setAllItemPricQuantity({
       subTotalQuantity: subTotalQuantity,
       subTotalPrice: subTotalPrice,
@@ -292,7 +314,6 @@ function StepForm() {
 
   const [successFullOrderDetailsData, setsuccessFullOrderDetailsData] =
     useState();
-
 
   const {
     data: cardData,
@@ -362,7 +383,6 @@ function StepForm() {
       // other necessary order details
     };
 
-
     try {
       // Prepare order data (e.g., payment details, shipping address, etc.)
       const token = localStorage.getItem("token");
@@ -376,7 +396,6 @@ function StepForm() {
           Authorization: `Bearer ${token}`, // Send the token as a Bearer token
         },
       });
-
 
       // Handle success response
       if (response.status === 200) {
@@ -455,8 +474,6 @@ function StepForm() {
       }
     }
   };
-
-
 
   return (
     <>
@@ -603,7 +620,10 @@ function StepForm() {
                 </div>
                 {/* {/ find location  /} */}
                 <div className="mt-10 max-w-fit mx-auto cursor-pointer">
-                  <div className="flex items-center gap-2 text-base sm:text-[20px] font-medium text-white bg-primary rounded-[10px] py-2 sm:py-4 px-2 sm:px-6">
+                  <div
+                    onClick={handlePostCodeLocation}
+                    className="flex items-center gap-2 text-base sm:text-[20px] font-medium text-white bg-primary rounded-[10px] py-2 sm:py-4 px-2 sm:px-6"
+                  >
                     <p className="sm:text-[24px]">
                       <CiLocationOn />
                     </p>
@@ -660,7 +680,7 @@ function StepForm() {
                   <div>
                     <label htmlFor="email">Postcode</label>
                     <input
-                      type="number"
+                      type="text"
                       name="postCode"
                       placeholder="Postcode"
                       onChange={e => {
@@ -1007,7 +1027,9 @@ function StepForm() {
                   <div>
                     <p className="text-lg lg:text-[25px] pb-2 font-bold text-primryDark border-b border-[#ACACAC]">
                       Payment Method{" "}
-                      <span className="text-red-500">(*Please select your card*)</span>
+                      <span className="text-red-500">
+                        (*Please select your card*)
+                      </span>
                     </p>
                   </div>
 

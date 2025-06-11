@@ -5,84 +5,89 @@ import {
   DashboardPaymentSvg,
   DashboardStarSvg,
   ReviewSvg,
-} from '@/components/SvgContainer/SvgContainer';
-import { Outlet, ScrollRestoration } from 'react-router-dom';
+} from "@/components/SvgContainer/SvgContainer";
+import { Outlet, ScrollRestoration } from "react-router-dom";
 import {
   DashboardUserSvg,
   SubscriptionSvg,
-} from './../components/SvgContainer/SvgContainer';
-import DashboardHeader from '@/components/Dashboard/Header/DashboardHeader';
-import DashboardSidebar from '@/components/Dashboard/Sidebar/DashboardSidebar';
-import AosProvider from '@/provider/Aos/AosProvider';
-import useAuth from '@/Hooks/useAuth';
+} from "./../components/SvgContainer/SvgContainer";
+import DashboardHeader from "@/components/Dashboard/Header/DashboardHeader";
+import DashboardSidebar from "@/components/Dashboard/Sidebar/DashboardSidebar";
+import AosProvider from "@/provider/Aos/AosProvider";
+import useAuth from "@/Hooks/useAuth";
+import { useSelector } from "react-redux";
 
 const DashboardLayout = () => {
   const { role } = useAuth();
+  const loggedInUser = useSelector(
+    state => state.loggedInuserSlice.loggedInUserData
+  );
 
+  console.log(loggedInUser?.role);
 
   const userDashboardNavLinks = [
     {
-      title: 'Homepage',
-      path: '/dashboard/user/user-homepage',
+      title: "Homepage",
+      path: "/dashboard/user/user-homepage",
       icon: DashboardHomeSvg,
     },
     {
-      title: 'Order History',
-      path: '/dashboard/user/user-order-history',
+      title: "Order History",
+      path: "/dashboard/user/user-order-history",
       icon: DashboardOrderSvg,
     },
     {
-      title: 'Assessment Result',
-      path: '/dashboard/user/user-assessment-result',
+      title: "Assessment Result",
+      path: "/dashboard/user/user-assessment-result",
       icon: AssessmentSvg,
     },
     {
-      title: 'My Payments',
-      path: '/dashboard/user/user-payments',
+      title: "My Payments",
+      path: "/dashboard/user/user-payments",
       icon: DashboardPaymentSvg,
     },
     {
-      title: 'My Subscription',
-      path: '/dashboard/user/user-subscription',
+      title: "My Subscription",
+      path: "/dashboard/user/user-subscription",
       icon: SubscriptionSvg,
     },
     {
-      title: 'My Review',
-      path: '/dashboard/user/user-review',
+      title: "My Review",
+      path: "/dashboard/user/user-review",
       icon: ReviewSvg,
     },
     {
-      title: 'My Profile',
-      path: '/dashboard/user/user-profile',
+      title: "My Profile",
+      path: "/dashboard/user/user-profile",
       icon: DashboardUserSvg,
     },
   ];
   const doctorDashboardNavLinks = [
     {
-      title: 'Dashboard',
-      path: '/dashboard/doctor/homepage',
+      title: "Dashboard",
+      path: "/dashboard/doctor/homepage",
       icon: DashboardHomeSvg,
     },
     {
-      title: 'Order Management',
-      path: '/dashboard/doctor/order-management',
+      title: "Order Management",
+      path: "/dashboard/doctor/order-management",
       icon: DashboardOrderSvg,
     },
     {
-      title: 'Meeting Management',
-      path: '/dashboard/doctor/meeting-management',
+      title: "Meeting Management",
+      path: "/dashboard/doctor/meeting-management",
       icon: DashboardStarSvg,
     },
   ];
   const pharmacistDashboardNavLinks = [
     {
-      title: 'Dashboard',
-      path: '/dashboard/pharmacist/homepage',
+      title: "Dashboard",
+      path: "/dashboard/pharmacist/homepage",
       icon: DashboardHomeSvg,
     },
     {
-      title: 'Order Management',
-      path: '/dashboard/pharmacist/order-management',
+      title: "Order Management",
+      path: "/dashboard/pharmacist/order-management",
       icon: DashboardOrderSvg,
     },
   ];
@@ -94,28 +99,29 @@ const DashboardLayout = () => {
         {/* sidebar */}
         <DashboardSidebar
           dashboardNavLinks={
-            role === 'user'
+            loggedInUser?.role === "user"
               ? userDashboardNavLinks
-              : role == 'doctor'
-                ? doctorDashboardNavLinks
-                : pharmacistDashboardNavLinks
+              : loggedInUser?.role == "doctor"
+              ? doctorDashboardNavLinks
+              : pharmacistDashboardNavLinks
           }
         />
 
         {/* dashboard */}
         <div className="min-[1200px]:w-[calc(100%-350px)] w-full min-h-screen max-h-screen">
           {/* dashboard header */}
-          <DashboardHeader dashboardNavLinks={
-            role === 'user'
-              ? userDashboardNavLinks
-              : role == 'doctor'
+          <DashboardHeader
+            dashboardNavLinks={
+              loggedInUser?.role === "user"
+                ? userDashboardNavLinks
+                : loggedInUser?.role == "doctor"
                 ? doctorDashboardNavLinks
                 : pharmacistDashboardNavLinks
-          } />
+            }
+          />
 
           {/* dashboard contents */}
           <div className="min-h-[calc(100%-88px)] p-5 sm:p-7 xl:p-10 max-h-[calc(100%-88px)] overflow-y-auto bg-[#F7F7FE] rounded-md">
-
             <Outlet />
           </div>
         </div>
