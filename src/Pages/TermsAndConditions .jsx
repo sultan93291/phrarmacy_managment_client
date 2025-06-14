@@ -23,9 +23,8 @@ const TermsAndConditions = () => {
           </p>
           <p className="mt-2">
             My Health Needs Ltd is registered with the General Pharmaceutical
-            Council (GPhC) under registration number +44(0)2082642464 and
-            complies with all regulations set forth by the Medicines and
-            Healthcare products Regulatory Agency (MHRA).
+            Council (GPhC) and fully complies with all regulations set forth by
+            the Medicines and Healthcare products Regulatory Agency (MHRA).
           </p>
           <p className="mt-2">
             By accessing and using our website, you agree to comply with and be

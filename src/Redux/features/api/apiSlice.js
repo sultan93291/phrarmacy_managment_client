@@ -259,6 +259,13 @@ export const apiSlice = createApi({
         method: `GET`,
       }),
     }),
+
+    getSocailMedia: builder.query({
+      query: () => ({
+        url: `/api/social-media`,
+        method: `GET`,
+      }),
+    }),
   }),
 });
 
@@ -290,5 +297,6 @@ export const {
   useGetCompanyDataQuery,
   useGetPersonalizedDataQuery,
   useGetConsultationDataQuery,
-  useGetSearchedTreatmentQuery
+  useGetSearchedTreatmentQuery,
+  useGetSocailMediaQuery,
 } = apiSlice;

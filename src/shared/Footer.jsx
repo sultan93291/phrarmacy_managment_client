@@ -7,6 +7,7 @@ import { FaLinkedin } from "react-icons/fa";
 import { TiLocationOutline } from "react-icons/ti";
 import { MdOutlineEmail } from "react-icons/md";
 import { MdOutlinePhone } from "react-icons/md";
+import { useGetSocailMediaQuery } from "@/Redux/features/api/apiSlice";
 
 const healthIssues = [
   "Hair Loss",
@@ -36,6 +37,15 @@ const contactOptions = [
   },
 ];
 function Footer() {
+  const { data, error, isLoading } = useGetSocailMediaQuery(undefined, {
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+  });
+
+  const SiteURl = import.meta.env.VITE_SITE_URL;
+
+
+
   return (
     <footer className="px-4 xl:px-[47px] text-white mt-10 mb-5 sm:my-10">
       <div
@@ -74,26 +84,28 @@ function Footer() {
                 data-aos-duration="2000"
                 className="flex items-center gap-5 text-[24px] mt-6"
               >
-                <li data-aos="zoom-up" data-aos-duration="2000">
-                  <Link to={"/"}>
-                    <FaFacebook />
-                  </Link>
-                </li>
-                <li data-aos="zoom-up" data-aos-duration="2000">
-                  <Link to={"/"}>
-                    <FaYoutube />
-                  </Link>
-                </li>
-                <li data-aos="zoom-up" data-aos-duration="2000">
-                  <Link to={"/"}>
-                    <FaInstagram />
-                  </Link>
-                </li>
-                <li data-aos="zoom-up" data-aos-duration="2000">
-                  <Link to={"/"}>
-                    <FaLinkedin />
-                  </Link>
-                </li>
+                {data?.data?.map((item, idx) => {
+                 return (
+                   <li
+                     key={idx}
+                     data-aos="zoom-up"
+                     className="cursor-pointer"
+                     data-aos-duration="2000"
+                   >
+                     <img
+                       src={`${SiteURl}/${item?.icon}`}
+                       alt={item?.title}
+                       data-aos="zoom-up"
+                       data-aos-duration="2000"
+                       className="max-h-10 max-w-10 object-fit-cover"
+                       onClick={() => {
+                         window.location.href = item?.url;
+                       }}
+                     />
+                   </li>
+                 );
+                
+                })}
               </ul>
               {/* footer contacts  */}
               <ul
@@ -103,7 +115,7 @@ function Footer() {
               >
                 <li data-aos="zoom-up" data-aos-duration="2000">
                   <TiLocationOutline />
-                  12 St Dunstand's Hill Sutton, SM1 2UE123
+                  12 St Dunstand's Hill Sutton, SM1 2UE
                 </li>
                 <li
                   data-aos="zoom-up"

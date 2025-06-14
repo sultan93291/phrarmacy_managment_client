@@ -84,7 +84,7 @@ const router = createBrowserRouter(
           element: <MedicineDetailsPage />,
         },
         {
-          path: "/checkout",
+          path: "/checkout/:id",
           element: (
             <ProtectedRoute>
               <CheckoutPage />

@@ -75,7 +75,7 @@ function MedicineDetails({ data }) {
     if (counsultainid) {
       if (assesMentResult.assesmentResult) {
         dispatch(addMedicineToCheckout(MedicineDetails));
-        navigate("/checkout");
+        navigate(`/checkout/${counsultainid}`);
       } else {
         dispatch(storeMedicineId({ id, assesMentId: counsultainid }));
         localStorage.setItem(
@@ -87,7 +87,7 @@ function MedicineDetails({ data }) {
     } else {
       dispatch(addMedicineToCheckout(MedicineDetails));
       dispatch(storeMedicineId({ id, assesMentId: "" }));
-      navigate("/checkout");
+      navigate(`/checkout/${counsultainid}`);
     }
   };
 

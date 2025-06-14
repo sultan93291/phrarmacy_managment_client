@@ -3,7 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import { CiLocationOn } from "react-icons/ci";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import prescriptionIcon from "../../assets/images/icon/prescription.svg";
 import pdfIcon from "../../assets/images/icon/pdf.png";
 import axios from "axios";
@@ -124,6 +124,8 @@ function StepForm() {
     }
   };
 
+  const { id } = useParams();
+
   const [treatmentMedicine, settreatmentMedicine] = useState([]);
   const SiteURl = import.meta.env.VITE_SITE_URL;
   const [medicineDeatilsArr, setmedicineDeatilsArr] = useState([]);
@@ -131,15 +133,21 @@ function StepForm() {
   useEffect(() => {
     axios({
       method: "get",
-      url: `${SiteURl}/api/medicines`,
+      url: `${SiteURl}/api/treatment/${id}/medicines`,
     })
       .then(res => {
+        console.log(res);
+        
         settreatmentMedicine(res?.data?.data);
       })
       .catch(err => {
         console.log(err);
       });
   }, []);
+
+  console.log(treatmentMedicine);
+
+  
 
   useEffect(() => {
     axios({
@@ -252,35 +260,34 @@ function StepForm() {
     window.scrollTo(0, 0);
   };
 
-  const handlePostCodeLocation = () => {
-    if (!billingDetails.postCode) return alert("Please enter a postcode");
+  // const handlePostCodeLocation = () => {
+  //   if (!billingDetails.postCode) return alert("Please enter a postcode");
 
-    PostcodeLookup(
-      {
-        apiKey: import.meta.env.VITE_IDEAL_POSTCODES_API_KEY, // Make sure this is correct
-        postcode: billingDetails.postCode.trim(),
-      },
-      (err, addresses) => {
-        if (err) {
-          console.error("Postcode lookup failed:", err);
-          return;
-        }
-
-        if (addresses && addresses.length > 0) {
-          const first = addresses[0];
-          setBillingDetails(prev => ({
-            ...prev,
-            city: first.post_town,
-            gpAdress: `${first.line_1}, ${first.line_2 || ""}, ${
-              first.post_town
-            }`,
-          }));
-        } else {
-          alert("No addresses found for this postcode.");
-        }
-      }
-    );
-  };
+  //   PostcodeLookup(
+  //     {
+  //       apiKey: import.meta.env.VITE_IDEAL_POSTCODES_API_KEY,
+  //       postcode: billingDetails.postCode.trim(),
+  //     },
+  //     (err, addresses) => {
+  //       if (err) {
+  //         console.error("Postcode lookup failed:", err);
+  //         return;
+  //       }
+  //       if (addresses && addresses.length > 0) {
+  //         const first = addresses[0];
+  //         setbillingrDetails(prev => ({
+  //           ...prev,
+  //           city: first.post_town,
+  //           gpAdress: `${first.line_1}, ${first.line_2 || ""}, ${
+  //             first.post_town
+  //           }`,
+  //         }));
+  //       } else {
+  //         alert("No addresses found for this postcode.");
+  //       }
+  //     }
+  //   );
+  // };
 
   const [allItemPricQuantity, setAllItemPricQuantity] = useState({
     items: [],
@@ -620,10 +627,7 @@ function StepForm() {
                 </div>
                 {/* {/ find location  /} */}
                 <div className="mt-10 max-w-fit mx-auto cursor-pointer">
-                  <div
-                    onClick={handlePostCodeLocation}
-                    className="flex items-center gap-2 text-base sm:text-[20px] font-medium text-white bg-primary rounded-[10px] py-2 sm:py-4 px-2 sm:px-6"
-                  >
+                  <div className="flex items-center gap-2 text-base sm:text-[20px] font-medium text-white bg-primary rounded-[10px] py-2 sm:py-4 px-2 sm:px-6">
                     <p className="sm:text-[24px]">
                       <CiLocationOn />
                     </p>
@@ -934,7 +938,7 @@ function StepForm() {
                   Add these to complete your treatment:
                 </h4>
                 <div>
-                  {treatmentMedicine.map((item, index) => (
+                  {treatmentMedicine?.medicines?.map((item, index) => (
                     <div key={item?.id}>
                       <div>
                         <input

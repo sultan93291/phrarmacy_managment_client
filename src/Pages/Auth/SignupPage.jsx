@@ -23,7 +23,6 @@ import { ClipLoader } from "react-spinners";
 import { useContext } from "react";
 import { AuthContext } from "@/provider/AuthProvider/AuthContextProvider";
 
-
 function SignupPage() {
   const navigate = useNavigate();
   const [toggle, setToggle] = useState(true);
@@ -56,7 +55,7 @@ function SignupPage() {
     setLoading(true);
     axios
       .post(` ${SiteURl}/api/register`, {
-        name: data?.name,
+        name: data.firstName + " " + data.lastName,
         email: data?.email,
         password: data?.password,
         password_confirmation: data?.confirm_password,
@@ -91,8 +90,6 @@ function SignupPage() {
       const token = response?.access_token;
 
       if (token) {
-        console.log(token);
-
         axios({
           method: "POST",
           url: `${SiteURl}/api/social-login`,
@@ -106,7 +103,7 @@ function SignupPage() {
         })
           .then(res => {
             if (res.data && res.data.token) {
-              toast.success('Successfully logged in')
+              toast.success("Successfully logged in");
               localStorage.setItem("token", res.data.token);
               fetchData();
               window.location.href = "/dashboard/user/user-homepage";
@@ -125,7 +122,6 @@ function SignupPage() {
   });
 
   return (
-    // min-h-[800px]
     <div className="py-10 xl:py-7 flex flex-col lg:flex-row justify-center items-center">
       <div className="container lg:w-4/12">
         <div className="pb-4">
@@ -154,17 +150,37 @@ function SignupPage() {
             >
               <input
                 type="text"
-                id="name"
-                name="name"
+                id="firstName"
+                name="firstName"
                 className="peer bg-transparent h-12  w-full rounded-md text-[#232323] placeholder-transparent ring-1 px-4 ring-gray-300 focus:ring-[#367AFF] focus:outline-none "
-                placeholder="Name"
-                {...register("name", { required: true })}
+                placeholder="First Name"
+                {...register("firstName", { required: true })}
               />
               <label
-                htmlFor="name"
+                htmlFor="firstName"
                 className="absolute cursor-text left-0 -top-3 text-sm text-[#232323] bg-inherit mx-1 px-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2.5 peer-focus:-top-3 peer-focus:text-[#367AFF] peer-focus:text-sm transition-all"
               >
-                Full Name
+                First Name
+              </label>
+            </div>
+            <div
+              data-aos="zoom-up"
+              data-aos-duration="2000"
+              className="relative bg-inherit"
+            >
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                className="peer bg-transparent h-12  w-full rounded-md text-[#232323] placeholder-transparent ring-1 px-4 ring-gray-300 focus:ring-[#367AFF] focus:outline-none "
+                placeholder="Last Name"
+                {...register("lastName", { required: true })}
+              />
+              <label
+                htmlFor="lastName"
+                className="absolute cursor-text left-0 -top-3 text-sm text-[#232323] bg-inherit mx-1 px-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2.5 peer-focus:-top-3 peer-focus:text-[#367AFF] peer-focus:text-sm transition-all"
+              >
+                last Name
               </label>
             </div>
             <div

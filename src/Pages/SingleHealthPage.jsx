@@ -20,7 +20,6 @@ function SingleHealthPage() {
       url: `${SiteURl}/api/treatment/${id}/detail`,
     })
       .then(res => {
-        console.log(res.data, "single health page data");
         setsetTreatmentData(res.data);
       })
       .catch(err => {
@@ -34,7 +33,6 @@ function SingleHealthPage() {
       url: `${SiteURl}/api/treatment/${id}/about`,
     })
       .then(res => {
-        console.log(res.data, "single health page data");
         setAboutData(res.data);
       })
       .catch(err => {
@@ -48,7 +46,6 @@ function SingleHealthPage() {
       url: `${SiteURl}/api/treatment/${id}/medicines`,
     })
       .then(res => {
-        console.log(res.data, "medicine data");
         setmedicineData(res.data.data);
       })
       .catch(err => {

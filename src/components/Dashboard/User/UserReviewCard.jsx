@@ -27,7 +27,7 @@ const UserReviewCard = ({ review }) => {
   <div className="w-full sm:w-52 sm:h-52 xl:w-60 xl:h-60 flex-shrink-0">
     <img
       className="w-full h-full object-cover rounded-lg"
-      src={review?.image ? review.image : medicine}
+      src={review?.image ? review.image || `${SiteURl}/${item?.icon}` : medicine}
       alt="Review Image"
     />
   </div>
