@@ -266,6 +266,13 @@ export const apiSlice = createApi({
         method: `GET`,
       }),
     }),
+
+    getSiteSettingData: builder.query({
+      query: () => ({
+        url: `/api/get-setting`,
+        method: ``,
+      }),
+    }),
   }),
 });
 
