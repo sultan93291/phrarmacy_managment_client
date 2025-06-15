@@ -50,7 +50,7 @@ function OurMission() {
       });
   }, []);
 
-  console.log("this is doctor data", DoctorData);
+
 
   return (
     <section className="pb-14 lg:pb-[140px]">

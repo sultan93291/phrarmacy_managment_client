@@ -24,7 +24,6 @@ function AverageReviews() {
       url: `${SiteURl}/api/medicine/review-avarage`,
     })
       .then(res => {
-        console.log("average review", res.data.data);
         setaverageReview(res?.data?.data);
       })
       .catch(err => {

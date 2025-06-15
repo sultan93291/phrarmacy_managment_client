@@ -89,7 +89,6 @@ const OrderDetailsDoctor = () => {
 
   return (
     <div>
-
       {/* Details */}
       <div className="mt-5 flex flex-col lg:flex-row gap-10 font-nunito w-full">
         {/* left content */}
@@ -160,9 +159,9 @@ const OrderDetailsDoctor = () => {
                       </p>
                     </div>
                     <h2 className="text-end font-bold">{med?.quantity}</h2>
-                    <h2 className="text-end font-bold">$ {med?.unit_price}</h2>
+                    <h2 className="text-end font-bold">£ {med?.unit_price}</h2>
                     <h2 className="text-end font-bold ">
-                      $ {med?.total_price}
+                      £ {med?.total_price}
                     </h2>
                   </div>
                 ))}
@@ -265,10 +264,10 @@ const OrderDetailsDoctor = () => {
                                 {med?.quantity}
                               </h2>
                               <h2 className="text-end font-bold">
-                                $ {med?.unit_price}
+                                £ {med?.unit_price}
                               </h2>
                               <h2 className="text-end font-bold ">
-                                $ {med?.total_price}
+                                £ {med?.total_price}
                               </h2>
                             </div>
                           ))}

@@ -5,28 +5,6 @@ import { useGetSubsCreptionDetailsIntentQuery } from "@/Redux/features/api/apiSl
 import { useEffect, useState } from "react";
 
 const UserSubscription = () => {
-  const subscriptions = [
-    {
-      orderId: "#101",
-      orderDate: "12/11/24",
-      CurrentPlan: 450,
-    },
-    {
-      orderId: "#101",
-      orderDate: "12/11/24",
-      CurrentPlan: 450,
-    },
-    {
-      orderId: "#101",
-      orderDate: "12/11/24",
-      CurrentPlan: 450,
-    },
-    {
-      orderId: "#101",
-      orderDate: "12/11/24",
-      CurrentPlan: 450,
-    },
-  ];
 
   const [allSubscreptionData, setallSubscreptionData] = useState([]);
   const [allActionData, setallActionData] = useState([]);
@@ -50,7 +28,7 @@ const UserSubscription = () => {
       const formattedData = data.data.map(sub => ({
         orderId: `#${sub.metadata.order_id}`,
         orderDate: formatDate(sub.metadata.order_data),
-        currentPlan: `$${sub.plan.amount.toFixed(2)}`,
+        currentPlan: `£${sub.plan.amount.toFixed(2)}`,
       }));
       setallSubscreptionData(formattedData);
     }

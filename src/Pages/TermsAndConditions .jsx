@@ -23,9 +23,8 @@ const TermsAndConditions = () => {
           </p>
           <p className="mt-2">
             My Health Needs Ltd is registered with the General Pharmaceutical
-            Council (GPhC) under registration number 1234567 and complies with
-            all regulations set forth by the Medicines and Healthcare products
-            Regulatory Agency (MHRA).
+            Council (GPhC) and fully complies with all regulations set forth by
+            the Medicines and Healthcare products Regulatory Agency (MHRA).
           </p>
           <p className="mt-2">
             By accessing and using our website, you agree to comply with and be
@@ -170,7 +169,7 @@ const TermsAndConditions = () => {
           </p>
           <ul className="list-disc pl-6 mt-2 space-y-1">
             <li>Email: complaints@myhealthneeds.co.uk</li>
-            <li>Phone: 12345678</li>
+            <li>Phone: +44(0)2082642464</li>
             <li>
               Address: Complaints Department, My Health Needs Ltd, 12 St.
               Dunstans Hill, Cheam, Sutton, England, SM1 2UE
@@ -274,7 +273,7 @@ const TermsAndConditions = () => {
               support@myhealthneeds.co.uk
             </a>
             <br />
-            Phone: xxxxxxxxxx
+            Phone: +44(0)2082642464
             <br />
             Address: 12 St. Dunstans Hill, Cheam, Sutton, England, SM1 2UE
           </p>

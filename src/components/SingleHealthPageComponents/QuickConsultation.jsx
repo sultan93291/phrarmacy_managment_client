@@ -24,7 +24,7 @@ function QuickConsultation() {
       });
   }, []);
 
-  console.log(consultationData);
+
 
   return (
     <section className="mb-14 sm:mb-[140px]">

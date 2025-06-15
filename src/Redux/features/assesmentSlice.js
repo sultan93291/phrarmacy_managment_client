@@ -20,10 +20,10 @@ const saveToLocalStorage = data => {
 };
 
 const initialState = {
-  assesmentData: loadFromLocalStorage(), // Load data from localStorage on init,
+  assesmentData: loadFromLocalStorage(),
   isAssesMent: {
     assesmentId: "",
-    assesmentResult: "",
+    assesmentResult: false, // Initialize as false for clarity
   },
   medicineId: "",
   assesMentId: "",
@@ -33,57 +33,50 @@ export const assesmentSlice = createSlice({
   name: "assesmentSlice",
   initialState,
   reducers: {
-    // Add or update assessment data
     setAssesmentData: (state, action) => {
-      state.assesmentData = loadFromLocalStorage(); // Sync with localStorage before updating
-
-      const newData = action.payload; // Must contain a unique 'id'
+      state.assesmentData = loadFromLocalStorage();
+      const newData = action.payload;
       const existingIndex = state.assesmentData.findIndex(
         item => item.id === newData.id
       );
 
       if (existingIndex !== -1) {
-        // Update existing data
         state.assesmentData[existingIndex] = newData;
       } else {
-        // Add new data
         state.assesmentData.push(newData);
       }
 
-      saveToLocalStorage(state.assesmentData); // Save updated data
+      saveToLocalStorage(state.assesmentData);
     },
 
-    // Get assessment data by ID
     getAssesmentData: (state, action) => {
-      state.assesmentData = loadFromLocalStorage(); // Ensure latest data
+      state.assesmentData = loadFromLocalStorage();
       const id = action.payload;
       return state.assesmentData.find(item => item.id === id) || null;
     },
 
-    // Check if an ID exists
     isIdPresent: (state, action) => {
-      const assesmentData = loadFromLocalStorage(); // ✅ No draft mutation
+      const assesmentData = loadFromLocalStorage();
       const { id } = action.payload;
-      assesmentData.find(item => {
-        if (item.id === id) {
-          state.isAssesMent.assesmentId = item.id;
-          state.isAssesMent.assesmentResult = true;
-          return true;
-        } else {
-          state.isAssesMent.assesmentId = null;
-          state.isAssesMent.assesmentResult = false;
-        }
-      });
+      const found = assesmentData.find(item => item.id === id);
+      if (found) {
+        state.isAssesMent.assesmentId = found.id; // Fixed: Use 'found' instead of 'item'
+        state.isAssesMent.assesmentResult = true;
+      } else {
+        state.isAssesMent.assesmentId = null;
+        state.isAssesMent.assesmentResult = false;
+      }
     },
-    // Clear all assessment data (optional)
+
     clearAssesmentData: state => {
       state.assesmentData = [];
       localStorage.removeItem("assesmentData");
     },
+
     storeMedicineId: (state, action) => {
       const { id, assesMentId } = action.payload;
-      state.medicineId = id;
-      state.assesMentId = assesMentId;
+      state.medicineId = id || state.medicineId;
+      state.assesMentId = assesMentId || state.assesMentId || "";
     },
   },
 });

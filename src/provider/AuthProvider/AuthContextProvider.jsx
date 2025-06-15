@@ -13,7 +13,6 @@ const AuthProvider = ({ children }) => {
   const fetchData = () => {
     const token = localStorage.getItem("token");
     if (!token) {
-      console.log("No token found. User not logged in.");
       return;
     }
 
@@ -25,7 +24,6 @@ const AuthProvider = ({ children }) => {
       },
     })
       .then(res => {
-        console.log(res.data.data);
         dispatch(setLoggedInUserData(res?.data?.data));
         setRole(res?.data?.data?.role || "user");
       })
@@ -67,7 +65,7 @@ const AuthProvider = ({ children }) => {
     setRole,
     isAuthenticated: localStorage.getItem("token"),
     handleLogout,
-    fetchData, // ✅ Expose fetchData here
+    fetchData, 
   };
 
   return (

@@ -35,8 +35,8 @@ import RegulationPolicy from "@/Pages/RegulationPolicy";
 import TermsAndConditions from "@/Pages/TermsAndConditions ";
 import CookiesPolicy from "@/Pages/CookiesPolicy ";
 import ComplaintsAndFeedback from "@/Pages/ComplaintsAndFeedback ";
-
-
+import NotFoundPage from "@/Pages/NotFoundPage/NotFoundPage";
+import ContactUsPage from "@/Pages/ContactUsPage";
 
 // Breadcrumb configuration
 const routes = [
@@ -57,6 +57,10 @@ const router = createBrowserRouter(
         {
           path: "/",
           element: <HomePage />,
+        },
+        {
+          path: "*",
+          element: <NotFoundPage />,
         },
         {
           path: "/service",
@@ -80,7 +84,7 @@ const router = createBrowserRouter(
           element: <MedicineDetailsPage />,
         },
         {
-          path: "/checkout",
+          path: "/checkout/:id",
           element: (
             <ProtectedRoute>
               <CheckoutPage />
@@ -114,6 +118,10 @@ const router = createBrowserRouter(
         {
           path: "/complaints",
           element: <ComplaintsAndFeedback />,
+        },
+        {
+          path: "/contact-us",
+          element: <ContactUsPage />,
         },
       ],
     },

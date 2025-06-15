@@ -8,12 +8,10 @@ import { cn } from "@/lib/utils";
 import chep from "@/assets/images/card_chep.png";
 
 const PaymentCard = ({ data,className }) => {
-  console.log(data, "from payment page");
   const loggeInUserData = useSelector(
     state => state.loggedInuserSlice.loggedInUserData
   );
 
-  console.log(loggeInUserData);
 
   return (
     <>
