@@ -26,7 +26,6 @@ function MedicineDetailsPage() {
       url: `${SiteURl}/api/medicine/${id}/show`,
     })
       .then(res => {
-        console.log(res.data.data, " medicine details data");
         setmedicineDetails(res.data.data);
       })
       .catch(err => {
@@ -34,7 +33,6 @@ function MedicineDetailsPage() {
       });
   }, [id]);
 
-  console.log(medicineDetails , ' this is the medicine details');
   
 
   useEffect(() => {
@@ -43,7 +41,6 @@ function MedicineDetailsPage() {
       url: `${SiteURl}/api/medicine/review?sort=&per_page=&page=`,
     })
       .then(res => {
-        console.log(res.data.data, " all review  data");
         setallReview(res.data.data);
       })
       .catch(err => {

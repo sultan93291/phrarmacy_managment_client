@@ -7,7 +7,6 @@ import { useGetPersonalizedDataQuery } from "@/Redux/features/api/apiSlice";
 function PersonalizedSection() {
   const { data, error, isLoading } = useGetPersonalizedDataQuery();
 
-  console.log(data?.data);
 
   const imgBaseurl = import.meta.env.VITE_SITE_URL;
 

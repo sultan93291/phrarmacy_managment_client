@@ -1,6 +1,6 @@
 import CommonQuestionBox from "@/components/AssessmentPageComponents/CommonQuestionBox";
 import FormHeader from "@/components/AssessmentPageComponents/FormHeader";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import InnerSection from "@/components/Common/InnerSection";
 import assesmentBg from "../assets/images/assesment-bg.png";
@@ -28,13 +28,18 @@ function AssessmentPage() {
   );
   const dispatch = useDispatch();
 
+  const [termsAccepted, setTermsAccepted] = useState(false);
+
+  const handleTermsChange = e => {
+    setTermsAccepted(e.target.checked);
+  };
+
   useEffect(() => {
     axios({
       method: "GET",
       url: `${SiteURl}/api/treatment/${id}/consultation`,
     })
       .then(res => {
-        console.log(res.data.data.assessments);
         sethealthQuestion(res.data.data.assessments);
       })
       .catch(err => {
@@ -54,6 +59,8 @@ function AssessmentPage() {
       return toast.error(
         "Assessment indicates you're not eligible to purchase this medicine."
       );
+    } else if (!termsAccepted) {
+      return toast.error("Please accept the terms and conidtion to continue ");
     }
 
     const fieldkeys = Object.keys(data);
@@ -257,6 +264,44 @@ function AssessmentPage() {
               </CommonQuestionBox>
             );
           })}
+
+          <div className="flex flex-col gap-y-6">
+            <div className="flex items-center pt-6 gap-2">
+              <input
+                type="checkbox"
+                id="terms"
+                checked={termsAccepted}
+                onChange={handleTermsChange}
+              />
+              <label
+                htmlFor="terms"
+                className="text-lg sm:text-xl text-subtitleText "
+              >
+                I confirm that{" "}
+                <span className="text-primary">I am over 18 </span> and{" "}
+                <span className="text-primary" >agree to the following </span>: *
+              </label>
+            </div>
+            <ul className="flex flex-col gap-y-3  text-black list-disc pl-5 text-sm sm:text-lg text-subtitleText ">
+              <li>
+                I will read the patient information leaflet supplied with my
+                medication.
+              </li>
+              <li>
+                I will contact you and inform my GP if I experience any side
+                effects, start new medication, or if my medical conditions
+                change during treatment.
+              </li>
+              <li>The treatment is solely for my own use.</li>
+              <li>
+                I have answered all questions accurately and truthfully, and I
+                understand that your prescribers rely on my answers to make
+                informed decisions. I understand that providing incorrect
+                information may be harmful to my health.
+              </li>
+              <li>I agree to the Terms and Conditions.</li>
+            </ul>
+          </div>
 
           <div className="flex flex-col sm:flex-row items-center gap-4 pt-5 sm:pt-10">
             <button

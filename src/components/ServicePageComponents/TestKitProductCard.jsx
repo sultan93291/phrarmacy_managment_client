@@ -3,7 +3,6 @@ import { Link, useParams } from "react-router-dom";
 import CommonButtonV2 from "../Common/CommonButtonV2";
 
 function TestKitProductCard({ item }) {
-  console.log("single kit item", item);
   const SiteURl = import.meta.env.VITE_SITE_URL;
 
   return (

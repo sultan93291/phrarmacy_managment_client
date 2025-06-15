@@ -75,7 +75,6 @@ function TestimonialSection() {
       url: `${SiteURl}/api/medicine/review?sort=&per_page=&page=`,
     })
       .then(res => {
-        console.log(res.data.data, " all review  data");
         setallReview(res.data.data);
       })
       .catch(err => {
@@ -126,7 +125,7 @@ function TestimonialSection() {
                   <div
                     data-aos="zoom-in"
                     data-aos-duration="2000"
-                    className="py-[30px] px-8 max-w-[378px] min-h-[250px] max-h-[378px] rounded-lg bg-white mt-5"
+                    className="py-[30px] px-8 max-w-[378px] min-h-[250px] max-h-[378px] rounded-lg bg-white mt-5 flex flex-col items-center"
                   >
                     <p className="text-xl font-bold text-menuLinkColor leading-9 mb-6 text-center">
                       "{item.review}"

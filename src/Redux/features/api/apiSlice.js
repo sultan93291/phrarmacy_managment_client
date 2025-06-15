@@ -252,9 +252,28 @@ export const apiSlice = createApi({
         method: `GET`,
       }),
     }),
-  }),
 
-  // create meeting
+    getSearchedTreatment: builder.query({
+      query: query => ({
+        url: `/api/treatments?search=${query}`,
+        method: `GET`,
+      }),
+    }),
+
+    getSocailMedia: builder.query({
+      query: () => ({
+        url: `/api/social-media`,
+        method: `GET`,
+      }),
+    }),
+
+    getSiteSettingData: builder.query({
+      query: () => ({
+        url: `/api/get-setting`,
+        method: ``,
+      }),
+    }),
+  }),
 });
 
 // Export hooks for each endpoint
@@ -284,5 +303,7 @@ export const {
   useDeleteMeetingIntentMutation,
   useGetCompanyDataQuery,
   useGetPersonalizedDataQuery,
-  useGetConsultationDataQuery
+  useGetConsultationDataQuery,
+  useGetSearchedTreatmentQuery,
+  useGetSocailMediaQuery,
 } = apiSlice;

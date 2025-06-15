@@ -25,7 +25,6 @@ function MedicineDetailsAccordion() {
       });
   }, []);
 
-  console.log(faqData, " this is a faq data ");
   return (
     <div data-aos="zoom-up" data-aos-duration="2000" className="py-14 sm:py-24">
       <Accordion className="space-y-2" type="single" collapsible>
